@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/authenticate/authenticate.dart';
-import 'package:health_wealth/screens/home/home.dart';
+import 'package:health_wealth/screens/home.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {
@@ -17,7 +17,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return const Authenticate();
     } else {
-      return Home();
+      return const Home();
     }
   }
 }
