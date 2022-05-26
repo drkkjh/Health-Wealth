@@ -26,8 +26,5 @@ class MyApp extends StatelessWidget {
         home: Wrapper(),
       ),
     );
-    // return const MaterialApp(
-    //   home: Wrapper(),
-    // );
   }
 }
