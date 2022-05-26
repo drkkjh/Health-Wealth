@@ -14,16 +14,20 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
+  // User input variables
   String email = '';
   String password = '';
+
+  String errorMsg = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.brown,
+      // backgroundColor: Colors.lightBlueAccent,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.indigoAccent,
         elevation: 0.0,
         title: const Text('Sign in'),
         actions: [
@@ -39,10 +43,18 @@ class _SignInState extends State<SignIn> {
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               const SizedBox(height: 20.0),
               TextFormField(
+                validator: (input) {
+                  if (input != null && input.isEmpty) {
+                    return 'Enter your email';
+                  } else {
+                    return null;
+                  }
+                },
                 onChanged: (input) {
                   setState(() => email = input);
                 },
@@ -50,6 +62,16 @@ class _SignInState extends State<SignIn> {
               const SizedBox(height: 20.0),
               TextFormField(
                 obscureText: true,
+                validator: (input) {
+                  if (input != null) {
+                    if (input.isEmpty) {
+                      return 'Enter your password';
+                    } else if (input.length < 6) {
+                      return 'Your password must be at least 6 characters!';
+                    }
+                  }
+                  return null;
+                },
                 onChanged: (input) {
                   setState(() => password = input);
                 },
@@ -63,9 +85,28 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 onPressed: () async {
-                  print(email);
-                  print(password);
+                  // Check if form is valid.
+                  if (_formKey.currentState != null) {
+                    if (_formKey.currentState!.validate()) {
+                      dynamic result = await _auth.signIn(email, password);
+                      if (result == null) {
+                        setState(() => errorMsg = 'Error with signing in');
+                      }
+                    }
+                  }
                 },
+                // onPressed: () async {
+                //   print(email);
+                //   print(password);
+                // },
+              ),
+              const SizedBox(height: 20.0),
+              Text(
+                errorMsg,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.0,
+                ),
               ),
             ],
           ),

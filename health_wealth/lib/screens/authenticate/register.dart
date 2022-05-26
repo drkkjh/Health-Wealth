@@ -14,9 +14,13 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
+  // User input variables
   String email = '';
   String password = '';
+
+  String errorMsg = '';
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +43,18 @@ class _RegisterState extends State<Register> {
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               const SizedBox(height: 20.0),
               TextFormField(
+                validator: (input) {
+                  if (input != null && input.isEmpty) {
+                    return 'Enter your email';
+                  } else {
+                    return null;
+                  }
+                },
                 onChanged: (input) {
                   setState(() => email = input);
                 },
@@ -50,6 +62,13 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 20.0),
               TextFormField(
                 obscureText: true,
+                validator: (input) {
+                  if (input != null && input.length < 6) {
+                    return 'Your password must be at least 6 characters!';
+                  } else {
+                    return null;
+                  }
+                },
                 onChanged: (input) {
                   setState(() => password = input);
                 },
@@ -63,9 +82,24 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 onPressed: () async {
-                  print(email);
-                  print(password);
+                  // Check if form is valid.
+                  if (_formKey.currentState != null) {
+                    if (_formKey.currentState!.validate()) {
+                      dynamic result = await _auth.register(email, password);
+                      if (result == null) {
+                        setState(() => errorMsg = 'Error with registration');
+                      }
+                    }
+                  }
                 },
+              ),
+              const SizedBox(height: 20.0),
+              Text(
+                errorMsg,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
               ),
             ],
           ),

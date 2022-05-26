@@ -18,23 +18,33 @@ class AuthService {
     return _auth.authStateChanges();
   }
 
-  // sign in anon
-  Future signInAnon() async {
+  // sign in with email & password
+  Future signIn(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInAnonymously();
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
-      print('$user has signed in anonymously');
+      print('$user has signed in');
       return user;
-      // return _fbUserToCustomUser(user);
     } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
-  // sign in with email & password
-
-  // register in with email & password
+  // register with email & password
+  Future register(String email, String password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User? user = result.user;
+      print('$user has registered');
+      return user;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   // sign out
   Future signOut() async {
