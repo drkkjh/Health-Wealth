@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/authenticate/register.dart';
 import 'package:health_wealth/screens/authenticate/sign_in.dart';
 
+/// The Authenticate widget allows Users to toggle between Sign In and Register
+/// screens.
 class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);
 

@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/services/auth.dart';
 
+/// The Sign In screen widget.
+/// Users will be brought to the Home screen upon successful sign in.
 class SignIn extends StatefulWidget {
   final Function togglePage;
 
@@ -95,10 +97,6 @@ class _SignInState extends State<SignIn> {
                     }
                   }
                 },
-                // onPressed: () async {
-                //   print(email);
-                //   print(password);
-                // },
               ),
               const SizedBox(height: 20.0),
               Text(

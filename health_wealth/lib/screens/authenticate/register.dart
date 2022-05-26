@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/services/auth.dart';
 
+/// The Register screen widget.
+/// Users will be logged in upon successful registration and brought to the
+/// Home screen.
 class Register extends StatefulWidget {
   final Function togglePage;
 
