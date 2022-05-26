@@ -4,7 +4,7 @@ class SnackTracker extends StatefulWidget {
   const SnackTracker({Key? key}) : super(key: key);
 
   @override
-  _SnackTrackerState createState() => _SnackTrackerState();
+  State<SnackTracker> createState() => _SnackTrackerState();
 }
 
 class _SnackTrackerState extends State<SnackTracker> {
