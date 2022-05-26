@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "179063474508",
+    "project_id": "health-wealth-64a5e",
+    "storage_bucket": "health-wealth-64a5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179063474508:android:62badff72db2e11daa27e9",
+        "android_client_info": {
+          "package_name": "com.example.health_wealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179063474508-9tjgvacsph9duo5g6lp1bsdm40dh4kc7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPrBJcI-q7tZZfW5pKUm8aWZ48_Pq0ahg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179063474508-9tjgvacsph9duo5g6lp1bsdm40dh4kc7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
