@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:health_wealth/services/auth.dart';
 
-void main() {
-  runApp(MaterialApp(home: Home()));
-}
+// void main() {
+//   runApp(MaterialApp(home: Home()));
+// }
 
+/// The Home screen widget.
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -12,6 +14,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width; // get screen width
@@ -19,7 +23,19 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Health==Wealth'),
+        title: const Text('Health==Wealth'),
+        actions: [
+          TextButton.icon(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            ),
+            icon: const Icon(Icons.person),
+            label: const Text('logout'),
+            onPressed: () async {
+              await _auth.signOut();
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: GridView.count(
@@ -28,20 +44,20 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             ElevatedButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.plus_one),
-                label: Text('snackTracker')),
+                icon: const Icon(Icons.plus_one),
+                label: const Text('snackTracker')),
             ElevatedButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.plus_one),
-                label: Text('runTracker')),
+                icon: const Icon(Icons.plus_one),
+                label: const Text('runTracker')),
             ElevatedButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.plus_one),
-                label: Text('workoutBuddy')),
+                icon: const Icon(Icons.plus_one),
+                label: const Text('workoutBuddy')),
             ElevatedButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.plus_one),
-                label: Text('shareIT')),
+                icon: const Icon(Icons.plus_one),
+                label: const Text('shareIT')),
           ],
         ),
       ),
