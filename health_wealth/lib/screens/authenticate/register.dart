@@ -41,6 +41,9 @@ class _RegisterState extends State<Register> {
           title: const Text('Register'),
           actions: [
             TextButton.icon(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
               icon: const Icon(Icons.person),
               label: const Text('Sign in'),
               onPressed: () {

@@ -40,6 +40,9 @@ class _SignInState extends State<SignIn> {
           title: const Text('Sign in'),
           actions: [
             TextButton.icon(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
               icon: const Icon(Icons.person),
               label: const Text('Create account'),
               onPressed: () {
