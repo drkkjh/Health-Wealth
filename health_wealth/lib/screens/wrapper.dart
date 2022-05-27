@@ -6,6 +6,8 @@ import 'package:health_wealth/screens/authenticate/authenticate.dart';
 import 'package:health_wealth/screens/home.dart';
 import 'package:provider/provider.dart';
 
+/// This class listens for changes in User sign-in state and renders either
+/// the Authenticate widget or the Home widget.
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
 

@@ -5,6 +5,7 @@ import 'package:health_wealth/services/auth.dart';
 //   runApp(MaterialApp(home: Home()));
 // }
 
+/// The Home screen widget.
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 

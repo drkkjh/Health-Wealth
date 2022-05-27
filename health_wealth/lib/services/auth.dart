@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// This class handles User Authentication functions.
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -14,29 +15,41 @@ class AuthService {
   // Stream<CustomUser?> get getUser {
   //   return _auth.authStateChanges().map(_fbUserToCustomUser);
   // }
+
+  /// Getter that returns User sign-in state in a Stream.
   Stream<User?> get getUser {
     return _auth.authStateChanges();
   }
 
-  // sign in anon
-  Future signInAnon() async {
+  /// Sign in with email and password.
+  Future signIn(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInAnonymously();
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
-      print('$user has signed in anonymously');
+      print('$user has signed in');
       return user;
-      // return _fbUserToCustomUser(user);
     } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
-  // sign in with email & password
+  /// Register with email and password.
+  Future register(String email, String password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User? user = result.user;
+      print('$user has registered');
+      return user;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
-  // register in with email & password
-
-  // sign out
+  /// Sign out.
   Future signOut() async {
     try {
       return await _auth.signOut();
