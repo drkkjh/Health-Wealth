@@ -12,31 +12,15 @@ class _ShareItState extends State<ShareIt> {
   final AuthService _auth = AuthService();
   int currentIndex = 3;
 
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          title: const Text('ShareIt'),
           centerTitle: true,
-          actions: [
-            TextButton.icon(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              ),
-              icon: const Icon(Icons.person),
-              label: const Text('logout'),
-              onPressed: () async {
-                await _auth.signOut();
-              },
-            ),
-          ],
+          backgroundColor: Colors.lightBlue,
           bottom: TabBar(
             indicatorColor: Colors.orange,
             indicator: BoxDecoration(
@@ -52,7 +36,6 @@ class _ShareItState extends State<ShareIt> {
               ),
             ],
           ),
-          title: const Text('ShareIt'),
         ),
         body: const TabBarView(
           children: [
@@ -72,29 +55,6 @@ class _ShareItState extends State<ShareIt> {
                   fontSize: 25.0,
                 ),
               ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: currentIndex,
-          type: BottomNavigationBarType.fixed,
-          onTap: ((index) => setState(() => currentIndex = index)),
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.food_bank),
-              label: 'SnackTracker',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.man_sharp),
-              label: 'WorkoutBuddy',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.man_rounded),
-              label: 'RunTracker',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'ShareIt',
             ),
           ],
         ),

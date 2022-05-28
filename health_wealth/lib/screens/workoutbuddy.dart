@@ -32,7 +32,7 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
 
   Widget list() {
     return ListView.builder(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         itemCount: workouts.length,
         itemBuilder: (BuildContext context, int index) {
           return row(context, index);
@@ -59,9 +59,9 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
   Widget refreshBackground() {
     return Container(
       alignment: Alignment.centerRight,
-      padding: EdgeInsets.only(right: 20.0),
+      padding: const EdgeInsets.only(right: 20.0),
       color: Colors.red[900],
-      child: Icon(Icons.delete, color: Colors.white),
+      child: const Icon(Icons.delete, color: Colors.white),
     );
   }
 
@@ -70,7 +70,7 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('WorkOutBuddy'),
+        title: const Text('WorkOutBuddy'),
       ),
       body: RefreshIndicator(
           key: refreshKey,
@@ -81,8 +81,8 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
     );
   }
 
-  Future<Null> refreshList() async {
-    await Future.delayed(Duration(seconds: 1));
+  Future<void> refreshList() async {
+    await Future.delayed(const Duration(seconds: 1));
     addAnyWorkout();
     return null;
   }
