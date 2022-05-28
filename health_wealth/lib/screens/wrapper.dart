@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/authenticate/authenticate.dart';
-import 'package:health_wealth/screens/home2.dart';
+import 'package:health_wealth/screens/feature_wrapper.dart';
 import 'package:provider/provider.dart';
 
 /// This class listens for changes in User sign-in state and renders either
