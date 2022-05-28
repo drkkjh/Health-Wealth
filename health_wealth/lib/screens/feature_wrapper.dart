@@ -12,7 +12,7 @@ class FeatureWrapper extends StatefulWidget {
   const FeatureWrapper({Key? key}) : super(key: key);
 
   @override
-  State<FeatureWrapper> createState() => _Home2State();
+  State<FeatureWrapper> createState() => _FeatureWrapperState();
 }
 
 class _FeatureWrapperState extends State<FeatureWrapper> {
