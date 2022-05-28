@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'dart:math';
+import 'package:health_wealth/screens/addworkout.dart';
+import 'package:health_wealth/model/workout.dart';
 
 class WorkOutBuddy extends StatefulWidget {
-  const WorkOutBuddy({Key? key}) : super(key: key);
+  final String workout;
+  const WorkOutBuddy({Key? key, required this.workout}) : super(key: key);
 
   @override
   State<WorkOutBuddy> createState() => _WorkOutBuddyState();
@@ -21,13 +24,7 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
   void initState() {
     super.initState();
     workouts = [];
-    addWorkouts();
     refreshKey = GlobalKey<RefreshIndicatorState>();
-  }
-
-  addWorkouts() {
-    workouts.add("Push Ups");
-    workouts.add("Sit Ups");
   }
 
   Widget list() {
@@ -71,6 +68,18 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('WorkOutBuddy'),
+        actions: <Widget>[
+          FloatingActionButton(
+            child: Icon(Icons.add),
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            onPressed: () async {
+              final workoutToAdd = await Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AddWorkOut()));
+              setState(() => workouts.add(workoutToAdd));
+            },
+          )
+        ],
       ),
       body: RefreshIndicator(
           key: refreshKey,
@@ -116,12 +125,5 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
         },
       ),
     ));
-  }
-
-  static List workOutList() {
-    List list = List.generate(len, (i) {
-      return "Workout $i";
-    });
-    return list;
   }
 }
