@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:health_wealth/services/auth.dart';
 
 class ShareIt extends StatefulWidget {
   const ShareIt({Key? key}) : super(key: key);
@@ -9,7 +8,6 @@ class ShareIt extends StatefulWidget {
 }
 
 class _ShareItState extends State<ShareIt> {
-  final AuthService _auth = AuthService();
   int currentIndex = 3;
 
   @override

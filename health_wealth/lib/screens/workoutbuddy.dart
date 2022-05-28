@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'dart:math';
+import 'package:health_wealth/screens/addworkout.dart';
 
 class WorkOutBuddy extends StatefulWidget {
-  const WorkOutBuddy({Key? key}) : super(key: key);
+  final String workout;
+  const WorkOutBuddy({Key? key, required this.workout}) : super(key: key);
 
   @override
   State<WorkOutBuddy> createState() => _WorkOutBuddyState();
@@ -21,13 +21,7 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
   void initState() {
     super.initState();
     workouts = [];
-    addWorkouts();
     refreshKey = GlobalKey<RefreshIndicatorState>();
-  }
-
-  addWorkouts() {
-    workouts.add("Push Ups");
-    workouts.add("Sit Ups");
   }
 
   Widget list() {
@@ -71,20 +65,40 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('WorkOutBuddy'),
+        actions: <Widget>[
+          FloatingActionButton(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            onPressed: () async {
+              final workoutToAdd = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const AddWorkOut(),
+                ),
+              );
+              setState(
+                () => workouts.add(workoutToAdd),
+              );
+            },
+            child: const Icon(Icons.add),
+          )
+        ],
       ),
       body: RefreshIndicator(
-          key: refreshKey,
-          onRefresh: () async {
-            await refreshList();
-          },
-          child: list()),
+        key: refreshKey,
+        onRefresh: () async {
+          await refreshList();
+        },
+        child: list(),
+      ),
     );
   }
 
   Future<void> refreshList() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(
+      const Duration(seconds: 1),
+    );
     addAnyWorkout();
-    return null;
+    return;
   }
 
   addAnyWorkout() {
@@ -116,12 +130,5 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
         },
       ),
     ));
-  }
-
-  static List workOutList() {
-    List list = List.generate(len, (i) {
-      return "Workout $i";
-    });
-    return list;
   }
 }

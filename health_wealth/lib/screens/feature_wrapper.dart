@@ -21,7 +21,7 @@ class _FeatureWrapperState extends State<FeatureWrapper> {
 
   final screens = [
     const SnackTracker(),
-    const WorkOutBuddy(),
+    const WorkOutBuddy(workout: 'Workout 1'),
     const RunTracker(),
     const ShareIt()
   ];
