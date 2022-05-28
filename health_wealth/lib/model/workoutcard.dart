@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/workout.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class WorkoutCard extends StatelessWidget {
   final Workout workout;
 
-  WorkoutCard({required this.workout});
+  const WorkoutCard({Key? key, required this.workout}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+      margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
       child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
         Text(
           workout.name.toString(),
@@ -20,7 +18,7 @@ class WorkoutCard extends StatelessWidget {
             color: Colors.grey[600],
           ),
         ),
-        SizedBox(height: 6.0),
+        const SizedBox(height: 6.0),
         Text(
           workout.days.toString(),
           style: TextStyle(

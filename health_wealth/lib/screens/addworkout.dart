@@ -1,8 +1,4 @@
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:health_wealth/screens/workoutbuddy.dart';
-import 'package:health_wealth/model/workout.dart';
 import 'package:health_wealth/model/workoutcard.dart';
 
 class AddWorkOut extends StatefulWidget {
