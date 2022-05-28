@@ -41,6 +41,9 @@ class _RegisterState extends State<Register> {
           title: const Text('Register'),
           actions: [
             TextButton.icon(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
               icon: const Icon(Icons.person),
               label: const Text('Sign in'),
               onPressed: () {
@@ -98,7 +101,8 @@ class _RegisterState extends State<Register> {
                       if (_formKey.currentState != null) {
                         if (_formKey.currentState!.validate()) {
                           setState(() => loading = true);
-                          dynamic result = await _auth.signIn(email, password);
+                          dynamic result =
+                              await _auth.register(email, password);
                           if (result == null) {
                             setState(() {
                               loading = false;
