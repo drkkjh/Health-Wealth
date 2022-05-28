@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/authenticate/authenticate.dart';
 import 'package:health_wealth/screens/home.dart';
+import 'package:health_wealth/screens/workoutbuddy.dart';
 import 'package:provider/provider.dart';
 
 /// This class listens for changes in User sign-in state and renders either
@@ -19,7 +20,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return const Authenticate();
     } else {
-      return const Home();
+      return const WorkOutBuddy(workout: 'Default');
     }
   }
 }
