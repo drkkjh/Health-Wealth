@@ -13,30 +13,36 @@ class _SnackTrackerState extends State<SnackTracker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: appBarTitle, actions: <Widget>[
-        IconButton(
-          icon: actionIcon,
-          onPressed: () {
-            setState(() {
-              if (actionIcon.icon == Icons.search) {
-                actionIcon = const Icon(Icons.close);
-                appBarTitle = const TextField(
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  decoration: InputDecoration(
+      appBar: AppBar(
+        centerTitle: true,
+        title: appBarTitle,
+        backgroundColor: Colors.lightBlue,
+        actions: <Widget>[
+          IconButton(
+            icon: actionIcon,
+            onPressed: () {
+              setState(() {
+                if (actionIcon.icon == Icons.search) {
+                  actionIcon = const Icon(Icons.close);
+                  appBarTitle = const TextField(
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    decoration: InputDecoration(
                       prefixIcon: Icon(Icons.search, color: Colors.white),
                       hintText: "Search...",
-                      hintStyle: TextStyle(color: Colors.white)),
-                );
-              } else {
-                actionIcon = const Icon(Icons.search);
-                appBarTitle = const Text("SnackTracker");
-              }
-            });
-          },
-        ),
-      ]),
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
+                  );
+                } else {
+                  actionIcon = const Icon(Icons.search);
+                  appBarTitle = const Text("SnackTracker");
+                }
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
 }
