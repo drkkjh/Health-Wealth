@@ -65,6 +65,7 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('WorkOutBuddy'),
+        backgroundColor: Colors.lightBlue,
         actions: <Widget>[
           FloatingActionButton(
             backgroundColor: Colors.green,

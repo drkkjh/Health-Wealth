@@ -45,7 +45,10 @@ class _FeatureWrapperState extends State<FeatureWrapper> {
           ),
         ],
       ),
-      body: screens[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: screens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
