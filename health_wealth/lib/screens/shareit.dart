@@ -27,7 +27,7 @@ class _ShareItState extends State<ShareIt> {
             ),
             tabs: const [
               Tab(
-                text: 'General',
+                text: 'Feed',
               ),
               Tab(
                 text: 'Discussion',
@@ -40,7 +40,7 @@ class _ShareItState extends State<ShareIt> {
             // TODO: Create General and Discussion screens
             Center(
               child: Text(
-                'General page coming soon!',
+                'Feed coming soon!',
                 style: TextStyle(
                   fontSize: 25.0,
                 ),

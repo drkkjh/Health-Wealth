@@ -51,79 +51,88 @@ class _SignInState extends State<SignIn> {
             ),
           ],
         ),
-        body: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                const SizedBox(height: 20.0),
-                TextFormField(
-                  decoration: formInputDecoration.copyWith(hintText: 'Email'),
-                  validator: (input) {
-                    if (input != null && input.isEmpty) {
-                      return 'Enter your email';
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (input) {
-                    setState(() => email = input);
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                TextFormField(
-                  obscureText: true,
-                  decoration:
-                      formInputDecoration.copyWith(hintText: 'Password'),
-                  validator: (input) {
-                    if (input != null) {
-                      if (input.isEmpty) {
-                        return 'Enter your password';
-                      } else if (input.length < 6) {
-                        return 'Your password must be at least 6 characters!';
-                      }
-                    }
-                    return null;
-                  },
-                  onChanged: (input) {
-                    setState(() => password = input);
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                ElevatedButton(
-                  child: const Text(
-                    'Sign in',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 50.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 20.0),
+                      TextFormField(
+                        decoration:
+                            formInputDecoration.copyWith(hintText: 'Email'),
+                        validator: (input) {
+                          if (input != null && input.isEmpty) {
+                            return 'Enter your email';
+                          } else {
+                            return null;
+                          }
+                        },
+                        onChanged: (input) {
+                          setState(() => email = input);
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      TextFormField(
+                        obscureText: true,
+                        decoration:
+                            formInputDecoration.copyWith(hintText: 'Password'),
+                        validator: (input) {
+                          if (input != null) {
+                            if (input.isEmpty) {
+                              return 'Enter your password';
+                            } else if (input.length < 6) {
+                              return 'Your password must be at least 6 characters!';
+                            }
+                          }
+                          return null;
+                        },
+                        onChanged: (input) {
+                          setState(() => password = input);
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      ElevatedButton(
+                        child: const Text(
+                          'Sign in',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: () async {
+                          // Check if form is valid.
+                          if (_formKey.currentState != null) {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() => loading = true);
+                              dynamic result =
+                                  await _auth.signIn(email, password);
+                              if (result == null) {
+                                setState(() {
+                                  loading = false;
+                                  errorMsg = 'Error with signing in';
+                                });
+                              }
+                            }
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        errorMsg,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                    ],
                   ),
-                  onPressed: () async {
-                    // Check if form is valid.
-                    if (_formKey.currentState != null) {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() => loading = true);
-                        dynamic result = await _auth.signIn(email, password);
-                        if (result == null) {
-                          setState(() {
-                            loading = false;
-                            errorMsg = 'Error with signing in';
-                          });
-                        }
-                      }
-                    }
-                  },
                 ),
-                const SizedBox(height: 20.0),
-                Text(
-                  errorMsg,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
