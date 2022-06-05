@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
 import 'package:health_wealth/common/loading.dart';
@@ -105,17 +106,15 @@ class _SignInState extends State<SignIn> {
                         ),
                         onPressed: () async {
                           // Check if form is valid.
-                          if (_formKey.currentState != null) {
-                            if (_formKey.currentState!.validate()) {
-                              setState(() => loading = true);
-                              dynamic result =
-                                  await _auth.signIn(email, password);
-                              if (result == null) {
-                                setState(() {
-                                  loading = false;
-                                  errorMsg = 'Error with signing in';
-                                });
-                              }
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => loading = true);
+                            try {
+                              await _auth.signIn(email, password);
+                            } on FirebaseAuthException catch (e) {
+                              setState(() {
+                                loading = false;
+                                errorMsg = e.message!;
+                              });
                             }
                           }
                         },
@@ -124,7 +123,7 @@ class _SignInState extends State<SignIn> {
                       Text(
                         errorMsg,
                         style: const TextStyle(
-                          color: Colors.black,
+                          color: Colors.red,
                           fontSize: 20.0,
                         ),
                       ),
