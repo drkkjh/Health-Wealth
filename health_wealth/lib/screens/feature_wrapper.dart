@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/runtracker.dart';
+import 'package:health_wealth/screens/settings.dart';
 import 'package:health_wealth/screens/shareit.dart';
 import 'package:health_wealth/screens/snacktracker.dart';
 import 'package:health_wealth/screens/workoutbuddy.dart';
@@ -23,7 +24,8 @@ class _FeatureWrapperState extends State<FeatureWrapper> {
     const SnackTracker(),
     const WorkOutBuddy(workout: 'Workout 1'),
     const RunTracker(),
-    const ShareIt()
+    const ShareIt(),
+    const Settings()
   ];
 
   @override
@@ -72,6 +74,10 @@ class _FeatureWrapperState extends State<FeatureWrapper> {
             icon: Icon(Icons.people),
             label: 'ShareIt',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          )
         ],
       ),
     );
