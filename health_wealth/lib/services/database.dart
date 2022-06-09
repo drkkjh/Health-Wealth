@@ -4,15 +4,29 @@ class DatabaseService {
   final String uid;
   DatabaseService({required this.uid});
 
-  // collection reference
-  final CollectionReference userDataCollection =
-      FirebaseFirestore.instance.collection('user data');
+  // Collection reference
+  final CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection("users");
 
-  // Future updateUserData(String username) async {
-  //   return await userDataCollection.startAtDocument(uid).set;
-  // }
+  Future createUser(String email) async {
+    return await usersCollection
+        .doc(uid)
+        .set({'username': email, 'email': email});
+  }
 
-  Future<DocumentReference> addUsername(String username) async {
-    return await userDataCollection.add(username);
+  Future updateUsername(String username) async {
+    // TODO: Implement logic to check that username isn't taken
+    return await usersCollection.doc(uid).update({'username': username});
+    // .set({'username': username}, SetOptions(merge: true));
+  }
+}
+
+/// Custom DatabaseServiceExceptions
+class UsernameTakenException implements Exception {
+  const UsernameTakenException() : super();
+
+  /// Getter that returns error message.
+  String get message {
+    return 'Username is already taken.';
   }
 }

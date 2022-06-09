@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/runtracker.dart';
-import 'package:health_wealth/screens/settings.dart';
+import 'package:health_wealth/screens/settings/settings.dart';
 import 'package:health_wealth/screens/shareit.dart';
 import 'package:health_wealth/screens/snacktracker.dart';
 import 'package:health_wealth/screens/workoutbuddy.dart';

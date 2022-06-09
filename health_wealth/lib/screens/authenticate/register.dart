@@ -69,7 +69,7 @@ class _RegisterState extends State<Register> {
                           decoration:
                               formInputDecoration.copyWith(hintText: 'Email'),
                           validator: (input) {
-                            if (input != null && input.isEmpty) {
+                            if (input == null || input.isEmpty) {
                               return 'Enter your email';
                             } else {
                               return null;
@@ -85,7 +85,7 @@ class _RegisterState extends State<Register> {
                           decoration: formInputDecoration.copyWith(
                               hintText: 'Password'),
                           validator: (input) {
-                            if (input != null && input.length < 6) {
+                            if (input == null || input.length < 6) {
                               return 'Your password must be at least 6 characters!';
                             } else {
                               return null;

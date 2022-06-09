@@ -67,7 +67,7 @@ class _SignInState extends State<SignIn> {
                         decoration:
                             formInputDecoration.copyWith(hintText: 'Email'),
                         validator: (input) {
-                          if (input != null && input.isEmpty) {
+                          if (input == null || input.isEmpty) {
                             return 'Enter your email';
                           } else {
                             return null;
