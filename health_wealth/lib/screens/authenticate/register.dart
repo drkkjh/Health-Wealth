@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
 import 'package:health_wealth/common/loading.dart';
@@ -68,7 +69,7 @@ class _RegisterState extends State<Register> {
                           decoration:
                               formInputDecoration.copyWith(hintText: 'Email'),
                           validator: (input) {
-                            if (input != null && input.isEmpty) {
+                            if (input == null || input.isEmpty) {
                               return 'Enter your email';
                             } else {
                               return null;
@@ -84,7 +85,7 @@ class _RegisterState extends State<Register> {
                           decoration: formInputDecoration.copyWith(
                               hintText: 'Password'),
                           validator: (input) {
-                            if (input != null && input.length < 6) {
+                            if (input == null || input.length < 6) {
                               return 'Your password must be at least 6 characters!';
                             } else {
                               return null;
@@ -104,17 +105,15 @@ class _RegisterState extends State<Register> {
                             ),
                             onPressed: () async {
                               // Check if form is valid.
-                              if (_formKey.currentState != null) {
-                                if (_formKey.currentState!.validate()) {
-                                  setState(() => loading = true);
-                                  dynamic result =
-                                      await _auth.register(email, password);
-                                  if (result == null) {
-                                    setState(() {
-                                      loading = false;
-                                      errorMsg = 'Error with registration';
-                                    });
-                                  }
+                              if (_formKey.currentState!.validate()) {
+                                setState(() => loading = true);
+                                try {
+                                  await _auth.register(email, password);
+                                } on FirebaseAuthException catch (e) {
+                                  setState(() {
+                                    loading = false;
+                                    errorMsg = e.message!;
+                                  });
                                 }
                               }
                             }),
@@ -122,7 +121,7 @@ class _RegisterState extends State<Register> {
                         Text(
                           errorMsg,
                           style: const TextStyle(
-                            color: Colors.black,
+                            color: Colors.red,
                             fontSize: 20.0,
                           ),
                         ),

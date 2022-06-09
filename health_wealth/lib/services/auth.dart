@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:health_wealth/services/database.dart';
 
 /// This class handles User Authentication functions.
 class AuthService {
@@ -15,6 +16,11 @@ class AuthService {
   // Stream<CustomUser?> get getUser {
   //   return _auth.authStateChanges().map(_fbUserToCustomUser);
   // }
+
+  /// Getter that returns current user.
+  User get currentUser {
+    return _auth.currentUser!;
+  }
 
   /// Getter that returns User sign-in state in a Stream.
   Stream<User?> get getUser {
@@ -31,7 +37,7 @@ class AuthService {
       return user;
     } catch (e) {
       print(e.toString());
-      return null;
+      rethrow;
     }
   }
 
@@ -42,10 +48,12 @@ class AuthService {
           email: email, password: password);
       User? user = result.user;
       print('$user has registered');
+      final db = DatabaseService(uid: _auth.currentUser!.uid);
+      await db.createUser(email);
       return user;
     } catch (e) {
       print(e.toString());
-      return null;
+      rethrow;
     }
   }
 
