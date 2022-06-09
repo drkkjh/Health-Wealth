@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:health_wealth/src/locations.dart' as locations;
 
 class RunTracker extends StatefulWidget {
   const RunTracker({Key? key}) : super(key: key);
@@ -8,19 +10,28 @@ class RunTracker extends StatefulWidget {
 }
 
 class _RunTrackerState extends State<RunTracker> {
+  late GoogleMapController mapController;
+
+  final LatLng _center = const LatLng(45.521563, -122.677433);
+
+  void _onMapCreated(GoogleMapController mapController) {
+    this.mapController = mapController;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('RunTracker'),
-        centerTitle: true,
-        backgroundColor: Colors.lightBlue,
-      ),
-      body: const Center(
-        child: Text(
-          'RunTracker page coming soon!',
-          style: TextStyle(
-            fontSize: 25.0,
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('RunTracker'),
+          centerTitle: true,
+          backgroundColor: Colors.lightBlue,
+        ),
+        body: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 11.0,
           ),
         ),
       ),
