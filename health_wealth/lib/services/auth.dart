@@ -48,8 +48,7 @@ class AuthService {
           email: email, password: password);
       User? user = result.user;
       print('$user has registered');
-      final db = DatabaseService(uid: _auth.currentUser!.uid);
-      await db.createUser(email);
+      await DatabaseService(uid: user!.uid).createUserDocument(email);
       return user;
     } catch (e) {
       print(e.toString());

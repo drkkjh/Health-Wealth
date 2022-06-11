@@ -6,9 +6,9 @@ class DatabaseService {
 
   // Collection reference
   final CollectionReference usersCollection =
-      FirebaseFirestore.instance.collection("users");
+      FirebaseFirestore.instance.collection('users');
 
-  Future createUser(String email) async {
+  Future createUserDocument(String email) async {
     return await usersCollection
         .doc(uid)
         .set({'username': email, 'email': email});
