@@ -1,6 +1,14 @@
+import 'dart:async';
+import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:health_wealth/src/locations.dart' as locations;
+import 'package:health_wealth/model/runlist.dart';
+import 'package:health_wealth/screens/running.dart';
+import 'package:health_wealth/model/runningcard.dart';
+import 'package:provider/provider.dart';
+import '../model/runningdetails.dart';
+import '../services/auth.dart';
+import '../services/database.dart';
 
 class RunTracker extends StatefulWidget {
   const RunTracker({Key? key}) : super(key: key);
@@ -10,28 +18,47 @@ class RunTracker extends StatefulWidget {
 }
 
 class _RunTrackerState extends State<RunTracker> {
-  late GoogleMapController mapController;
-
-  final LatLng _center = const LatLng(45.521563, -122.677433);
-
-  void _onMapCreated(GoogleMapController mapController) {
-    this.mapController = mapController;
-  }
+  final _auth = AuthService();
+  late final _db = DatabaseService(uid: _auth.currentUser.uid);
+  final user = AuthService().currentUser;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
+    return StreamProvider<List<RunningDetails>?>.value(
+      initialData: const [],
+      value: _db.getRuns,
+      /*catchError: (_, err) => [
+        RunningDetails(
+            id: 'abc',
+            date: '14/6/2022',
+            duration: '20.0',
+            speed: 1.0,
+            distance: 2.4)
+      ],*/
+      child: Scaffold(
         appBar: AppBar(
-          title: const Text('RunTracker'),
+          title: Text("RunTracker"),
           centerTitle: true,
-          backgroundColor: Colors.lightBlue,
+          backgroundColor: Colors.blue,
         ),
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
+        body: const RunList(),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+          onPressed: () {
+            final activityToTrack = Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Running(),
+              ),
+            );
+          },
+          tooltip: 'Press to start tracking a run',
+          child: Icon(
+            Icons.add,
           ),
         ),
       ),

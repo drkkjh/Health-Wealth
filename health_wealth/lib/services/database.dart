@@ -1,12 +1,23 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_wealth/model/runningcard.dart';
+import 'package:health_wealth/model/runningdetails.dart';
+import 'package:health_wealth/screens/running.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as p;
 
 class DatabaseService {
   final String uid;
+  static late Database _db;
   DatabaseService({required this.uid});
 
   // Collection reference
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection("users");
+
+  // Collection reference for runs
+  final CollectionReference runsCollection =
+      FirebaseFirestore.instance.collection("runs");
 
   Future createUser(String email) async {
     return await usersCollection
@@ -18,6 +29,38 @@ class DatabaseService {
     // TODO: Implement logic to check that username isn't taken
     return await usersCollection.doc(uid).update({'username': username});
     // .set({'username': username}, SetOptions(merge: true));
+  }
+
+  // For RunTracker specifically
+  Stream<List<RunningDetails>> get getRuns {
+    return runsCollection
+        .doc(uid)
+        .collection('run data')
+        .snapshots()
+        .map(snapshotToListOfRuns);
+  }
+
+  List<RunningDetails> snapshotToListOfRuns(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      var data = doc.data() as Map<String, dynamic>;
+      return RunningDetails(
+        id: data['id'],
+        date: data['date'],
+        duration: data['duration'],
+        speed: data['speed'],
+        distance: data['distance'],
+      );
+    }).toList();
+  }
+
+  Future insertRun(RunningDetails details) async {
+    return await runsCollection.doc(uid).collection('run data').add({
+      'id': details.id,
+      'date': details.date,
+      'duration': details.duration,
+      'speed': details.speed,
+      'distance': details.distance,
+    });
   }
 }
 
