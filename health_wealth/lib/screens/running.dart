@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
@@ -6,8 +7,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:health_wealth/model/runningdetails.dart';
+import 'package:health_wealth/services/auth.dart';
+import 'package:health_wealth/services/database.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:health_wealth/model/runningcard.dart';
 
@@ -31,7 +36,7 @@ class _RunningState extends State<Running> {
   late int _finalTime;
   double _speed = 0;
   double _avgSpeed = 0;
-  int _numberOfDifferentSpeedRecorded = 0;
+  double _numberOfDifferentSpeedRecorded = 0;
 
   // Stopwatch to track user runtime
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
@@ -93,6 +98,8 @@ class _RunningState extends State<Running> {
 
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<User>(context);
+    DatabaseService db = DatabaseService(uid: user.uid);
     return Scaffold(
         body: Stack(children: [
       Container(
@@ -123,7 +130,7 @@ class _RunningState extends State<Running> {
                     Column(
                       children: [
                         Text(
-                          "SPEED",
+                          "SPEED(KM/H)",
                           style: GoogleFonts.yanoneKaffeesatz(
                             fontSize: 15,
                           ),
@@ -188,12 +195,14 @@ class _RunningState extends State<Running> {
                   padding: EdgeInsets.all(0),
                   onPressed: () {
                     RunningDetails rd = RunningDetails(
+                      id: AuthService().currentUser.uid,
                       date: DateFormat.yMMMMd('en_US').format(DateTime.now()),
                       duration: _displayTime,
                       speed: _avgSpeed / _numberOfDifferentSpeedRecorded,
                       distance: _dist,
                     );
-                    Navigator.pop(context, rd);
+                    db.insertRun(rd);
+                    Navigator.pop(context);
                   },
                 )
               ],

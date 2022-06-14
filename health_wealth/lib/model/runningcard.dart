@@ -7,8 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:health_wealth/model/runningdetails.dart';
 
 class RunningCard extends StatelessWidget {
-  final RunningDetails? runningdetails;
-  const RunningCard({this.runningdetails});
+  final RunningDetails runningdetails;
+  const RunningCard({required this.runningdetails});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +22,11 @@ class RunningCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  runningdetails!.date!,
+                  runningdetails.date,
                   style: GoogleFonts.yanoneKaffeesatz(fontSize: 18),
                 ),
                 Text(
-                  "${(runningdetails!.distance! / 1000).toStringAsFixed(2)} km",
+                  "${(runningdetails.distance / 1000.0).toStringAsFixed(2)} km",
                   style: GoogleFonts.yanoneKaffeesatz(fontSize: 18),
                 ),
               ],
@@ -35,11 +35,11 @@ class RunningCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  runningdetails!.duration!,
+                  runningdetails.duration,
                   style: GoogleFonts.yanoneKaffeesatz(fontSize: 14),
                 ),
                 Text(
-                  "${runningdetails!.speed!.toStringAsFixed(2)} km/h",
+                  "${runningdetails.speed.toStringAsFixed(2)} km/h",
                   style: GoogleFonts.yanoneKaffeesatz(fontSize: 14),
                 ),
               ],

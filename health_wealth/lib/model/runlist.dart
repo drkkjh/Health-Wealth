@@ -20,9 +20,9 @@ class _RunListState extends State<RunList> {
     return Scaffold(
       body: ListView.builder(
         itemCount: list.length,
-        itemBuilder: ((context, index) {
+        itemBuilder: (context, index) {
           return RunningCard(runningdetails: list[index]);
-        }),
+        },
       ),
     );
   }

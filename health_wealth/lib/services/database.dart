@@ -33,27 +33,33 @@ class DatabaseService {
 
   // For RunTracker specifically
   Stream<List<RunningDetails>> get getRuns {
-    return runsCollection.snapshots().map(_snapshotToListOfRuns);
+    return runsCollection
+        .doc(uid)
+        .collection('run data')
+        .snapshots()
+        .map(snapshotToListOfRuns);
   }
 
-  List<RunningDetails> _snapshotToListOfRuns(QuerySnapshot snapshot) {
+  List<RunningDetails> snapshotToListOfRuns(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
       return RunningDetails(
-        date: data['date'] ?? '',
-        duration: data['duration'] ?? '',
-        speed: data['speed'] ?? '',
-        distance: data['distance'] ?? '',
+        id: data['id'],
+        date: data['date'],
+        duration: data['duration'],
+        speed: data['speed'],
+        distance: data['distance'],
       );
     }).toList();
   }
 
   Future insertRun(RunningDetails details) async {
-    return await runsCollection.doc(uid).set({
+    return await runsCollection.doc(uid).collection('run data').add({
+      'id': details.id,
       'date': details.date,
       'duration': details.duration,
       'speed': details.speed,
-      'distance': details.duration,
+      'distance': details.distance,
     });
   }
 }

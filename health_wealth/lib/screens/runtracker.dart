@@ -18,65 +18,47 @@ class RunTracker extends StatefulWidget {
 }
 
 class _RunTrackerState extends State<RunTracker> {
-  late List<RunningDetails> _data;
-  late List<RunningCard> _cards;
   final _auth = AuthService();
   late final _db = DatabaseService(uid: _auth.currentUser.uid);
   final user = AuthService().currentUser;
-
-  void initState() {
-    super.initState();
-    _fetchDBEntries();
-  }
-
-  void _fetchDBEntries() async {
-    _cards = []; // clear database
-    //_data = _results.map((item) => RunningDetails.fromMap(item)).toList();
-    //_data.forEach((value) => _cards.add(RunningCard(runningdetails: value)));
-    setState(() {
-      Stream<List<RunningDetails>> _results = _db.getRuns;
-    });
-  }
-
-  void _addDBEntry(RunningDetails rd) async {
-    _db.insertRun(rd);
-    _fetchDBEntries();
-  }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: height,
-      width: width,
-      child: StreamProvider<List<RunningDetails>>.value(
-        initialData: const [],
-        value: _db.getRuns,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("RunTracker"),
-            centerTitle: true,
-            backgroundColor: Colors.blue,
-          ),
-          body: const RunList(),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            onPressed: () {
-              final activityToTrack = Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Running(),
-                ),
-              ).then((value) => _addDBEntry(value));
-              setState() {}
-            },
-            tooltip: 'Press to start tracking a run',
-            child: Icon(
-              Icons.add,
-            ),
+    return StreamProvider<List<RunningDetails>?>.value(
+      initialData: const [],
+      value: _db.getRuns,
+      /*catchError: (_, err) => [
+        RunningDetails(
+            id: 'abc',
+            date: '14/6/2022',
+            duration: '20.0',
+            speed: 1.0,
+            distance: 2.4)
+      ],*/
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("RunTracker"),
+          centerTitle: true,
+          backgroundColor: Colors.blue,
+        ),
+        body: const RunList(),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+          onPressed: () {
+            final activityToTrack = Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Running(),
+              ),
+            );
+          },
+          tooltip: 'Press to start tracking a run',
+          child: Icon(
+            Icons.add,
           ),
         ),
       ),
