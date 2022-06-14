@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:health_wealth/model/runningcard.dart';
 import 'package:health_wealth/model/runningdetails.dart';
 import 'package:provider/provider.dart';
