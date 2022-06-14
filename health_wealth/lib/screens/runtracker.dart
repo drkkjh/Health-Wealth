@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:health_wealth/src/locations.dart' as locations;
 
 class RunTracker extends StatefulWidget {
   const RunTracker({Key? key}) : super(key: key);
