@@ -42,8 +42,17 @@ dependencies:
   flutter_spinkit: ^5.1.0
   google_maps_flutter: ^2.1.7
   google_maps_flutter_web: ^0.3.3
+  location: ^4.4.0
   http: ^0.13.4
   json_serializable: ^6.2.0
+  permission_handler: ^9.2.0
+  geolocator: ^8.2.1
+  geocoding: ^2.0.4
+  flutter_polyline_points: ^1.0.0
+  stop_watch_timer: ^1.5.0
+  google_fonts: ^3.0.1
+  intl: ^0.17.0
+  sqflite: ^2.0.2+1
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +79,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/locations.json  
+   - assets/locations.json
+   - assets/YouAreHere.png  
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

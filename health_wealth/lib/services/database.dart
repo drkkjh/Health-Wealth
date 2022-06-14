@@ -1,24 +1,24 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
+import 'package:health_wealth/model/runningdetails.dart';
 
 class DatabaseService {
-  final _auth = AuthService();
-  late final String uid = _auth.currentUser.uid;
+  late final String uid = AuthService().currentUser.uid;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // final String uid;
-  // DatabaseService({required this.uid});
+  /// Collection reference for users.
+  late final CollectionReference usersCollection = _db.collection('users');
 
-  // Collection references
-  final CollectionReference usersCollection =
-      FirebaseFirestore.instance.collection('users');
+  /// Collection reference for snacks.
+  late final CollectionReference userSnacksCollection =
+      _db.collection('users').doc(uid).collection('snacks');
 
-  late final CollectionReference userSnacksCollection = FirebaseFirestore
-      .instance
-      .collection('users')
-      .doc(uid)
-      .collection('snacks');
+  /// Collection reference for runs.
+  late final CollectionReference runsCollection = _db.collection("runs");
 
+  /// Methods for User Settings.
   Future createUserDocument(String email) async {
     return await usersCollection
         .doc(uid)
@@ -31,13 +31,13 @@ class DatabaseService {
     // .set({'username': username}, SetOptions(merge: true));
   }
 
+  /// Methods for SnackTracker.
   /// Add snack to the user's snacks collection.
   Future addSnack(Snack snack) async {
     await userSnacksCollection.doc(snack.name).set(snack.toJson());
   }
 
   /// Update snack in the user's snacks collection.
-  // * Unnecessary?
   Future updateSnackCalories(Snack snack) async {
     return await userSnacksCollection
         .doc(snack.name)
@@ -64,6 +64,38 @@ class DatabaseService {
       // return Snack(name: data['name'], calories: data['calories']);
       return Snack(name: data['name'], calories: data['calories']);
     }).toList();
+  }
+
+  /// Methods for RunTracker
+  Stream<List<RunningDetails>> get getRuns {
+    return runsCollection
+        .doc(uid)
+        .collection('run data')
+        .snapshots()
+        .map(snapshotToListOfRuns);
+  }
+
+  List<RunningDetails> snapshotToListOfRuns(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      var data = doc.data() as Map<String, dynamic>;
+      return RunningDetails(
+        id: data['id'],
+        date: data['date'],
+        duration: data['duration'],
+        speed: data['speed'],
+        distance: data['distance'],
+      );
+    }).toList();
+  }
+
+  Future insertRun(RunningDetails details) async {
+    return await runsCollection.doc(uid).collection('run data').add({
+      'id': details.id,
+      'date': details.date,
+      'duration': details.duration,
+      'speed': details.speed,
+      'distance': details.distance,
+    });
   }
 }
 
