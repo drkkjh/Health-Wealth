@@ -11,7 +11,7 @@ class WorkOutBuddy extends StatefulWidget {
 }
 
 class _WorkOutBuddyState extends State<WorkOutBuddy> {
-  static int len = 1;
+  // static int len = 1;
   List<String> workouts = [];
   GlobalKey<RefreshIndicatorState> refreshKey =
       GlobalKey<RefreshIndicatorState>();
@@ -68,6 +68,7 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
         backgroundColor: Colors.lightBlue,
         actions: <Widget>[
           FloatingActionButton(
+            heroTag: 'addWorkoutTag',
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
             onPressed: () async {

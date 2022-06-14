@@ -44,7 +44,7 @@ class _SnackTileState extends State<SnackTile> {
   Future _openDialog() {
     return showDialog(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           scrollable: true,
           title: const Text('Update snack details'),
@@ -82,7 +82,7 @@ class _SnackTileState extends State<SnackTile> {
                 _textController1.clear();
                 _textController2.clear();
                 if (!mounted) return;
-                Navigator.of(context).pop();
+                Navigator.of(dialogContext).pop();
               },
             ),
             TextButton(
