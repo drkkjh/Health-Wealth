@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:health_wealth/model/workoutcard.dart';
 
 class AddWorkOut extends StatefulWidget {
   const AddWorkOut({Key? key}) : super(key: key);
@@ -12,12 +11,12 @@ class _AddWorkOutState extends State<AddWorkOut> {
   String? _result;
   final _textController = TextEditingController();
 
-  Widget addTemplate(workout) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: WorkoutCard(workout: workout),
-    );
-  }
+  // Widget addTemplate(workout) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(12.0),
+  //     child: WorkoutCard(workout: workout),
+  //   );
+  // }
 
   void _addWorkout() {
     String textToSend = _textController.text;

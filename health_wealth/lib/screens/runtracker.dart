@@ -1,10 +1,6 @@
-import 'dart:async';
-import 'dart:typed_data';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/runlist.dart';
 import 'package:health_wealth/screens/running.dart';
-import 'package:health_wealth/model/runningcard.dart';
 import 'package:provider/provider.dart';
 import '../model/runningdetails.dart';
 import '../services/auth.dart';
@@ -18,14 +14,13 @@ class RunTracker extends StatefulWidget {
 }
 
 class _RunTrackerState extends State<RunTracker> {
-  final _auth = AuthService();
-  late final _db = DatabaseService(uid: _auth.currentUser.uid);
+  late final _db = DatabaseService();
   final user = AuthService().currentUser;
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+    // var height = MediaQuery.of(context).size.height;
+    // var width = MediaQuery.of(context).size.width;
 
     return StreamProvider<List<RunningDetails>?>.value(
       initialData: const [],
@@ -40,7 +35,7 @@ class _RunTrackerState extends State<RunTracker> {
       ],*/
       child: Scaffold(
         appBar: AppBar(
-          title: Text("RunTracker"),
+          title: const Text("RunTracker"),
           centerTitle: true,
           backgroundColor: Colors.blue,
         ),
@@ -52,12 +47,12 @@ class _RunTrackerState extends State<RunTracker> {
             final activityToTrack = Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Running(),
+                builder: (context) => const Running(),
               ),
             );
           },
           tooltip: 'Press to start tracking a run',
-          child: Icon(
+          child: const Icon(
             Icons.add,
           ),
         ),

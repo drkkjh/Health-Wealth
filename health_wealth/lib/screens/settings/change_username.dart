@@ -14,13 +14,10 @@ class ChangeUsername extends StatefulWidget {
 
 class _ChangeUsernameState extends State<ChangeUsername> {
   final _auth = AuthService();
-  final _db = DatabaseService(uid: AuthService().currentUser.uid);
+  late final _db = DatabaseService();
+  // late final _db = DatabaseService(uid: _auth.currentUser.uid);
   final _controller1 = TextEditingController();
   final _controller2 = TextEditingController();
-
-  /// User input variables
-  String username1 = '';
-  String username2 = '';
 
   bool loading = false;
   bool _validate1 = true;
@@ -104,6 +101,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                           errorMsg = e.message!;
                         });
                       } on UsernameTakenException catch (e) {
+                        loading = false;
                         errorMsg = e.message;
                       }
                       setState(() {

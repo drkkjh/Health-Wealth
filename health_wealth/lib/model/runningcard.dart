@@ -1,14 +1,10 @@
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:health_wealth/model/runningdetails.dart';
 
 class RunningCard extends StatelessWidget {
   final RunningDetails runningdetails;
-  const RunningCard({required this.runningdetails});
+  const RunningCard({Key? key, required this.runningdetails}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

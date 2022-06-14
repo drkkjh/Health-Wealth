@@ -97,26 +97,27 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(height: 20.0),
                         ElevatedButton(
-                            child: const Text(
-                              'Create an account',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                          child: const Text(
+                            'Create an account',
+                            style: TextStyle(
+                              color: Colors.white,
                             ),
-                            onPressed: () async {
-                              // Check if form is valid.
-                              if (_formKey.currentState!.validate()) {
-                                setState(() => loading = true);
-                                try {
-                                  await _auth.register(email, password);
-                                } on FirebaseAuthException catch (e) {
-                                  setState(() {
-                                    loading = false;
-                                    errorMsg = e.message!;
-                                  });
-                                }
+                          ),
+                          onPressed: () async {
+                            // Check if form is valid.
+                            if (_formKey.currentState!.validate()) {
+                              setState(() => loading = true);
+                              try {
+                                await _auth.register(email, password);
+                              } on FirebaseAuthException catch (e) {
+                                setState(() {
+                                  loading = false;
+                                  errorMsg = e.message!;
+                                });
                               }
-                            }),
+                            }
+                          },
+                        ),
                         const SizedBox(height: 20.0),
                         Text(
                           errorMsg,

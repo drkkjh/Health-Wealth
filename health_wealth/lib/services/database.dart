@@ -1,25 +1,25 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:health_wealth/model/runningcard.dart';
+import 'package:health_wealth/model/snack.dart';
+import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/model/runningdetails.dart';
-import 'package:health_wealth/screens/running.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' as p;
 
 class DatabaseService {
-  final String uid;
-  static late Database _db;
-  DatabaseService({required this.uid});
+  late final String uid = AuthService().currentUser.uid;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // Collection reference
-  final CollectionReference usersCollection =
-      FirebaseFirestore.instance.collection("users");
+  /// Collection reference for users.
+  late final CollectionReference usersCollection = _db.collection('users');
 
-  // Collection reference for runs
-  final CollectionReference runsCollection =
-      FirebaseFirestore.instance.collection("runs");
+  /// Collection reference for snacks.
+  late final CollectionReference userSnacksCollection =
+      _db.collection('users').doc(uid).collection('snacks');
 
-  Future createUser(String email) async {
+  /// Collection reference for runs.
+  late final CollectionReference runsCollection = _db.collection("runs");
+
+  /// Methods for User Settings.
+  Future createUserDocument(String email) async {
     return await usersCollection
         .doc(uid)
         .set({'username': email, 'email': email});
@@ -31,7 +31,42 @@ class DatabaseService {
     // .set({'username': username}, SetOptions(merge: true));
   }
 
-  // For RunTracker specifically
+  /// Methods for SnackTracker.
+  /// Add snack to the user's snacks collection.
+  Future addSnack(Snack snack) async {
+    await userSnacksCollection.doc(snack.name).set(snack.toJson());
+  }
+
+  /// Update snack in the user's snacks collection.
+  Future updateSnackCalories(Snack snack) async {
+    return await userSnacksCollection
+        .doc(snack.name)
+        .update({'calories': snack.calories});
+  }
+
+  /// Delete snack from the user's snacks collection.
+  Future deleteSnack(Snack snack) async {
+    return await userSnacksCollection.doc(snack.name).delete();
+  }
+
+  /// Get Snacks stream
+  Stream<List<Snack>> get getSnacks {
+    return userSnacksCollection
+        .orderBy('calories', descending: true)
+        .snapshots()
+        .map(_snapshotToListOfSnacks);
+  }
+
+  /// Get a List of Snacks from QuerySnapshot
+  List<Snack> _snapshotToListOfSnacks(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      var data = doc.data() as Map<String, dynamic>;
+      // return Snack(name: data['name'], calories: data['calories']);
+      return Snack(name: data['name'], calories: data['calories']);
+    }).toList();
+  }
+
+  /// Methods for RunTracker
   Stream<List<RunningDetails>> get getRuns {
     return runsCollection
         .doc(uid)
@@ -64,7 +99,7 @@ class DatabaseService {
   }
 }
 
-/// Custom DatabaseServiceExceptions
+/// Custom DatabaseServiceExceptions.
 class UsernameTakenException implements Exception {
   const UsernameTakenException() : super();
 
