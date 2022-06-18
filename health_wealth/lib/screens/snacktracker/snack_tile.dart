@@ -93,7 +93,7 @@ class _SnackTileState extends State<SnackTile> {
               onPressed: () async {
                 await _db.deleteSnack(widget.snack);
                 if (!mounted) return;
-                Navigator.of(context).pop();
+                Navigator.of(dialogContext).pop();
               },
             ),
           ],
