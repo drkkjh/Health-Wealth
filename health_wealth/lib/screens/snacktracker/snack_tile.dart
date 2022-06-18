@@ -14,13 +14,17 @@ class SnackTile extends StatefulWidget {
 
 class _SnackTileState extends State<SnackTile> {
   final _db = DatabaseService();
-  final _textController1 = TextEditingController();
-  final _textController2 = TextEditingController();
+  final _controller1 = TextEditingController();
+  final _controller2 = TextEditingController();
+
+  bool _hasNewName = false;
+  bool _hasNewCal = false;
+  bool _isValidCal = true;
 
   @override
   void dispose() {
-    _textController1.dispose();
-    _textController2.dispose();
+    _controller1.dispose();
+    _controller2.dispose();
     super.dispose();
   }
 
@@ -52,12 +56,12 @@ class _SnackTileState extends State<SnackTile> {
             child: ListBody(
               children: <Widget>[
                 TextField(
-                  controller: _textController1,
+                  controller: _controller1,
                   decoration: formInputDecoration.copyWith(
                       hintText: 'Change snack name'),
                 ),
                 TextField(
-                  controller: _textController2,
+                  controller: _controller2,
                   keyboardType: TextInputType.number,
                   decoration: formInputDecoration.copyWith(
                       hintText: 'Change calories content'),
@@ -67,33 +71,71 @@ class _SnackTileState extends State<SnackTile> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Update snack'),
-              onPressed: () async {
-                num cal = num.tryParse(_textController2.text) ??
-                    widget.snack.calories;
-                if (_textController1.text.isEmpty) {
-                  await _db.updateSnackCalories(
-                      Snack(name: widget.snack.name, calories: cal));
-                } else {
-                  await _db.addSnack(
-                      Snack(name: _textController1.text, calories: cal));
-                  await _db.deleteSnack(widget.snack);
-                }
-                _textController1.clear();
-                _textController2.clear();
-                if (!mounted) return;
-                Navigator.of(dialogContext).pop();
-              },
-            ),
+                child: const Text('Update snack'),
+                onPressed: () async {
+                  setState(() {
+                    _hasNewName = _controller1.text.isNotEmpty;
+                    _hasNewCal = _controller2.text.isNotEmpty;
+                    _isValidCal = num.tryParse(_controller2.text) != null;
+
+                    if (!_isValidCal && _hasNewCal) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text('Input must be numeric'),
+                        ),
+                      );
+                    }
+                  });
+
+                  if (_hasNewName) {
+                    // Change both name and cals
+                    if (_hasNewCal && _isValidCal) {
+                      await _db
+                          .updateSnackName(widget.snack, _controller1.text)
+                          .then((value) => _db.updateSnack(Snack(
+                              name: _controller1.text,
+                              calories: num.parse(_controller2.text))))
+                          .whenComplete(() {
+                        _controller1.clear();
+                        _controller2.clear();
+                        Navigator.of(dialogContext).pop();
+                      });
+                    }
+                    // Only change name
+                    if (!_hasNewCal) {
+                      await _db
+                          .updateSnackName(widget.snack, _controller1.text)
+                          .whenComplete(() {
+                        _controller1.clear();
+                        _controller2.clear();
+                        Navigator.of(dialogContext).pop();
+                      });
+                    }
+                  } else {
+                    // Only change cals
+                    if (_hasNewCal && _isValidCal) {
+                      await _db
+                          .updateSnack(Snack(
+                              name: widget.snack.name,
+                              calories: num.parse(_controller2.text)))
+                          .whenComplete(() {
+                        _controller1.clear();
+                        _controller2.clear();
+                        Navigator.of(dialogContext).pop();
+                      });
+                    }
+                  }
+                }),
             TextButton(
               child: const Text(
                 'Delete snack',
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () async {
-                await _db.deleteSnack(widget.snack);
-                if (!mounted) return;
-                Navigator.of(dialogContext).pop();
+                await _db.deleteSnack(widget.snack).whenComplete(() {
+                  Navigator.of(dialogContext).pop();
+                });
               },
             ),
           ],
