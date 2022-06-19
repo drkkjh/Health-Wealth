@@ -54,6 +54,7 @@ dependencies:
   intl: ^0.17.0
   sqflite: ^2.0.2+1
   json_annotation: ^4.5.0
+  flutter_speed_dial: ^6.0.0
 
 dev_dependencies:
   flutter_test:

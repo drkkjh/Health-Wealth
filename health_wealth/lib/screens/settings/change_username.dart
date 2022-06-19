@@ -110,6 +110,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                         _validate2 = true;
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
+                            // TODO: Show error message is there's one
                             content: Text('Username changed successfully'),
                           ),
                         );
