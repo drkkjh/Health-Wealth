@@ -38,10 +38,15 @@ class DatabaseService {
   }
 
   /// Update snack in the user's snacks collection.
-  Future updateSnackCalories(Snack snack) async {
-    return await userSnacksCollection
-        .doc(snack.name)
-        .update({'calories': snack.calories});
+  /// This method can be extended if the Snack class is modelled differently.
+  Future updateSnack(Snack snack) async {
+    return await userSnacksCollection.doc(snack.name).update(snack.toJson());
+  }
+
+  /// Update snack name in the user's snack collection
+  Future updateSnackName(Snack oldSnack, String name) async {
+    await addSnack(Snack(name: name, calories: oldSnack.calories));
+    await deleteSnack(oldSnack);
   }
 
   /// Delete snack from the user's snacks collection.
