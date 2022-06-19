@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:health_wealth/screens/addworkout.dart';
 
-class WorkOutBuddy extends StatefulWidget {
+class WorkOutBuddy2 extends StatefulWidget {
   final String workout;
-  const WorkOutBuddy({Key? key, required this.workout}) : super(key: key);
+  const WorkOutBuddy2({Key? key, required this.workout}) : super(key: key);
 
   @override
-  State<WorkOutBuddy> createState() => _WorkOutBuddyState();
+  State<WorkOutBuddy2> createState() => _WorkOutBuddyState();
 }
 
-class _WorkOutBuddyState extends State<WorkOutBuddy> {
+class _WorkOutBuddyState extends State<WorkOutBuddy2> {
   // static int len = 1;
   List<String> workouts = [];
   GlobalKey<RefreshIndicatorState> refreshKey =
@@ -64,7 +63,7 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('WorkOutBuddy'),
+        title: const Text('WorkOutBuddy2'),
         backgroundColor: Colors.lightBlue,
         actions: <Widget>[
           FloatingActionButton(
@@ -72,14 +71,14 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
             onPressed: () async {
-              final workoutToAdd = await Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AddWorkOut(),
-                ),
-              );
-              setState(
-                () => workouts.add(workoutToAdd),
-              );
+              // final workoutToAdd = await Navigator.of(context).push(
+              //   MaterialPageRoute(
+              // builder: (context) => const AddWorkOut(),
+              //   ),
+              // );
+              // setState(
+              //   () => workouts.add(workoutToAdd),
+              // );
             },
             child: const Icon(Icons.add),
           )

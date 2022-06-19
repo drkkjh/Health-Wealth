@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
 import 'package:health_wealth/common/loading.dart';
+import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/services/auth.dart';
+import 'package:health_wealth/services/database.dart';
 
 /// The Register screen widget.
 /// Users will be logged in upon successful registration and brought to the
@@ -20,6 +22,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
+  final DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
@@ -109,6 +112,10 @@ class _RegisterState extends State<Register> {
                               setState(() => loading = true);
                               try {
                                 await _auth.register(email, password);
+                                await _db.createUserDocument(email);
+                                for (Exercise ex in Exercise.defaultExercises) {
+                                  await _db.addExercise(ex);
+                                }
                               } on FirebaseAuthException catch (e) {
                                 setState(() {
                                   loading = false;
