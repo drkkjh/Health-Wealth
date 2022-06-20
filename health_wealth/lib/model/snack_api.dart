@@ -15,9 +15,9 @@ class SnackAPI {
   factory SnackAPI.fromJson(Map<String, dynamic> json) =>
       _$SnackAPIFromJson(json);
 
-  static List<SnackAPI> listOfSnackAPIsFromJson(json) => (json as List)
-      .map((data) => SnackAPI.fromJson(data as Map<String, dynamic>))
-      .toList();
+  // static List<SnackAPI> listOfSnackAPIsFromJson(json) => (json as List)
+  //     .map((data) => SnackAPI.fromJson(data as Map<String, dynamic>))
+  //     .toList();
 
   @override
   String toString() {

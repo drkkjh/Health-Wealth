@@ -29,17 +29,17 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
               title: const Text('WorkOutBuddy'),
               backgroundColor: Colors.lightBlue,
             ),
-            floatingActionButton: FloatingActionButton(
-              heroTag: 'addWorkoutTag',
-              onPressed: () async {
-                // final workoutToAdd = await Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => const AddWorkOut(),
-                //   ),
-                // );
-              },
-              child: const Icon(Icons.add),
-            ),
+            // floatingActionButton: FloatingActionButton(
+            //   heroTag: 'addWorkoutTag',
+            //   onPressed: () async {
+            //     final workoutToAdd = await Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (context) => const AddWorkOut(),
+            //       ),
+            //     );
+            //   },
+            //   child: const Icon(Icons.add),
+            // ),
             body: Column(
               children: [
                 const HeaderRow(),

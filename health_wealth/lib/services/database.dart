@@ -16,7 +16,7 @@ class DatabaseService {
   late final CollectionReference userSnacksCollection =
       _db.collection('users').doc(uid).collection('snacks');
 
-  /// Collection reference for snacks.
+  /// Collection reference for user workout routine.
   late final CollectionReference userWorkoutRoutineCollection =
       _db.collection('users').doc(uid).collection('workout routine');
 
@@ -71,7 +71,6 @@ class DatabaseService {
   List<Snack> _snapshotToListOfSnacks(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
-      // return Snack(name: data['name'], calories: data['calories']);
       return Snack(name: data['name'], calories: data['calories']);
     }).toList();
   }
@@ -82,6 +81,14 @@ class DatabaseService {
     await userWorkoutRoutineCollection
         .doc(exercise.name)
         .set(exercise.toJson());
+  }
+
+  /// Update exercise in the user's workout routine collection.
+  /// Exercise attributes are changed except for it's name.
+  Future updateExercise(Exercise exercise) async {
+    return await userWorkoutRoutineCollection
+        .doc(exercise.name)
+        .update(exercise.toJson());
   }
 
   /// Get Exercises stream
@@ -95,8 +102,7 @@ class DatabaseService {
   List<Exercise> _snapshotToListOfExercises(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
-      return Exercise(
-          name: data['name'], sets: data['sets'], reps: data['reps']);
+      return Exercise.fromJson(data);
     }).toList();
   }
 

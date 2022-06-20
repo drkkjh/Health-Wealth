@@ -14,12 +14,12 @@ class NetworkService {
 
     if (response.statusCode == 200) {
       Map data = jsonDecode(response.body);
-      List temp = [];
+      List<SnackAPI> snacks = [];
 
       for (var item in data['items']) {
-        temp.add({'name': item['name'], 'calories': item['calories']});
+        snacks.add(SnackAPI.fromJson(item));
       }
-      return SnackAPI.listOfSnackAPIsFromJson(temp);
+      return snacks;
     }
     return null;
   }

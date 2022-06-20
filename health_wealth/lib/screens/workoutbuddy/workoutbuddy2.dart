@@ -1,53 +1,57 @@
+// *This page has swipe to delete features. Not linked to backend.
+//* In order to undo deletes, the deleted Exercise will have to be stored in a variable.
+
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:health_wealth/common/loading.dart';
+import 'package:health_wealth/model/exercise.dart';
+import 'package:health_wealth/screens/workoutbuddy/exercise_card.dart';
+import 'package:health_wealth/services/database.dart';
 
 class WorkOutBuddy2 extends StatefulWidget {
-  final String workout;
-  const WorkOutBuddy2({Key? key, required this.workout}) : super(key: key);
+  const WorkOutBuddy2({Key? key}) : super(key: key);
 
   @override
   State<WorkOutBuddy2> createState() => _WorkOutBuddyState();
 }
 
 class _WorkOutBuddyState extends State<WorkOutBuddy2> {
-  // static int len = 1;
-  List<String> workouts = [];
+  final _db = DatabaseService();
+  List<Exercise>? _exercises = [];
   GlobalKey<RefreshIndicatorState> refreshKey =
       GlobalKey<RefreshIndicatorState>();
-  Random r = Random();
 
-  @override
-  void initState() {
-    super.initState();
-    workouts = [];
-    refreshKey = GlobalKey<RefreshIndicatorState>();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // exercises = [];
+  //   refreshKey = GlobalKey<RefreshIndicatorState>();
+  // }
 
-  Widget list() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(20.0),
-        itemCount: workouts.length,
-        itemBuilder: (BuildContext context, int index) {
-          return row(context, index);
-        });
-  }
+  // Widget list() {
+  //   return ListView.builder(
+  //       padding: const EdgeInsets.all(20.0),
+  //       itemCount: exerciseList.length,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         return row(context, index);
+  //       });
+  // }
 
-  Widget row(BuildContext context, int index) {
-    return Dismissible(
-      key: Key(UniqueKey().toString()),
-      onDismissed: (direction) {
-        var workout = workouts[index];
-        showDeleted(context, workout, index);
-        removeWorkout(index);
-      },
-      background: refreshBackground(),
-      child: Card(
-        child: ListTile(
-          title: Text(workouts[index]),
-        ),
-      ),
-    );
-  }
+  // Widget row(BuildContext context, int index) {
+  //   return Dismissible(
+  //     key: Key(UniqueKey().toString()),
+  //     onDismissed: (direction) {
+  //       var workout = exercises[index];
+  //       showDeleted(context, workout, index);
+  //       removeExercise(index);
+  //     },
+  //     background: refreshBackground(),
+  //     child: Card(
+  //       child: ListTile(
+  //         title: Text(exercises[index]),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget refreshBackground() {
     return Container(
@@ -60,74 +64,94 @@ class _WorkOutBuddyState extends State<WorkOutBuddy2> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('WorkOutBuddy2'),
-        backgroundColor: Colors.lightBlue,
-        actions: <Widget>[
-          FloatingActionButton(
-            heroTag: 'addWorkoutTag',
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            onPressed: () async {
-              // final workoutToAdd = await Navigator.of(context).push(
-              //   MaterialPageRoute(
-              // builder: (context) => const AddWorkOut(),
-              //   ),
-              // );
-              // setState(
-              //   () => workouts.add(workoutToAdd),
-              // );
-            },
-            child: const Icon(Icons.add),
-          )
-        ],
-      ),
-      body: RefreshIndicator(
-        key: refreshKey,
-        onRefresh: () async {
-          await refreshList();
-        },
-        child: list(),
-      ),
-    );
+    return StreamBuilder<List<Exercise>?>(
+        initialData: const [],
+        stream: _db.getExercises,
+        builder: (context, snapshot) {
+          final exerciseList = snapshot.data;
+          if (snapshot.hasData) {
+            Future.delayed(Duration.zero, () async {
+              setState(() {
+                _exercises = exerciseList;
+              });
+            });
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: const Text('WorkOutBuddy2'),
+                backgroundColor: Colors.lightBlue,
+                actions: <Widget>[
+                  FloatingActionButton(
+                    heroTag: 'addWorkoutTag',
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    onPressed: () async {
+                      // final workoutToAdd = await Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      // builder: (context) => const AddWorkOut(),
+                      //   ),
+                      // );
+                      // setState(
+                      //   () => exercises.add(workoutToAdd),
+                      // );
+                    },
+                    child: const Icon(Icons.add),
+                  )
+                ],
+              ),
+              body: ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(20.0),
+                itemCount: _exercises!.length,
+                itemBuilder: ((context, index) {
+                  var ex = _exercises![index];
+                  return Dismissible(
+                      key: Key(ex.name),
+                      onDismissed: (direction) {
+                        showDeleted(context, ex, index);
+                        removeExercise(index);
+                        // _db.setExercises(_exercises);
+                      },
+                      background: refreshBackground(),
+                      child: ExerciseCard(exercise: ex));
+                }),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontSize: 20.0,
+                ),
+              ),
+            );
+          } else {
+            return const Loading();
+          }
+        });
   }
 
-  Future<void> refreshList() async {
-    await Future.delayed(
-      const Duration(seconds: 1),
-    );
-    addAnyWorkout();
-    return;
-  }
-
-  addAnyWorkout() {
-    int next = r.nextInt(100);
+  void removeExercise(index) {
     setState(() {
-      workouts.add("Workout $next");
+      _exercises!.removeAt(index);
     });
   }
 
-  void removeWorkout(index) {
+  void undoDelete(index, Exercise ex) {
     setState(() {
-      workouts.removeAt(index);
+      _exercises!.insert(index, ex);
     });
   }
 
-  void undoDelete(index, workout) {
-    setState(() {
-      workouts.insert(index, workout);
-    });
-  }
-
-  void showDeleted(BuildContext context, workout, index) {
+  void showDeleted(BuildContext context, Exercise ex, index) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('$workout deleted'),
+      content: Text('${ex.name} deleted'),
       action: SnackBarAction(
         label: 'UNDO',
         onPressed: () {
-          undoDelete(index, workout);
+          undoDelete(index, ex);
         },
       ),
     ));
