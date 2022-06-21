@@ -42,12 +42,18 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
   void Undo() {
     setState(() {
       description = '';
+      Navigator.pop(context);
     });
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,

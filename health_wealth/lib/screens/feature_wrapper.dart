@@ -33,7 +33,6 @@ class _FeatureWrapperState extends State<FeatureWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

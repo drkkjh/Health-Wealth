@@ -17,7 +17,7 @@ class AddToFeed extends StatefulWidget {
 }
 
 class _AddToFeedState extends State<AddToFeed> {
-  // User inputs description for PostCard
+  // User inputs description for Post
   String description = '';
   final _db = DatabaseService();
   final TextEditingController _descriptionController = TextEditingController();
@@ -51,7 +51,6 @@ class _AddToFeedState extends State<AddToFeed> {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -69,9 +68,10 @@ class _AddToFeedState extends State<AddToFeed> {
             child: TextField(
               controller: _descriptionController,
               decoration: const InputDecoration(
-                hintText: 'Write a caption',
+                hintText: 'Write a caption for your post',
                 border: InputBorder.none,
               ),
+              maxLines: 8,
             ),
           ),
         ],
