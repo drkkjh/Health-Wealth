@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/post.dart';
-import 'package:health_wealth/providers/user_provider.dart';
 import 'package:health_wealth/services/database.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class AddToDiscussion extends StatefulWidget {
@@ -15,10 +13,10 @@ class AddToDiscussion extends StatefulWidget {
 class _AddToDiscussionState extends State<AddToDiscussion> {
   // User inputs for discussion post
   String description = '';
-  DatabaseService _db = DatabaseService();
-  TextEditingController _descriptionController = TextEditingController();
+  final DatabaseService _db = DatabaseService();
+  final TextEditingController _descriptionController = TextEditingController();
 
-  void AddDiscussion(String description, String uid, String username) async {
+  void addDiscussion(String description, String uid, String username) async {
     String result = 'For debugging purposes';
     try {
       String postId =
@@ -39,7 +37,7 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
     print(result); // used for debugging
   }
 
-  void Undo() {
+  void undo() {
     setState(() {
       description = '';
       Navigator.pop(context);
@@ -57,11 +55,11 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text('Posting to Discussion'),
+        title: const Text('Posting to Discussion'),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: Undo,
+          onPressed: undo,
         ),
       ),
       body: Column(

@@ -1,12 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/post.dart';
-import 'package:health_wealth/model/postcard.dart';
-import 'package:health_wealth/providers/user_provider.dart';
-import 'package:health_wealth/services/auth.dart';
-import 'package:health_wealth/model/user.dart' as model;
 import 'package:health_wealth/services/database.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class AddToFeed extends StatefulWidget {
@@ -43,7 +37,7 @@ class _AddToFeedState extends State<AddToFeed> {
     print(result); // used for debugging
   }
 
-  void Undo() {
+  void undo() {
     setState(() {
       description = '';
     });
@@ -54,7 +48,7 @@ class _AddToFeedState extends State<AddToFeed> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text('Posting to Feed'),
+        title: const Text('Posting to Feed'),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

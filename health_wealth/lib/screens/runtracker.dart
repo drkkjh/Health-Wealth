@@ -44,11 +44,9 @@ class _RunTrackerState extends State<RunTracker> {
           backgroundColor: Colors.green,
           foregroundColor: Colors.white,
           onPressed: () {
-            final activityToTrack = Navigator.push(
+            Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => const Running(),
-              ),
+              MaterialPageRoute(builder: (context) => const Running()),
             );
           },
           tooltip: 'Press to start tracking a run',

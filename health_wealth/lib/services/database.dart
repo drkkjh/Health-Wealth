@@ -1,14 +1,14 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_wealth/model/exercise.dart';
-import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/model/postcard.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/model/runningdetails.dart';
 import 'package:health_wealth/model/user.dart' as model;
-import 'package:http/http.dart';
 
 class DatabaseService {
   late final String uid = AuthService().currentUser.uid;

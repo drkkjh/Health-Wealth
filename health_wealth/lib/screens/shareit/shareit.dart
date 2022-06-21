@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:health_wealth/model/postcard.dart';
-import 'package:health_wealth/providers/user_provider.dart';
 import 'package:health_wealth/screens/shareit/add_discussion.dart';
 import 'package:health_wealth/screens/shareit/add_feed.dart';
 import 'package:health_wealth/services/database.dart';
@@ -18,17 +16,6 @@ class ShareIt extends StatefulWidget {
 class _ShareItState extends State<ShareIt> {
   int currentIndex = 3;
   final DatabaseService _db = DatabaseService();
-
-  @override
-  void initState() {
-    super.initState();
-    addData();
-  }
-
-  addData() async {
-    UserProvider _userProvider = Provider.of(context, listen: false);
-    await _userProvider.refreshUser();
-  }
 
   @override
   Widget build(BuildContext context) {

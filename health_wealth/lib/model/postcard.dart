@@ -4,7 +4,7 @@ import 'package:health_wealth/services/database.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
-  PostCard({
+  const PostCard({
     Key? key,
     required this.snap,
   }) : super(key: key);
