@@ -4,7 +4,6 @@ import 'package:health_wealth/services/database.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
-  final DatabaseService _db = DatabaseService();
   PostCard({
     Key? key,
     required this.snap,
@@ -16,7 +15,7 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   int commentLen = 0;
-  bool isLikeAnimating = false;
+  final DatabaseService _db = DatabaseService();
 
   @override
   void initState() {
@@ -26,17 +25,13 @@ class _PostCardState extends State<PostCard> {
 
   fetchCommentLen() async {
     try {
-      QuerySnapshot snap = await _db
-          .collection('posts')
+      QuerySnapshot snap = await _db.postCollection
           .doc(widget.snap['postId'])
           .collection('comments')
           .get();
       commentLen = snap.docs.length;
     } catch (err) {
-      showSnackBar(
-        context,
-        err.toString(),
-      );
+      print(err);
     }
     setState(() {});
   }

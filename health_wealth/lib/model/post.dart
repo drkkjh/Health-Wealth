@@ -7,7 +7,6 @@ class Post {
   final likes;
   final String postId;
   final DateTime datePublished;
-  final String postUrl;
 
   const Post({
     required this.description,
@@ -16,7 +15,6 @@ class Post {
     required this.likes,
     required this.postId,
     required this.datePublished,
-    required this.postUrl,
   });
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -29,7 +27,6 @@ class Post {
       postId: snapshot["postId"],
       datePublished: snapshot["datePublished"],
       username: snapshot["username"],
-      postUrl: snapshot['postUrl'],
     );
   }
 
@@ -40,6 +37,5 @@ class Post {
         "username": username,
         "postId": postId,
         "datePublished": datePublished,
-        'postUrl': postUrl,
       };
 }
