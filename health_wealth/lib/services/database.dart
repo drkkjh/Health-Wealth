@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_wealth/model/exercise.dart';
+import 'package:health_wealth/model/post.dart';
+import 'package:health_wealth/model/postcard.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/model/runningdetails.dart';
+import 'package:health_wealth/model/user.dart' as model;
+import 'package:http/http.dart';
 
 class DatabaseService {
   late final String uid = AuthService().currentUser.uid;
@@ -23,11 +28,37 @@ class DatabaseService {
   /// Collection reference for runs.
   late final CollectionReference runsCollection = _db.collection("runs");
 
+  /// Collection reference for user followers
+  late final CollectionReference followersCollection =
+      _db.collection("followers");
+
+  /// Collection reference for user followings
+  late final CollectionReference followingsCollection =
+      _db.collection("followings");
+
+  /// Collection reference for user's posts
+  late final CollectionReference postCollection = _db.collection("posts");
+
   /// Methods for User Settings.
   Future createUserDocument(String email) async {
-    return await usersCollection
-        .doc(uid)
-        .set({'username': email, 'email': email});
+    model.User user = model.User(
+      username: email,
+      uid: uid,
+      email: email,
+      followers: [],
+      following: [],
+    );
+    return await usersCollection.doc(uid).set(user.toJson());
+  }
+
+  /// Method to retreive user data from database
+  Future<model.User> getUserDetails() async {
+    User currentUser = AuthService().currentUser;
+
+    DocumentSnapshot snap =
+        await _db.collection('users').doc(currentUser.uid).get();
+
+    return model.User.fromSnap(snap);
   }
 
   Future updateUsername(String username) async {
@@ -136,6 +167,51 @@ class DatabaseService {
       'speed': details.speed,
       'distance': details.distance,
     });
+  }
+
+// For ShareIT
+  Future followUser(String uid, String followId) async {
+    try {
+      DocumentSnapshot snap = await followingsCollection.doc(uid).get();
+      List following = (snap.data()! as dynamic)['following'];
+      // unfollow function
+      if (following.contains(followId)) {
+        await followingsCollection.doc(followId).update({
+          'following': FieldValue.arrayRemove([uid])
+        });
+        await followingsCollection.doc(uid).update({
+          'following': FieldValue.arrayRemove([followId])
+        });
+      } else {
+        // follow function
+        await followingsCollection.doc(followId).update({
+          'following': FieldValue.arrayUnion([uid])
+        });
+
+        await followingsCollection.doc(uid).update({
+          'following': FieldValue.arrayUnion([followId])
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Stream<List<PostCard>> get getPosts {
+    return postCollection
+        .doc(uid)
+        .collection('posts')
+        .snapshots()
+        .map(snapshotToListOfPosts);
+  }
+
+  List<PostCard> snapshotToListOfPosts(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      var data = doc.data() as Map<String, dynamic>;
+      return PostCard(
+        snap: data['snap'],
+      );
+    }).toList();
   }
 }
 
