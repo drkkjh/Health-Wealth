@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:health_wealth/providers/user_provider.dart';
-import 'package:provider/provider.dart';
 
 class ShareIt extends StatefulWidget {
   const ShareIt({Key? key}) : super(key: key);
@@ -11,17 +9,6 @@ class ShareIt extends StatefulWidget {
 
 class _ShareItState extends State<ShareIt> {
   int currentIndex = 3;
-
-  @override
-  void initState() {
-    super.initState();
-    addData();
-  }
-
-  addData() async {
-    UserProvider _userProvider = Provider.of(context, listen: false);
-    await _userProvider.refreshUser();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +37,7 @@ class _ShareItState extends State<ShareIt> {
         ),
         body: const TabBarView(
           children: [
-            // TODO: Create Feed and Discussion screens
+            // TODO: Create General and Discussion screens
             Center(
               child: Text(
                 'Feed coming soon!',
