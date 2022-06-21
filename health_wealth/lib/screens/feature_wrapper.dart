@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:health_wealth/providers/user_provider.dart';
 import 'package:health_wealth/screens/runtracker.dart';
 import 'package:health_wealth/screens/settings/settings.dart';
 import 'package:health_wealth/screens/shareit.dart';
 import 'package:health_wealth/screens/snacktracker/snacktracker.dart';
 import 'package:health_wealth/screens/workoutbuddy/workoutbuddy.dart';
 import 'package:health_wealth/services/auth.dart';
-import 'package:health_wealth/model/user.dart' as model;
-import 'package:provider/provider.dart';
 
 /// The FeatureWrapper widget handles the navigation between the four feature
 /// screens.
@@ -33,7 +30,6 @@ class _FeatureWrapperState extends State<FeatureWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
