@@ -36,8 +36,12 @@ class DatabaseService {
   late final CollectionReference followingsCollection =
       _db.collection("followings");
 
-  /// Collection reference for user's posts
+  /// Collection reference for user's posts on feed
   late final CollectionReference postCollection = _db.collection("posts");
+
+  /// Collection reference for user's discussion posts
+  late final CollectionReference discussionCollection =
+      _db.collection("discussions");
 
   /// Methods for User Settings.
   Future createUserDocument(String email) async {
