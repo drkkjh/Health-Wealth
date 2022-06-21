@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/model/runningdetails.dart';
@@ -14,6 +15,10 @@ class DatabaseService {
   /// Collection reference for snacks.
   late final CollectionReference userSnacksCollection =
       _db.collection('users').doc(uid).collection('snacks');
+
+  /// Collection reference for user workout routine.
+  late final CollectionReference userWorkoutRoutineCollection =
+      _db.collection('users').doc(uid).collection('workout routine');
 
   /// Collection reference for runs.
   late final CollectionReference runsCollection = _db.collection("runs");
@@ -66,8 +71,38 @@ class DatabaseService {
   List<Snack> _snapshotToListOfSnacks(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
-      // return Snack(name: data['name'], calories: data['calories']);
       return Snack(name: data['name'], calories: data['calories']);
+    }).toList();
+  }
+
+  /// Methods for WorkoutBuddy
+  /// Add exercise to the user's workout routine collection.
+  Future addExercise(Exercise exercise) async {
+    await userWorkoutRoutineCollection
+        .doc(exercise.name)
+        .set(exercise.toJson());
+  }
+
+  /// Update exercise in the user's workout routine collection.
+  /// Exercise attributes are changed except for it's name.
+  Future updateExercise(Exercise exercise) async {
+    return await userWorkoutRoutineCollection
+        .doc(exercise.name)
+        .update(exercise.toJson());
+  }
+
+  /// Get Exercises stream
+  Stream<List<Exercise>> get getExercises {
+    return userWorkoutRoutineCollection
+        .snapshots()
+        .map(_snapshotToListOfExercises);
+  }
+
+  /// Get a List of Exercises from QuerySnapshot
+  List<Exercise> _snapshotToListOfExercises(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      var data = doc.data() as Map<String, dynamic>;
+      return Exercise.fromJson(data);
     }).toList();
   }
 

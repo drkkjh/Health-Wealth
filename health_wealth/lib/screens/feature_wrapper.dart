@@ -3,7 +3,7 @@ import 'package:health_wealth/screens/runtracker.dart';
 import 'package:health_wealth/screens/settings/settings.dart';
 import 'package:health_wealth/screens/shareit.dart';
 import 'package:health_wealth/screens/snacktracker/snacktracker.dart';
-import 'package:health_wealth/screens/workoutbuddy.dart';
+import 'package:health_wealth/screens/workoutbuddy/workoutbuddy.dart';
 import 'package:health_wealth/services/auth.dart';
 
 /// The FeatureWrapper widget handles the navigation between the four feature
@@ -22,7 +22,7 @@ class _FeatureWrapperState extends State<FeatureWrapper> {
 
   final screens = [
     const SnackTracker(),
-    const WorkOutBuddy(workout: 'Workout 1'),
+    const WorkOutBuddy(),
     const RunTracker(),
     const ShareIt(),
     const Settings()
