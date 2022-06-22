@@ -52,7 +52,7 @@ class _AddToFeedState extends State<AddToFeed> {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: Undo,
+          onPressed: undo,
         ),
       ),
       body: Column(

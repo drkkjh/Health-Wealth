@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/model/postcard.dart';
 import 'package:health_wealth/model/snack.dart';
@@ -56,13 +55,8 @@ class DatabaseService {
   }
 
   /// Method to retreive user data from database
-  Future<model.User> getUserDetails() async {
-    User currentUser = AuthService().currentUser;
-
-    DocumentSnapshot snap =
-        await _db.collection('users').doc(currentUser.uid).get();
-
-    return model.User.fromSnap(snap);
+  Stream<model.User> get getUserDetails {
+    return usersCollection.doc(uid).snapshots().map(model.User.fromSnap);
   }
 
   Future updateUsername(String username) async {

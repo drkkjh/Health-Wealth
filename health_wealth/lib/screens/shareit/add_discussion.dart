@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/services/database.dart';
