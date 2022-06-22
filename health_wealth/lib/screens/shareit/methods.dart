@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/services/database.dart';
 import 'package:uuid/uuid.dart';
@@ -51,6 +52,24 @@ class Methods {
     try {
       await _db.postCollection.doc(postId).delete();
       print('successfully deleted post'); // for debugging
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> likePost(String postId, String uid, List likes) async {
+    try {
+      if (likes.contains(uid)) {
+        // already liked the post
+        await _db.postCollection.doc(postId).update({
+          'likes': FieldValue.arrayRemove([uid]),
+        });
+      } else {
+        // havent like the post
+        await _db.postCollection.doc(postId).update({
+          'likes': FieldValue.arrayUnion([uid]),
+        });
+      }
     } catch (e) {
       print(e.toString());
     }

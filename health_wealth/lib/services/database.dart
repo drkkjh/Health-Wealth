@@ -35,11 +35,11 @@ class DatabaseService {
       _db.collection('users').doc(uid).collection("followings");
 
   /// Collection reference for user's posts on feed
-  late final CollectionReference postCollection =
+  late final CollectionReference<Map<String, dynamic>> postCollection =
       _db.collection('users').doc(uid).collection('posts');
 
   /// Collection reference for user's discussion posts
-  late final CollectionReference discussionCollection =
+  late final CollectionReference<Map<String, dynamic>> discussionCollection =
       _db.collection('users').doc(uid).collection("discussions");
 
   Future createUserDocument(String email) async {
@@ -206,8 +206,8 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
       return PostCard(
-          //snap: data['snap'],
-          );
+        snap: data['snap'],
+      );
     }).toList();
   }
 }
