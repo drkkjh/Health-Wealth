@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/services/database.dart';
+import 'package:health_wealth/screens/shareit/methods.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
@@ -18,6 +19,7 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   int commentLen = 0;
   final DatabaseService _db = DatabaseService();
+  Methods methods = Methods();
 
   @override
   void initState() {
@@ -36,6 +38,10 @@ class _PostCardState extends State<PostCard> {
       print(err);
     }
     setState(() {});
+  }
+
+  deletePost(String postId) async {
+    methods.deletePost(postId);
   }
 
   @override
