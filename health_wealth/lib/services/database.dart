@@ -2,13 +2,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_wealth/model/exercise.dart';
-import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/model/postcard.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/model/runningdetails.dart';
 import 'package:health_wealth/model/user.dart' as model;
-import 'package:http/http.dart';
 
 class DatabaseService {
   late final String uid = AuthService().currentUser.uid;
@@ -30,20 +28,20 @@ class DatabaseService {
 
   /// Collection reference for user followers
   late final CollectionReference followersCollection =
-      _db.collection("followers");
+      _db.collection('users').doc(uid).collection("followers");
 
   /// Collection reference for user followings
   late final CollectionReference followingsCollection =
-      _db.collection("followings");
+      _db.collection('users').doc(uid).collection("followings");
 
   /// Collection reference for user's posts on feed
-  late final CollectionReference postCollection = _db.collection("posts");
+  late final CollectionReference postCollection =
+      _db.collection('users').doc(uid).collection('posts');
 
   /// Collection reference for user's discussion posts
   late final CollectionReference discussionCollection =
-      _db.collection("discussions");
+      _db.collection('users').doc(uid).collection("discussions");
 
-  /// Methods for User Settings.
   Future createUserDocument(String email) async {
     model.User user = model.User(
       username: email,
@@ -56,13 +54,8 @@ class DatabaseService {
   }
 
   /// Method to retreive user data from database
-  Future<model.User> getUserDetails() async {
-    User currentUser = AuthService().currentUser;
-
-    DocumentSnapshot snap =
-        await _db.collection('users').doc(currentUser.uid).get();
-
-    return model.User.fromSnap(snap);
+  Stream<model.User> get getUserDetails {
+    return usersCollection.doc(uid).snapshots().map(model.User.fromSnap);
   }
 
   Future updateUsername(String username) async {
@@ -173,7 +166,7 @@ class DatabaseService {
     });
   }
 
-// For ShareIT
+  // For ShareIT
   Future followUser(String uid, String followId) async {
     try {
       DocumentSnapshot snap = await followingsCollection.doc(uid).get();
