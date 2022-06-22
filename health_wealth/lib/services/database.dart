@@ -206,8 +206,8 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
       return PostCard(
-        snap: data['snap'],
-      );
+          //snap: data['snap'],
+          );
     }).toList();
   }
 }
