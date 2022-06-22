@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/post.dart';
+import 'package:health_wealth/screens/shareit/methods.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
 import 'package:uuid/uuid.dart';
@@ -19,26 +20,10 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
   User user = AuthService().currentUser;
   TextEditingController _descriptionController = TextEditingController();
   late String _userName;
+  Methods methods = Methods();
 
   void _addDiscussion(String description, String uid, String username) async {
-    String result = 'For debugging purposes';
-    try {
-      String postId =
-          const Uuid().v1(); // generating a unique postId based on current time
-      Post post = Post(
-        description: description,
-        uid: uid,
-        username: username,
-        likes: [],
-        postId: postId,
-        datePublished: DateTime.now(),
-      );
-      _db.discussionCollection.doc(postId).set(post.toJson());
-      result = 'successfully added to database';
-    } catch (err) {
-      result = err.toString();
-    }
-    print(result); // used for debugging
+    methods.addDiscussion(description, uid, username);
   }
 
   void Undo() {
