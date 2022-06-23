@@ -98,31 +98,4 @@ class Methods {
       print(e.toString());
     }
   }
-
-  Future followUser(String uid, String followId) async {
-    try {
-      DocumentSnapshot snap = await _db.discussionCollection.doc(uid).get();
-      List following = (snap.data()! as dynamic)['following'];
-      // unfollow function
-      if (following.contains(followId)) {
-        await _db.followingsCollection.doc(followId).update({
-          'following': FieldValue.arrayRemove([uid])
-        });
-        await _db.followingsCollection.doc(uid).update({
-          'following': FieldValue.arrayRemove([followId])
-        });
-      } else {
-        // follow function
-        await _db.followingsCollection.doc(followId).update({
-          'following': FieldValue.arrayUnion([uid])
-        });
-
-        await _db.followingsCollection.doc(uid).update({
-          'following': FieldValue.arrayUnion([followId])
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
 }

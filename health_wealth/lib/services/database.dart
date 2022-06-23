@@ -170,8 +170,6 @@ class DatabaseService {
     });
   }
 
-<<<<<<< HEAD
-=======
   /// For ShareIT
 
   /// Returns list of model.Users who the logged-in user follows.
@@ -243,7 +241,6 @@ class DatabaseService {
     }
   }
 
->>>>>>> main
   Stream<List<PostCard>> get getPosts {
     return usersCollection
         .doc(uid)
