@@ -5,8 +5,6 @@ import 'package:health_wealth/screens/shareit/shareit.dart';
 import 'package:health_wealth/screens/snacktracker/snacktracker.dart';
 import 'package:health_wealth/screens/workoutbuddy/workoutbuddy.dart';
 import 'package:health_wealth/services/auth.dart';
-import 'package:health_wealth/model/user.dart' as model;
-import 'package:provider/provider.dart';
 
 /// The FeatureWrapper widget handles the navigation between the four feature
 /// screens.

@@ -2,12 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:health_wealth/model/discussioncard.dart';
-import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/model/postcard.dart';
 import 'package:health_wealth/screens/shareit/add_discussion.dart';
 import 'package:health_wealth/screens/shareit/add_feed.dart';
+import 'package:health_wealth/screens/shareit/search_users.dart';
 import 'package:health_wealth/services/database.dart';
-import 'package:provider/provider.dart';
 
 class ShareIt extends StatefulWidget {
   const ShareIt({Key? key}) : super(key: key);
@@ -19,11 +18,6 @@ class ShareIt extends StatefulWidget {
 class _ShareItState extends State<ShareIt> {
   int currentIndex = 3;
   final DatabaseService _db = DatabaseService();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,52 +35,18 @@ class _ShareItState extends State<ShareIt> {
               color: Colors.orange, // Creates border
             ),
             tabs: const [
-              Tab(
-                text: 'Feed',
-              ),
-              Tab(
-                text: 'Discussion',
-              ),
+              Tab(text: 'Feed'),
+              Tab(text: 'Discussion'),
             ],
           ),
         ),
         body: TabBarView(
-          children: [
-            // TODO: Create Feed and Discussion screens
+          children: <Widget>[
             Scaffold(
-              floatingActionButton: SpeedDial(
-                  activeBackgroundColor: Colors.blue[500],
-                  activeIcon: Icons.cancel,
-                  icon: Icons.more_vert,
-                  children: [
-                    SpeedDialChild(
-                      label: 'Add post to Discussion',
-                      child: const Icon(Icons.add_circle),
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AddToDiscussion()),
-                        );
-                      },
-                    ),
-                    SpeedDialChild(
-                      label: 'Add post to Feed',
-                      child: const Icon(Icons.add_circle),
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AddToFeed()),
-                        );
-                      },
-                    ),
-                  ]),
-              body: StreamBuilder(
-                stream: _db.postCollection.snapshots(),
-                builder: (context,
-                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                        snapshot) {
+              floatingActionButton: const CustomSpeedDial(),
+              body: StreamBuilder<QuerySnapshot>(
+                stream: _db.postsCollection.snapshots(),
+                builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
@@ -105,81 +65,17 @@ class _ShareItState extends State<ShareIt> {
               body: StreamProvider<List<PostCard>?>.value(
                 initialData: const [],
                 value: _db.getPosts,
-                child: Scaffold(
-                  floatingActionButton: SpeedDial(
-                      activeBackgroundColor: Colors.blue[500],
-                      activeIcon: Icons.cancel,
-                      icon: Icons.more_vert,
-                      children: [
-                        SpeedDialChild(
-                          label: 'Add post to Discussion',
-                          child: const Icon(Icons.add_circle),
-                          onTap: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddToDiscussion()),
-                            );
-                          },
-                        ),
-                        SpeedDialChild(
-                          label: 'Add post to Feed',
-                          child: const Icon(Icons.add_circle),
-                          onTap: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AddToFeed()),
-                            );
-                          },
-                        ),
-                      ]),
+                child: const Scaffold(
+                  floatingActionButton: CustomSpeedDial(),
                 ),
               ),
-            ),*/
-            /*Center(
-              child: Text(
-                'Feed coming soon!',
-                style: TextStyle(
-                  fontSize: 25.0,
-                ),
-              ),
-            ),*/
+            ),
+            */
             Scaffold(
-              floatingActionButton: SpeedDial(
-                  activeBackgroundColor: Colors.blue[500],
-                  activeIcon: Icons.cancel,
-                  icon: Icons.more_vert,
-                  children: [
-                    SpeedDialChild(
-                      label: 'Add post to Discussion',
-                      child: const Icon(Icons.add_circle),
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AddToDiscussion()),
-                        );
-                      },
-                    ),
-                    SpeedDialChild(
-                      label: 'Add post to Feed',
-                      child: const Icon(Icons.add_circle),
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AddToFeed()),
-                        );
-                      },
-                    ),
-                  ]),
-              body: StreamBuilder(
-                stream: _db.discussionCollection.snapshots(),
-                builder: (context,
-                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                        snapshot) {
+              floatingActionButton: const CustomSpeedDial(),
+              body: StreamBuilder<QuerySnapshot>(
+                stream: _db.discussionsCollection.snapshots(),
+                builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
@@ -197,6 +93,55 @@ class _ShareItState extends State<ShareIt> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CustomSpeedDial extends StatelessWidget {
+  const CustomSpeedDial({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SpeedDial(
+      activeBackgroundColor: Colors.blue[500],
+      activeIcon: Icons.cancel,
+      icon: Icons.more_vert,
+      children: [
+        SpeedDialChild(
+          label: 'Add post to Discussion',
+          child: const Icon(Icons.add_circle),
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddToDiscussion()),
+            );
+          },
+        ),
+        SpeedDialChild(
+          label: 'Add post to Feed',
+          child: const Icon(Icons.add_circle),
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddToFeed()),
+            );
+          },
+        ),
+        SpeedDialChild(
+          label: 'Search for users',
+          child: const Icon(Icons.person_search_outlined),
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  // builder: (context) => const SearchScreen()),
+                  builder: (context) => const SearchUsers()),
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
-import 'package:uuid/uuid.dart';
 import 'package:health_wealth/model/user.dart' as model;
 
 class AddToDiscussion extends StatefulWidget {
@@ -16,9 +14,9 @@ class AddToDiscussion extends StatefulWidget {
 
 class _AddToDiscussionState extends State<AddToDiscussion> {
   // User inputs for discussion post
-  DatabaseService _db = DatabaseService();
+  final DatabaseService _db = DatabaseService();
   User user = AuthService().currentUser;
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   late String _userName;
   Methods methods = Methods();
 
@@ -26,7 +24,7 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
     methods.addDiscussion(description, uid, username);
   }
 
-  void Undo() {
+  void undo() {
     Navigator.of(context).pop();
   }
 
@@ -52,7 +50,7 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
               centerTitle: true,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: Undo,
+                onPressed: undo,
               ),
               actions: <Widget>[
                 TextButton(

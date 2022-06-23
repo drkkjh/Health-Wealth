@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/model/postcard.dart';
 import 'package:health_wealth/model/snack.dart';
@@ -27,20 +28,23 @@ class DatabaseService {
   late final CollectionReference runsCollection = _db.collection("runs");
 
   /// Collection reference for user followers
-  late final CollectionReference followersCollection =
-      _db.collection('users').doc(uid).collection("followers");
+  // late final CollectionReference followersCollection =
+  //     _db.collection('users').doc(uid).collection("followers");
 
   /// Collection reference for user followings
-  late final CollectionReference followingsCollection =
-      _db.collection('users').doc(uid).collection("followings");
+  // late final CollectionReference followingsCollection =
+  //     _db.collection('users').doc(uid).collection("followings");
 
-  /// Collection reference for user's posts on feed
-  late final CollectionReference<Map<String, dynamic>> postCollection =
+  /// Collection reference for feed posts
+  late final CollectionReference postsCollection = _db.collection('posts');
+
+  /// Subcollection reference for user's feed posts
+  late final CollectionReference postsSubcollection =
       _db.collection('users').doc(uid).collection('posts');
 
-  /// Collection reference for user's discussion posts
-  late final CollectionReference<Map<String, dynamic>> discussionCollection =
-      _db.collection('users').doc(uid).collection("discussions");
+  /// Collection reference for discussion posts
+  late final CollectionReference discussionsCollection =
+      _db.collection('discussions');
 
   Future createUserDocument(String email) async {
     model.User user = model.User(
@@ -166,36 +170,79 @@ class DatabaseService {
     });
   }
 
-  // For ShareIT
+  /// For ShareIT
+
+  /// Returns list of model.Users who the logged-in user follows.
+  Future<List<Future<model.User?>>> get getListOfFollowingUids async {
+    DocumentSnapshot snap = await usersCollection.doc(uid).get();
+    model.User user = model.User.fromSnap(snap);
+    List<String> listFollowers = user.following as List<String>;
+    return listFollowers.map(_uidToModelUser).toList();
+  }
+
+  /// Returns a model.User object given a uid.
+  Future<model.User?> _uidToModelUser(String uid) async {
+    DocumentSnapshot snap = await usersCollection.doc(uid).get();
+    return model.User.fromSnap(snap);
+  }
+
+  /// Returns a model.User object with given username iff such a User exists.
+  Future<model.User?> findUsersByUsername(String username) async {
+    QuerySnapshot snap =
+        await usersCollection.where('username', isEqualTo: username).get();
+    if (snap.size == 0) {
+      return null;
+    }
+    // snap.docs must be size 1 assuming username is unique.
+    return model.User.fromSnap(snap.docs[0]);
+  }
+
   Future followUser(String uid, String followId) async {
     try {
-      DocumentSnapshot snap = await followingsCollection.doc(uid).get();
-      List following = (snap.data()! as dynamic)['following'];
-      // unfollow function
-      if (following.contains(followId)) {
-        await followingsCollection.doc(followId).update({
-          'following': FieldValue.arrayRemove([uid])
+      DocumentSnapshot snap = await usersCollection.doc(uid).get();
+      model.User user = model.User.fromSnap(snap);
+      if (user.following.contains(followId)) {
+        await usersCollection.doc(followId).update({
+          'followers': FieldValue.arrayRemove([uid])
         });
-        await followingsCollection.doc(uid).update({
+        await usersCollection.doc(uid).update({
           'following': FieldValue.arrayRemove([followId])
         });
       } else {
-        // follow function
-        await followingsCollection.doc(followId).update({
-          'following': FieldValue.arrayUnion([uid])
+        await usersCollection.doc(followId).update({
+          'followers': FieldValue.arrayUnion([uid])
         });
-
-        await followingsCollection.doc(uid).update({
+        await usersCollection.doc(uid).update({
           'following': FieldValue.arrayUnion([followId])
         });
       }
+      // DocumentSnapshot snap = await followingsCollection.doc(uid).get();
+      // List following = (snap.data()! as dynamic)['following'];
+      // // unfollow function
+      // if (following.contains(followId)) {
+      //   await followingsCollection.doc(followId).update({
+      //     'following': FieldValue.arrayRemove([uid])
+      //   });
+      //   await followingsCollection.doc(uid).update({
+      //     'following': FieldValue.arrayRemove([followId])
+      //   });
+      // } else {
+      //   // follow function
+      //   await followingsCollection.doc(followId).update({
+      //     'following': FieldValue.arrayUnion([uid])
+      //   });
+
+      //   await followingsCollection.doc(uid).update({
+      //     'following': FieldValue.arrayUnion([followId])
+      //   });
+      // }
     } catch (e) {
       print(e);
     }
   }
 
   Stream<List<PostCard>> get getPosts {
-    return postCollection
+    return usersCollection
         .doc(uid)
         .collection('posts')
         .snapshots()

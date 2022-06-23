@@ -6,14 +6,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // create customUser obj base on Firebases' User obj
-  // CustomUser? _fbUserToCustomUser(User? user) {
-  //   return user != null ? CustomUser(uid: user.uid) : null;
+  // Create model.User object from a Firebases User obj
+  // model.User? _fbUserToModelUser(User? user) {
+  //   model.User user = _db.getUserDetails();
+  //   return user;
+  // return user != null
+  //     ? model.User(
+  //         username: user.email,
+  //         uid: user.uid,
+  //         email: user.email,
+  //         followers: [],
+  //         following: [],
+  //       )
+  //     : null;
   // }
 
-  // auth change user stream
-  // Stream<CustomUser?> get getUser {
-  //   return _auth.authStateChanges().map(_fbUserToCustomUser);
+  // Getter that returns User sign-in state in a Stream.
+  // Stream<model.User?> get getUser {
+  //   return _auth.authStateChanges().map(_fbUserToModelUser);
   // }
 
   /// Getter that returns current user.
