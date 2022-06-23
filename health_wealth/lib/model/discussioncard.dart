@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 class DiscussionCard extends StatefulWidget {
   final snap;
-  DiscussionCard({
+  const DiscussionCard({
     Key? key,
     required this.snap,
   }) : super(key: key);
@@ -37,7 +39,7 @@ class _PostCardState extends State<DiscussionCard> {
 
   fetchCommentLen() async {
     try {
-      QuerySnapshot snap = await _db.postCollection
+      QuerySnapshot snap = await _db.postsCollection
           .doc(widget.snap['postId'])
           .collection('comments')
           .get();
@@ -82,7 +84,7 @@ class _PostCardState extends State<DiscussionCard> {
                       children: [
                         Text(
                           widget.snap['username'].toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),

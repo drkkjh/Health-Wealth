@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+// * Backup file with different UI and implementation
+
+>>>>>>> main
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/services/auth.dart';
@@ -18,9 +23,14 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void dispose() {
+<<<<<<< HEAD
     // TODO: implement dispose
     super.dispose();
     searchController.dispose();
+=======
+    searchController.dispose();
+    super.dispose();
+>>>>>>> main
   }
 
   @override
@@ -65,7 +75,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               },
             )
+<<<<<<< HEAD
           : Text('Posts'),
+=======
+          : const Text('Posts'),
+>>>>>>> main
     );
   }
 }

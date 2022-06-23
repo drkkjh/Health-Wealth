@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
-  PostCard({
+  const PostCard({
     Key? key,
     required this.snap,
   }) : super(key: key);
@@ -39,7 +41,7 @@ class _PostCardState extends State<PostCard> {
 
   fetchCommentLen() async {
     try {
-      QuerySnapshot snap = await _db.postCollection
+      QuerySnapshot snap = await _db.postsCollection
           .doc(widget.snap['postId'])
           .collection('comments')
           .get();
@@ -142,8 +144,6 @@ class _PostCardState extends State<PostCard> {
                 duration: const Duration(milliseconds: 200),
                 opacity: isLikeAnimating ? 1 : 0,
                 child: LikeAnimation(
-                  child:
-                      const Icon(Icons.favorite, color: Colors.red, size: 100),
                   isAnimating: isLikeAnimating,
                   duration: const Duration(
                     milliseconds: 400,
@@ -153,6 +153,8 @@ class _PostCardState extends State<PostCard> {
                       isLikeAnimating = false;
                     });
                   },
+                  child:
+                      const Icon(Icons.favorite, color: Colors.red, size: 100),
                 ),
               ),
             ],

@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/model/user.dart' as model;
@@ -21,22 +22,11 @@ class _AddToFeedState extends State<AddToFeed> {
   final TextEditingController _descriptionController = TextEditingController();
   Methods methods = Methods();
 
-  void initState() {
-    super.initState();
-    _getUserName();
-  }
-
-  Future<void> _getUserName() async {
-    var snapshot =
-        _db.usersCollection.doc(user.uid).snapshots() as Map<String, dynamic>;
-    _userName = snapshot["username"];
-  }
-
   void _addFeed(String description, String uid, String username) async {
     methods.addFeed(description, uid, username);
   }
 
-  void Undo() {
+  void undo() {
     Navigator.of(context).pop();
   }
 
@@ -56,7 +46,7 @@ class _AddToFeedState extends State<AddToFeed> {
               centerTitle: true,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: Undo,
+                onPressed: undo,
               ),
               actions: <Widget>[
                 TextButton(
