@@ -35,13 +35,16 @@ class DatabaseService {
   // late final CollectionReference followingsCollection =
   //     _db.collection('users').doc(uid).collection("followings");
 
-  /// Collection reference for user's posts on feed
-  late final CollectionReference postCollection =
+  /// Collection reference for feed posts
+  late final CollectionReference postsCollection = _db.collection('posts');
+
+  /// Subcollection reference for user's feed posts
+  late final CollectionReference postsSubcollection =
       _db.collection('users').doc(uid).collection('posts');
 
-  /// Collection reference for user's discussion posts
-  late final CollectionReference discussionCollection =
-      _db.collection('users').doc(uid).collection("discussions");
+  /// Collection reference for discussion posts
+  late final CollectionReference discussionsCollection =
+      _db.collection('discussions');
 
   Future createUserDocument(String email) async {
     model.User user = model.User(
@@ -239,7 +242,7 @@ class DatabaseService {
   }
 
   Stream<List<PostCard>> get getPosts {
-    return postCollection
+    return usersCollection
         .doc(uid)
         .collection('posts')
         .snapshots()

@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:health_wealth/model/discussioncard.dart';
 import 'package:health_wealth/model/postcard.dart';
 import 'package:health_wealth/screens/shareit/add_discussion.dart';
 import 'package:health_wealth/screens/shareit/add_feed.dart';
 import 'package:health_wealth/screens/shareit/search_users.dart';
 import 'package:health_wealth/services/database.dart';
-import 'package:provider/provider.dart';
 
 class ShareIt extends StatefulWidget {
   const ShareIt({Key? key}) : super(key: key);
@@ -42,6 +43,25 @@ class _ShareItState extends State<ShareIt> {
         body: TabBarView(
           children: <Widget>[
             Scaffold(
+              floatingActionButton: const CustomSpeedDial(),
+              body: StreamBuilder<QuerySnapshot>(
+                stream: _db.postsCollection.snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) => PostCard(
+                      snap: snapshot.data!.docs[index].data(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            /*Scaffold(
               body: StreamProvider<List<PostCard>?>.value(
                 initialData: const [],
                 value: _db.getPosts,
@@ -50,9 +70,25 @@ class _ShareItState extends State<ShareIt> {
                 ),
               ),
             ),
-            const Scaffold(
-              // TODO: Use StreamBuilder to render list of discussion posts
-              floatingActionButton: CustomSpeedDial(),
+            */
+            Scaffold(
+              floatingActionButton: const CustomSpeedDial(),
+              body: StreamBuilder<QuerySnapshot>(
+                stream: _db.discussionsCollection.snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) => DiscussionCard(
+                      snap: snapshot.data!.docs[index].data(),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),

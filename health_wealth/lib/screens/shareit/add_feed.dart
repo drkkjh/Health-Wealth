@@ -1,13 +1,11 @@
 // ignore_for_file: avoid_print
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:health_wealth/model/post.dart';
+import 'package:health_wealth/screens/shareit/methods.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/model/user.dart' as model;
 import 'package:health_wealth/services/database.dart';
-import 'package:uuid/uuid.dart';
 
 class AddToFeed extends StatefulWidget {
   const AddToFeed({Key? key}) : super(key: key);
@@ -22,32 +20,10 @@ class _AddToFeedState extends State<AddToFeed> {
   User user = AuthService().currentUser;
   late String _userName;
   final TextEditingController _descriptionController = TextEditingController();
+  Methods methods = Methods();
 
   void _addFeed(String description, String uid, String username) async {
-    String result = 'For debugging purposes';
-    try {
-      String postId =
-          const Uuid().v1(); // generating a unique postId based on current time
-      Post post = Post(
-        description: description,
-        uid: uid,
-        username: username,
-        likes: [],
-        postId: postId,
-        datePublished: DateTime.now(),
-      );
-      // * Add posts to top-level collection
-      // TODO: Abstract this away in a database method?
-      await FirebaseFirestore.instance
-          .collection('posts')
-          .doc(postId)
-          .set(post.toJson());
-      await _db.postCollection.doc(postId).set(post.toJson());
-      result = 'successfully added to database';
-    } catch (err) {
-      result = err.toString();
-    }
-    print(result); // used for debugging
+    methods.addFeed(description, uid, username);
   }
 
   void undo() {

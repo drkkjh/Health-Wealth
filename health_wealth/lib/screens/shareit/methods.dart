@@ -13,6 +13,7 @@ class Methods {
 
   /// Returns true iff user if following the targetUser
   Future<bool> isFollowing(User targetUser) async {
+    // TODO: Abstract away into a DatabaseService method
     var snap = await _db.usersCollection.doc(_auth.currentUser.uid).get();
     User user = User.fromSnap(snap);
     return user.following.contains(targetUser.uid);
@@ -31,13 +32,9 @@ class Methods {
         postId: postId,
         datePublished: DateTime.now(),
       );
-      await _db.postCollection.doc(postId).set(post.toJson());
-      // * Add feed posts to top-level collection
-      // TODO: Abstract away using a database method?
-      await FirebaseFirestore.instance
-          .collection('posts')
-          .doc(postId)
-          .set(post.toJson());
+      // TODO: Abstract away into a DatabaseService method
+      await _db.postsSubcollection.doc(postId).set(post.toJson());
+      await _db.postsCollection.doc(postId).set(post.toJson());
       result = 'successfully added to database';
     } catch (err) {
       result = err.toString();
@@ -58,13 +55,7 @@ class Methods {
         postId: postId,
         datePublished: DateTime.now(),
       );
-      await _db.discussionCollection.doc(postId).set(post.toJson());
-      // * Add discussion posts to top-level collection
-      // TODO: Abstract away using a database method?
-      await FirebaseFirestore.instance
-          .collection('discussions')
-          .doc(postId)
-          .set(post.toJson());
+      await _db.discussionsCollection.doc(postId).set(post.toJson());
       result = 'successfully added to database';
     } catch (err) {
       result = err.toString();
@@ -74,8 +65,35 @@ class Methods {
 
   deletePost(String postId) async {
     try {
-      await _db.postCollection.doc(postId).delete();
+      // TODO: Abstract away into a DatabaseService method
+      await _db.postsCollection.doc(postId).delete();
+      await _db.postsSubcollection.doc(postId).delete();
       print('successfully deleted post'); // for debugging
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> likePost(String postId, String uid, List likes) async {
+    // TODO: Abstract away into a DatabaseService method
+    try {
+      if (likes.contains(uid)) {
+        // already liked the post
+        await _db.postsCollection.doc(postId).update({
+          'likes': FieldValue.arrayRemove([uid]),
+        });
+        await _db.postsSubcollection.doc(postId).update({
+          'likes': FieldValue.arrayRemove([uid]),
+        });
+      } else {
+        // havent like the post
+        await _db.postsCollection.doc(postId).update({
+          'likes': FieldValue.arrayUnion([uid]),
+        });
+        await _db.postsSubcollection.doc(postId).update({
+          'likes': FieldValue.arrayUnion([uid]),
+        });
+      }
     } catch (e) {
       print(e.toString());
     }
