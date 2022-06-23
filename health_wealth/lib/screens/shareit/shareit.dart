@@ -94,7 +94,9 @@ class _ShareItState extends State<ShareIt> {
                         }),
                   ]),
               body: StreamBuilder(
-                stream: _db.postCollection.snapshots(),
+                stream: _db.postCollection
+                    .orderBy('datePublished', descending: true)
+                    .snapshots(),
                 builder: (context,
                     AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                         snapshot) {
@@ -197,7 +199,9 @@ class _ShareItState extends State<ShareIt> {
                         }),
                   ]),
               body: StreamBuilder(
-                stream: _db.discussionCollection.snapshots(),
+                stream: _db.discussionCollection
+                    .orderBy('datePublished', descending: true)
+                    .snapshots(),
                 builder: (context,
                     AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                         snapshot) {

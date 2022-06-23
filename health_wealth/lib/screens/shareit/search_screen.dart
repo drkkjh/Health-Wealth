@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_wealth/services/auth.dart';
+import 'package:health_wealth/services/database.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -9,6 +12,9 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
+  final DatabaseService _db = DatabaseService();
+  final User user = AuthService().currentUser;
+  bool isShowUsers = false;
 
   @override
   void dispose() {
@@ -28,10 +34,38 @@ class _SearchScreenState extends State<SearchScreen> {
             labelText: 'Search for user',
           ),
           onFieldSubmitted: (String _) {
-            print(_);
+            setState(() {
+              isShowUsers = true;
+            });
           },
         ),
       ),
+      body: isShowUsers
+          ? FutureBuilder(
+              future: _db.usersCollection
+                  .where(
+                    'username',
+                    isGreaterThanOrEqualTo: searchController.text,
+                  )
+                  .get(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: (snapshot.data! as dynamic).docs.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                          (snapshot.data! as dynamic).docs[index]['username']),
+                    );
+                  },
+                );
+              },
+            )
+          : Text('Posts'),
     );
   }
 }
