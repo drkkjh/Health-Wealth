@@ -6,6 +6,7 @@ import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/model/postcard.dart';
 import 'package:health_wealth/screens/shareit/add_discussion.dart';
 import 'package:health_wealth/screens/shareit/add_feed.dart';
+import 'package:health_wealth/screens/shareit/search_screen.dart';
 import 'package:health_wealth/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -81,6 +82,16 @@ class _ShareItState extends State<ShareIt> {
                         );
                       },
                     ),
+                    SpeedDialChild(
+                        label: 'Search for user',
+                        child: const Icon(Icons.search),
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SearchScreen()),
+                          );
+                        }),
                   ]),
               body: StreamBuilder(
                 stream: _db.postCollection.snapshots(),
@@ -174,6 +185,16 @@ class _ShareItState extends State<ShareIt> {
                         );
                       },
                     ),
+                    SpeedDialChild(
+                        label: 'Search for user',
+                        child: const Icon(Icons.search),
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SearchScreen()),
+                          );
+                        }),
                   ]),
               body: StreamBuilder(
                 stream: _db.discussionCollection.snapshots(),

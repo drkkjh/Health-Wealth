@@ -166,34 +166,6 @@ class DatabaseService {
     });
   }
 
-  // For ShareIT
-  Future followUser(String uid, String followId) async {
-    try {
-      DocumentSnapshot snap = await followingsCollection.doc(uid).get();
-      List following = (snap.data()! as dynamic)['following'];
-      // unfollow function
-      if (following.contains(followId)) {
-        await followingsCollection.doc(followId).update({
-          'following': FieldValue.arrayRemove([uid])
-        });
-        await followingsCollection.doc(uid).update({
-          'following': FieldValue.arrayRemove([followId])
-        });
-      } else {
-        // follow function
-        await followingsCollection.doc(followId).update({
-          'following': FieldValue.arrayUnion([uid])
-        });
-
-        await followingsCollection.doc(uid).update({
-          'following': FieldValue.arrayUnion([followId])
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
   Stream<List<PostCard>> get getPosts {
     return postCollection
         .doc(uid)
