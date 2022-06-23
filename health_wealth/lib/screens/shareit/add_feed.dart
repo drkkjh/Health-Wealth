@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/post.dart';
@@ -22,18 +23,6 @@ class _AddToFeedState extends State<AddToFeed> {
   late String _userName;
   final TextEditingController _descriptionController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    _getUserName();
-  }
-
-  Future<void> _getUserName() async {
-    var snapshot =
-        _db.usersCollection.doc(user.uid).snapshots() as Map<String, dynamic>;
-    _userName = snapshot["username"];
-  }
-
   void _addFeed(String description, String uid, String username) async {
     String result = 'For debugging purposes';
     try {
@@ -47,7 +36,13 @@ class _AddToFeedState extends State<AddToFeed> {
         postId: postId,
         datePublished: DateTime.now(),
       );
-      _db.postCollection.doc(postId).set(post.toJson());
+      // * Add posts to top-level collection
+      // TODO: Abstract this away in a database method?
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postId)
+          .set(post.toJson());
+      await _db.postCollection.doc(postId).set(post.toJson());
       result = 'successfully added to database';
     } catch (err) {
       result = err.toString();

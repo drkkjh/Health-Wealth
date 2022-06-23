@@ -14,7 +14,7 @@ class SearchNutrition extends StatefulWidget {
 
 class _SearchSnackAPIState extends State<SearchNutrition> {
   final _controller1 = TextEditingController();
-  Future<dynamic>? apiQuery;
+  Future<List<SnackAPI>?>? apiQuery;
   var showExamples = true;
 
   @override
