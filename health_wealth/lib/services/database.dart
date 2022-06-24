@@ -27,14 +27,6 @@ class DatabaseService {
   /// Collection reference for runs.
   late final CollectionReference runsCollection = _db.collection("runs");
 
-  /// Collection reference for user followers
-  // late final CollectionReference followersCollection =
-  //     _db.collection('users').doc(uid).collection("followers");
-
-  /// Collection reference for user followings
-  // late final CollectionReference followingsCollection =
-  //     _db.collection('users').doc(uid).collection("followings");
-
   /// Collection reference for feed posts
   late final CollectionReference postsCollection = _db.collection('posts');
 
@@ -65,7 +57,6 @@ class DatabaseService {
   Future updateUsername(String username) async {
     // TODO: Implement logic to check that username isn't taken
     return await usersCollection.doc(uid).update({'username': username});
-    // .set({'username': username}, SetOptions(merge: true));
   }
 
   /// Methods for SnackTracker.
@@ -173,18 +164,18 @@ class DatabaseService {
   /// For ShareIT
 
   /// Returns list of model.Users who the logged-in user follows.
-  Future<List<Future<model.User?>>> get getListOfFollowingUids async {
-    DocumentSnapshot snap = await usersCollection.doc(uid).get();
-    model.User user = model.User.fromSnap(snap);
-    List<String> listFollowers = user.following as List<String>;
-    return listFollowers.map(_uidToModelUser).toList();
-  }
+  // Future<List<Future<model.User?>>> get getListOfFollowingUids async {
+  //   DocumentSnapshot snap = await usersCollection.doc(uid).get();
+  //   model.User user = model.User.fromSnap(snap);
+  //   List<String> listFollowers = user.following;
+  //   return listFollowers.map(_uidToModelUser).toList();
+  // }
 
   /// Returns a model.User object given a uid.
-  Future<model.User?> _uidToModelUser(String uid) async {
-    DocumentSnapshot snap = await usersCollection.doc(uid).get();
-    return model.User.fromSnap(snap);
-  }
+  // Future<model.User?> _uidToModelUser(String uid) async {
+  //   DocumentSnapshot snap = await usersCollection.doc(uid).get();
+  //   return model.User.fromSnap(snap);
+  // }
 
   /// Returns a model.User object with given username iff such a User exists.
   Future<model.User?> findUsersByUsername(String username) async {
@@ -241,15 +232,18 @@ class DatabaseService {
     }
   }
 
-  Stream<List<PostCard>> get getPosts {
-    return usersCollection
-        .doc(uid)
-        .collection('posts')
-        .snapshots()
-        .map(snapshotToListOfPosts);
+  Stream<QuerySnapshot> getPostsSnapshot(model.User user) {
+    //  To ensure that firebase query has a non-empty list argument
+    List listOfFollowing = user.following.isEmpty ? [''] : user.following;
+    return postsCollection.where('uid', whereIn: listOfFollowing).snapshots();
   }
 
-  List<PostCard> snapshotToListOfPosts(QuerySnapshot snapshot) {
+  // * Not in use
+  Stream<List<PostCard>> get getPosts {
+    return postsCollection.snapshots().map(_snapshotToListOfPostCards);
+  }
+
+  List<PostCard> _snapshotToListOfPostCards(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
       return PostCard(
