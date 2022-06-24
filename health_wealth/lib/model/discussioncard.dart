@@ -50,8 +50,8 @@ class _PostCardState extends State<DiscussionCard> {
     setState(() {});
   }
 
-  deletePost(String postId) async {
-    methods.deletePost(postId);
+  deleteDiscussion(String postId) async {
+    methods.deleteDiscussion(postId);
   }
 
   @override
@@ -94,35 +94,50 @@ class _PostCardState extends State<DiscussionCard> {
                 ),
                 IconButton(
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        child: ListView(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 16,
-                          ),
-                          shrinkWrap: true,
-                          children: [
-                            'Delete discussion post',
-                          ]
-                              .map(
-                                (e) => InkWell(
-                                  onTap: () {
-                                    deletePost(
-                                      widget.snap['postId'].toString(),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 16),
-                                    child: Text(e),
-                                  ),
+                    widget.snap['uid'] == user.uid
+                        ? showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                              child: ListView(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
                                 ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    );
+                                shrinkWrap: true,
+                                children: [
+                                  'Delete discussion post',
+                                ]
+                                    .map(
+                                      (e) => InkWell(
+                                        onTap: () {
+                                          deleteDiscussion(
+                                            widget.snap['postId'].toString(),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 12, horizontal: 16),
+                                          child: Text(e),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          )
+                        : showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                              child: ListView(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                shrinkWrap: true,
+                                children: const [
+                                  Text('No permission to delete post'),
+                                ],
+                              ),
+                            ),
+                          );
                   },
                   icon: const Icon(Icons.more_vert),
                 ),
