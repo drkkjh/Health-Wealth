@@ -74,6 +74,16 @@ class Methods {
     }
   }
 
+  deleteDiscussion(String postId) async {
+    try {
+      // TODO: Abstract away into a DatabaseService method
+      await _db.discussionsCollection.doc(postId).delete();
+      print('successfully deleted post'); // for debugging
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future<void> likePost(String postId, String uid, List likes) async {
     // TODO: Abstract away into a DatabaseService method
     try {

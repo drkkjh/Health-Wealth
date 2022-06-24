@@ -96,35 +96,49 @@ class _PostCardState extends State<PostCard> {
                 ),
                 IconButton(
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        child: ListView(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 16,
-                          ),
-                          shrinkWrap: true,
-                          children: [
-                            'Delete post',
-                          ]
-                              .map(
-                                (e) => InkWell(
-                                  onTap: () {
-                                    deletePost(
-                                      widget.snap['postId'].toString(),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 16),
-                                    child: Text(e),
-                                  ),
+                    widget.snap['uid'] == user.uid
+                        ? showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                              child: ListView(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
                                 ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    );
+                                shrinkWrap: true,
+                                children: [
+                                  'Delete post',
+                                ]
+                                    .map(
+                                      (e) => InkWell(
+                                        onTap: () {
+                                          deletePost(
+                                            widget.snap['postId'].toString(),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 12, horizontal: 16),
+                                          child: Text(e),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          )
+                        : showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                              child: ListView(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
+                                  shrinkWrap: true,
+                                  children: const [
+                                    Text('No permission to delete post'),
+                                  ]),
+                            ),
+                          );
                   },
                   icon: const Icon(Icons.more_vert),
                 ),
