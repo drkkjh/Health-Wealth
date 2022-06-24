@@ -178,6 +178,8 @@ class DatabaseService {
   // }
 
   /// Returns a model.User object with given username iff such a User exists.
+  // * Might have to modify to return a List<model.User> if search criteria is changed
+  // * (ie. Find all users where input string is a substring of user's username)
   Future<model.User?> findUsersByUsername(String username) async {
     QuerySnapshot snap =
         await usersCollection.where('username', isEqualTo: username).get();
@@ -185,7 +187,9 @@ class DatabaseService {
       return null;
     }
     // snap.docs must be size 1 assuming username is unique.
-    return model.User.fromSnap(snap.docs[0]);
+    model.User returnedUser = model.User.fromSnap(snap.docs[0]);
+    // Ensures that logged-in users cannot find themselves in SearchUsers
+    return returnedUser.uid != uid ? returnedUser : null;
   }
 
   Future followUser(String uid, String followId) async {

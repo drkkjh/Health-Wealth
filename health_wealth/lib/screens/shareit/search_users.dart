@@ -67,14 +67,12 @@ class _SearchUsersState extends State<SearchUsers> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done &&
                       snapshot.hasData) {
-                    print(snapshot.toString());
                     final User? user = snapshot.data;
                     return user == null
                         ? const Text('No user found')
                         : SearchUserCard(user: user);
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
-                    print(snapshot.toString());
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
@@ -96,7 +94,7 @@ class _SearchUsersState extends State<SearchUsers> {
                   } else {
                     if (showCurrentFollowers) {
                       return Container();
-                      // * Return the list of users currently followed and following?
+                      // TODO: Return the list of users currently followed and following?
                       // FutureBuilder<List<Future<User?>>>(
                       //   future: _db.getListOfFollowingUids,
                       //   builder: (context, snapshot) {
