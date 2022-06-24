@@ -56,7 +56,8 @@ class DatabaseService {
 
   Future updateUsername(String username) async {
     // TODO: Implement logic to check that username isn't taken
-    return await usersCollection.doc(uid).update({'username': username});
+    await usersCollection.doc(uid).update({'username': username});
+    return await updateUsernameInShareItPosts(username);
   }
 
   /// Methods for SnackTracker.
@@ -178,6 +179,8 @@ class DatabaseService {
   // }
 
   /// Returns a model.User object with given username iff such a User exists.
+  // * Might have to modify to return a List<model.User> if search criteria is changed
+  // * (ie. Find all users where input string is a substring of user's username)
   Future<model.User?> findUsersByUsername(String username) async {
     QuerySnapshot snap =
         await usersCollection.where('username', isEqualTo: username).get();
@@ -185,7 +188,9 @@ class DatabaseService {
       return null;
     }
     // snap.docs must be size 1 assuming username is unique.
-    return model.User.fromSnap(snap.docs[0]);
+    model.User returnedUser = model.User.fromSnap(snap.docs[0]);
+    // Ensures that logged-in users cannot find themselves in SearchUsers
+    return returnedUser.uid != uid ? returnedUser : null;
   }
 
   Future followUser(String uid, String followId) async {
@@ -207,26 +212,6 @@ class DatabaseService {
           'following': FieldValue.arrayUnion([followId])
         });
       }
-      // DocumentSnapshot snap = await followingsCollection.doc(uid).get();
-      // List following = (snap.data()! as dynamic)['following'];
-      // // unfollow function
-      // if (following.contains(followId)) {
-      //   await followingsCollection.doc(followId).update({
-      //     'following': FieldValue.arrayRemove([uid])
-      //   });
-      //   await followingsCollection.doc(uid).update({
-      //     'following': FieldValue.arrayRemove([followId])
-      //   });
-      // } else {
-      //   // follow function
-      //   await followingsCollection.doc(followId).update({
-      //     'following': FieldValue.arrayUnion([uid])
-      //   });
-
-      //   await followingsCollection.doc(uid).update({
-      //     'following': FieldValue.arrayUnion([followId])
-      //   });
-      // }
     } catch (e) {
       print(e);
     }
@@ -250,6 +235,22 @@ class DatabaseService {
         snap: data['snap'],
       );
     }).toList();
+  }
+
+  Future<void> updateUsernameInShareItPosts(String newName) async {
+    QuerySnapshot q1 = await postsCollection.where('uid', isEqualTo: uid).get();
+    for (QueryDocumentSnapshot snap in q1.docs) {
+      var data = snap.data() as Map<String, dynamic>;
+      await postsCollection.doc(data['postId']).update({'username': newName});
+    }
+    QuerySnapshot q2 =
+        await discussionsCollection.where('uid', isEqualTo: uid).get();
+    for (QueryDocumentSnapshot snap in q2.docs) {
+      var data = snap.data() as Map<String, dynamic>;
+      await discussionsCollection
+          .doc(data['postId'])
+          .update({'username': newName});
+    }
   }
 }
 

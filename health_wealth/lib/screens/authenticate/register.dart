@@ -111,8 +111,11 @@ class _RegisterState extends State<Register> {
                             if (_formKey.currentState!.validate()) {
                               setState(() => loading = true);
                               try {
-                                await _auth.register(email, password);
+                                User user =
+                                    await _auth.register(email, password);
                                 await _db.createUserDocument(email);
+                                await _db.followUser(user.uid, user.uid);
+                                // Create default exercises in WorkoutBuddy
                                 for (Exercise ex in Exercise.defaultExercises) {
                                   await _db.addExercise(ex);
                                 }

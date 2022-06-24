@@ -15,7 +15,6 @@ class ChangeUsername extends StatefulWidget {
 class _ChangeUsernameState extends State<ChangeUsername> {
   final _auth = AuthService();
   late final _db = DatabaseService();
-  // late final _db = DatabaseService(uid: _auth.currentUser.uid);
   final _controller1 = TextEditingController();
   final _controller2 = TextEditingController();
 
