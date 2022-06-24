@@ -31,6 +31,13 @@ class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     initializeDateFormatting();

@@ -56,7 +56,8 @@ class DatabaseService {
 
   Future updateUsername(String username) async {
     // TODO: Implement logic to check that username isn't taken
-    return await usersCollection.doc(uid).update({'username': username});
+    await usersCollection.doc(uid).update({'username': username});
+    return await updateUsernameInShareItPosts(username);
   }
 
   /// Methods for SnackTracker.
@@ -211,26 +212,6 @@ class DatabaseService {
           'following': FieldValue.arrayUnion([followId])
         });
       }
-      // DocumentSnapshot snap = await followingsCollection.doc(uid).get();
-      // List following = (snap.data()! as dynamic)['following'];
-      // // unfollow function
-      // if (following.contains(followId)) {
-      //   await followingsCollection.doc(followId).update({
-      //     'following': FieldValue.arrayRemove([uid])
-      //   });
-      //   await followingsCollection.doc(uid).update({
-      //     'following': FieldValue.arrayRemove([followId])
-      //   });
-      // } else {
-      //   // follow function
-      //   await followingsCollection.doc(followId).update({
-      //     'following': FieldValue.arrayUnion([uid])
-      //   });
-
-      //   await followingsCollection.doc(uid).update({
-      //     'following': FieldValue.arrayUnion([followId])
-      //   });
-      // }
     } catch (e) {
       print(e);
     }
@@ -254,6 +235,22 @@ class DatabaseService {
         snap: data['snap'],
       );
     }).toList();
+  }
+
+  Future<void> updateUsernameInShareItPosts(String newName) async {
+    QuerySnapshot q1 = await postsCollection.where('uid', isEqualTo: uid).get();
+    for (QueryDocumentSnapshot snap in q1.docs) {
+      var data = snap.data() as Map<String, dynamic>;
+      await postsCollection.doc(data['postId']).update({'username': newName});
+    }
+    QuerySnapshot q2 =
+        await discussionsCollection.where('uid', isEqualTo: uid).get();
+    for (QueryDocumentSnapshot snap in q2.docs) {
+      var data = snap.data() as Map<String, dynamic>;
+      await discussionsCollection
+          .doc(data['postId'])
+          .update({'username': newName});
+    }
   }
 }
 
