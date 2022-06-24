@@ -133,7 +133,7 @@ class _PostCardState extends State<DiscussionCard> {
                                 ),
                                 shrinkWrap: true,
                                 children: const [
-                                  Text('No permission to delete'),
+                                  Text('No permission to delete post'),
                                 ],
                               ),
                             ),
