@@ -1,5 +1,5 @@
-// *This page has swipe to delete features. Not linked to backend.
-//* In order to undo deletes, the deleted Exercise will have to be stored in a variable.
+// * This page has swipe to delete features. Not linked to backend.
+// * In order to undo deletes, the deleted Exercise will have to be stored in a variable.
 
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/loading.dart';
