@@ -91,7 +91,6 @@ class _RunningState extends State<Running> {
 
   @override
   Widget build(BuildContext context) {
-    // User user = Provider.of<User>(context);
     DatabaseService db = DatabaseService();
     return Scaffold(
       body: Stack(

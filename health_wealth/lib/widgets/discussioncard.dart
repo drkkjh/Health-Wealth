@@ -56,8 +56,6 @@ class _PostCardState extends State<DiscussionCard> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.symmetric(
