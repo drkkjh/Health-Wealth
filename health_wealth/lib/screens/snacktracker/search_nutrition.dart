@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/model/snack_api.dart';
-import 'package:health_wealth/screens/snacktracker/snack_api_tile.dart';
+import 'package:health_wealth/widgets/snack_api_tile.dart';
 import 'package:health_wealth/services/network_service.dart';
 
 class SearchNutrition extends StatefulWidget {

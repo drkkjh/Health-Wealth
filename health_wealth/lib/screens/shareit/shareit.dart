@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:health_wealth/model/discussioncard.dart';
-import 'package:health_wealth/model/postcard.dart';
+import 'package:health_wealth/widgets/discussioncard.dart';
+import 'package:health_wealth/widgets/postcard.dart';
 import 'package:health_wealth/model/user.dart';
 import 'package:health_wealth/screens/shareit/add_discussion.dart';
 import 'package:health_wealth/screens/shareit/add_feed.dart';

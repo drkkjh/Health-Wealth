@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
-import 'package:health_wealth/common/loading.dart';
+import 'package:health_wealth/widgets/loading.dart';
 import 'package:health_wealth/services/auth.dart';
 
 /// The Sign In screen widget.
@@ -34,7 +34,6 @@ class _SignInState extends State<SignIn> {
       return const Loading();
     } else {
       return Scaffold(
-        // backgroundColor: Colors.lightBlueAccent,
         appBar: AppBar(
           backgroundColor: Colors.blue,
           elevation: 0.0,

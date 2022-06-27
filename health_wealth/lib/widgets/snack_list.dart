@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/snack.dart';
-import 'package:health_wealth/screens/snacktracker/snack_tile.dart';
+import 'package:health_wealth/widgets/snack_tile.dart';
 import 'package:provider/provider.dart';
 
 class SnackList extends StatelessWidget {
