@@ -66,8 +66,9 @@ class _AddSnackState extends State<AddSnack> {
                         validator: (input) {
                           if (input == null || input.isEmpty) {
                             return 'Enter a number';
-                          } else if (num.tryParse(input) == null) {
-                            return 'Enter a number!';
+                          } else if (num.tryParse(input) == null ||
+                              num.parse(input) < 0) {
+                            return 'Enter a postive number!';
                           } else {
                             return null;
                           }
