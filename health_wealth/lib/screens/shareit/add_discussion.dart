@@ -72,7 +72,7 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
             body: Column(
               children: <Widget>[
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width,
                   child: TextField(
                     controller: _descriptionController,
                     decoration: const InputDecoration(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/runlist.dart';
-import 'package:health_wealth/screens/running.dart';
+import 'package:health_wealth/screens/runtracker/running.dart';
 import 'package:provider/provider.dart';
-import '../model/runningdetails.dart';
-import '../services/auth.dart';
-import '../services/database.dart';
+import '../../model/runningdetails.dart';
+import '../../services/auth.dart';
+import '../../services/database.dart';
 
 class RunTracker extends StatefulWidget {
   const RunTracker({Key? key}) : super(key: key);
