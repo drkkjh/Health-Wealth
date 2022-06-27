@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
-import 'package:health_wealth/common/loading.dart';
+import 'package:health_wealth/widgets/loading.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/user.dart';
-import 'package:health_wealth/screens/shareit/follow_button.dart';
+import 'package:health_wealth/widgets/follow_button.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';

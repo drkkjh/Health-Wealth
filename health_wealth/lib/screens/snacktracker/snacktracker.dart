@@ -3,7 +3,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/screens/snacktracker/add_snack.dart';
 import 'package:health_wealth/screens/snacktracker/search_nutrition.dart';
-import 'package:health_wealth/screens/snacktracker/snack_list.dart';
+import 'package:health_wealth/widgets/snack_list.dart';
 import 'package:health_wealth/services/database.dart';
 import 'package:provider/provider.dart';
 
