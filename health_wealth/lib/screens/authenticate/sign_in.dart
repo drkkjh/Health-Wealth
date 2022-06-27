@@ -34,9 +34,8 @@ class _SignInState extends State<SignIn> {
       return const Loading();
     } else {
       return Scaffold(
-        // backgroundColor: Colors.lightBlueAccent,
         appBar: AppBar(
-          backgroundColor: Colors.indigoAccent,
+          backgroundColor: Colors.blue,
           elevation: 0.0,
           title: const Text('Sign in'),
           actions: [

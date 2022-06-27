@@ -38,9 +38,8 @@ class _RegisterState extends State<Register> {
       return const Loading();
     } else {
       return Scaffold(
-        // backgroundColor: Colors.,
         appBar: AppBar(
-          backgroundColor: Colors.indigoAccent,
+          backgroundColor: Colors.blue,
           elevation: 0.0,
           title: const Text('Register'),
           actions: [
