@@ -37,8 +37,8 @@ class _UpdateExerciseState extends State<UpdateExercisePanel> {
               validator: (val) {
                 if (val == null || val.isEmpty) {
                   return null;
-                } else if (int.tryParse(val) == null) {
-                  return 'Enter a integer';
+                } else if (int.tryParse(val) == null || int.parse(val) < 0) {
+                  return 'Enter a positive integer';
                 } else {
                   return null;
                 }
@@ -58,8 +58,8 @@ class _UpdateExerciseState extends State<UpdateExercisePanel> {
               validator: (val) {
                 if (val == null || val.isEmpty) {
                   return null;
-                } else if (int.tryParse(val) == null) {
-                  return 'Enter an integer';
+                } else if (int.tryParse(val) == null || int.parse(val) < 0) {
+                  return 'Enter a positive integer';
                 } else {
                   return null;
                 }

@@ -76,13 +76,14 @@ class _SnackTileState extends State<SnackTile> {
                   setState(() {
                     _hasNewName = _controller1.text.isNotEmpty;
                     _hasNewCal = _controller2.text.isNotEmpty;
-                    _isValidCal = num.tryParse(_controller2.text) != null;
+                    _isValidCal = num.tryParse(_controller2.text) != null &&
+                        num.parse(_controller2.text) >= 0;
 
                     if (!_isValidCal && _hasNewCal) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           backgroundColor: Colors.red,
-                          content: Text('Input must be numeric'),
+                          content: Text('Enter a positive number'),
                         ),
                       );
                     }
