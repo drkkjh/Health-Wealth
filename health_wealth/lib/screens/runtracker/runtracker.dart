@@ -19,20 +19,9 @@ class _RunTrackerState extends State<RunTracker> {
 
   @override
   Widget build(BuildContext context) {
-    // var height = MediaQuery.of(context).size.height;
-    // var width = MediaQuery.of(context).size.width;
-
     return StreamProvider<List<RunningDetails>?>.value(
       initialData: const [],
       value: _db.getRuns,
-      /*catchError: (_, err) => [
-        RunningDetails(
-            id: 'abc',
-            date: '14/6/2022',
-            duration: '20.0',
-            speed: 1.0,
-            distance: 2.4)
-      ],*/
       child: Scaffold(
         appBar: AppBar(
           title: const Text("RunTracker"),
