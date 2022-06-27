@@ -37,7 +37,7 @@ class _RunTrackerState extends State<RunTracker> {
         appBar: AppBar(
           title: const Text("RunTracker"),
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.lightBlue,
         ),
         body: const RunList(),
         floatingActionButton: FloatingActionButton(
