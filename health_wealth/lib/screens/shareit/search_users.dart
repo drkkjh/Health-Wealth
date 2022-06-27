@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
 import 'package:health_wealth/model/user.dart';
-import 'package:health_wealth/screens/shareit/search_user_card.dart';
+import 'package:health_wealth/widgets/search_user_card.dart';
 import 'package:health_wealth/services/database.dart';
 
 class SearchUsers extends StatefulWidget {

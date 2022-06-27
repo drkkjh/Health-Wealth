@@ -1,10 +1,10 @@
-// *This page has swipe to delete features. Not linked to backend.
-//* In order to undo deletes, the deleted Exercise will have to be stored in a variable.
+// * This page has swipe to delete features. Not linked to backend.
+// * In order to undo deletes, the deleted Exercise will have to be stored in a variable.
 
 import 'package:flutter/material.dart';
-import 'package:health_wealth/common/loading.dart';
+import 'package:health_wealth/widgets/loading.dart';
 import 'package:health_wealth/model/exercise.dart';
-import 'package:health_wealth/screens/workoutbuddy/exercise_card.dart';
+import 'package:health_wealth/widgets/exercise_card.dart';
 import 'package:health_wealth/services/database.dart';
 
 class WorkOutBuddy2 extends StatefulWidget {

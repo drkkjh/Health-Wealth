@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       initialData: null,
       value: AuthService().getUser,
       child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Wrapper(),
       ),
     );
