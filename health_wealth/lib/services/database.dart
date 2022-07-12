@@ -45,6 +45,8 @@ class DatabaseService {
       email: email,
       followers: [],
       following: [],
+      totalKcal: 0,
+      kcalLimit: 500,
     );
     return await usersCollection.doc(uid).set(user.toJson());
   }
@@ -64,12 +66,18 @@ class DatabaseService {
   /// Add snack to the user's snacks collection.
   Future addSnack(Snack snack) async {
     await userSnacksCollection.doc(snack.name).set(snack.toJson());
+    await usersCollection
+        .doc(uid)
+        .update({'totalKcal': FieldValue.increment(snack.calories)});
   }
 
   /// Update snack in the user's snacks collection.
   /// This method can be extended if the Snack class is modelled differently.
-  Future updateSnack(Snack snack) async {
-    return await userSnacksCollection.doc(snack.name).update(snack.toJson());
+  Future updateSnack(Snack snack, num calChange) async {
+    await userSnacksCollection.doc(snack.name).update(snack.toJson());
+    await usersCollection
+        .doc(uid)
+        .update({'totalKcal': FieldValue.increment(calChange)});
   }
 
   /// Update snack name in the user's snack collection
@@ -80,12 +88,15 @@ class DatabaseService {
 
   /// Delete snack from the user's snacks collection.
   Future deleteSnack(Snack snack) async {
-    return await userSnacksCollection.doc(snack.name).delete();
+    await userSnacksCollection.doc(snack.name).delete();
+    await usersCollection
+        .doc(uid)
+        .update({'totalKcal': FieldValue.increment(-snack.calories)});
   }
 
   /// Update user's caloric limit
   Future updateCalLimit(num limit) async {
-    return await usersCollection.doc(uid).update({'calLimit': limit});
+    return await usersCollection.doc(uid).update({'kcalLimit': limit});
   }
 
   /// Get Snacks stream
