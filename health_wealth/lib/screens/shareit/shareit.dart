@@ -55,11 +55,14 @@ class _ShareItState extends State<ShareIt> {
                   }
                   User user = snapshot.data ??
                       const User(
-                          username: '',
-                          uid: '',
-                          email: '',
-                          followers: [''],
-                          following: ['']);
+                        username: '',
+                        uid: '',
+                        email: '',
+                        followers: [''],
+                        following: [''],
+                        totalKcal: 0,
+                        kcalLimit: 0,
+                      );
                   return StreamBuilder<QuerySnapshot>(
                     stream: _db.getPostsSnapshot(user),
                     builder: (context, snapshot) {

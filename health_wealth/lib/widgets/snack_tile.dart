@@ -92,11 +92,12 @@ class _SnackTileState extends State<SnackTile> {
                   if (_hasNewName) {
                     // Change both name and cals
                     if (_hasNewCal && _isValidCal) {
+                      num newCal = num.parse(_controller2.text);
                       await _db
                           .updateSnackName(widget.snack, _controller1.text)
-                          .then((value) => _db.updateSnack(Snack(
-                              name: _controller1.text,
-                              calories: num.parse(_controller2.text))))
+                          .then((value) => _db.updateSnack(
+                              Snack(name: _controller1.text, calories: newCal),
+                              newCal - widget.snack.calories))
                           .whenComplete(() {
                         _controller1.clear();
                         _controller2.clear();
@@ -116,10 +117,11 @@ class _SnackTileState extends State<SnackTile> {
                   } else {
                     // Only change cals
                     if (_hasNewCal && _isValidCal) {
+                      num newCal = num.parse(_controller2.text);
                       await _db
-                          .updateSnack(Snack(
-                              name: widget.snack.name,
-                              calories: num.parse(_controller2.text)))
+                          .updateSnack(
+                              Snack(name: widget.snack.name, calories: newCal),
+                              newCal - widget.snack.calories)
                           .whenComplete(() {
                         _controller1.clear();
                         _controller2.clear();
