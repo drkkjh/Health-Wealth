@@ -10,8 +10,8 @@ class SnackList extends StatelessWidget {
   Widget build(BuildContext context) {
     final snacks = Provider.of<List<Snack>>(context);
 
-    return Scaffold(
-      body: ListView.builder(
+    return Expanded(
+      child: ListView.builder(
         itemCount: snacks.length,
         itemBuilder: (context, index) {
           return SnackTile(snack: snacks[index]);

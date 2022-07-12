@@ -56,6 +56,7 @@ dependencies:
   json_annotation: ^4.5.0
   flutter_speed_dial: ^6.0.0
   uuid: ^3.0.6
+  percent_indicator: ^4.2.2
 
 dev_dependencies:
   flutter_test:

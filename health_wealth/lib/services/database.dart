@@ -83,6 +83,11 @@ class DatabaseService {
     return await userSnacksCollection.doc(snack.name).delete();
   }
 
+  /// Update user's caloric limit
+  Future updateCalLimit(num limit) async {
+    return await usersCollection.doc(uid).update({'calLimit': limit});
+  }
+
   /// Get Snacks stream
   Stream<List<Snack>> get getSnacks {
     return userSnacksCollection
