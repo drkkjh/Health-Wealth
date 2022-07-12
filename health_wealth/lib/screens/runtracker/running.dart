@@ -92,6 +92,7 @@ class _RunningState extends State<Running> {
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService();
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Stack(
         children: [
@@ -180,24 +181,26 @@ class _RunningState extends State<Running> {
                     ),
                   ),
                   const Divider(),
-                  IconButton(
-                    icon: Icon(
-                      Icons.stop_circle,
-                      size: 70,
-                      color: Colors.red[700],
+                  Center(
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.stop_circle,
+                        size: 70,
+                        color: Colors.red[700],
+                      ),
+                      onPressed: () {
+                        RunningDetails rd = RunningDetails(
+                          id: AuthService().currentUser.uid,
+                          date:
+                              DateFormat.yMMMMd('en_US').format(DateTime.now()),
+                          duration: _displayTime,
+                          speed: _avgSpeed / _numberOfDifferentSpeedRecorded,
+                          distance: _dist,
+                        );
+                        db.insertRun(rd);
+                        Navigator.pop(context);
+                      },
                     ),
-                    padding: const EdgeInsets.fromLTRB(0, 0.0, 30.0, 0),
-                    onPressed: () {
-                      RunningDetails rd = RunningDetails(
-                        id: AuthService().currentUser.uid,
-                        date: DateFormat.yMMMMd('en_US').format(DateTime.now()),
-                        duration: _displayTime,
-                        speed: _avgSpeed / _numberOfDifferentSpeedRecorded,
-                        distance: _dist,
-                      );
-                      db.insertRun(rd);
-                      Navigator.pop(context);
-                    },
                   )
                 ],
               ),

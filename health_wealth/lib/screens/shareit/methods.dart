@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_wealth/model/comment.dart';
 import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/model/user.dart';
 import 'package:health_wealth/services/auth.dart';
@@ -42,6 +43,28 @@ class Methods {
     print(result); // used for debugging
   }
 
+  void addFeedComment(
+      String com, String uid, String username, String postId) async {
+    String result = 'debug';
+    try {
+      Comment comment = Comment(
+        comment: com,
+        uid: uid,
+        username: username,
+        postId: postId,
+        datePublished: DateTime.now(),
+      );
+      await _db.postsCollection
+          .doc(postId)
+          .collection(postId)
+          .doc(postId)
+          .set(comment.toJson());
+      result = 'successfully added to database';
+    } catch (err) {
+      print(err.toString());
+    }
+  }
+
   void addDiscussion(String description, String uid, String username) async {
     String result = 'For debugging purposes';
     try {
@@ -61,6 +84,28 @@ class Methods {
       result = err.toString();
     }
     print(result); // used for debugging
+  }
+
+  void addDiscussionComment(
+      String com, String uid, String username, String postId) async {
+    String result = 'debug';
+    try {
+      Comment comment = Comment(
+        comment: com,
+        uid: uid,
+        username: username,
+        postId: postId,
+        datePublished: DateTime.now(),
+      );
+      await _db.postsCollection
+          .doc(postId)
+          .collection(postId)
+          .doc(postId)
+          .set(comment.toJson());
+      result = 'successfully added to database';
+    } catch (err) {
+      print(err.toString());
+    }
   }
 
   deletePost(String postId) async {

@@ -12,6 +12,7 @@ import 'package:health_wealth/model/user.dart' as model;
 class DatabaseService {
   late final String uid = AuthService().currentUser.uid;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  late final String userName;
 
   /// Collection reference for users.
   late final CollectionReference usersCollection = _db.collection('users');
@@ -221,6 +222,10 @@ class DatabaseService {
     //  To ensure that firebase query has a non-empty list argument
     List listOfFollowing = user.following.isEmpty ? [''] : user.following;
     return postsCollection.where('uid', whereIn: listOfFollowing).snapshots();
+  }
+
+  Stream<DocumentSnapshot> getCommentsSnapshot(String pId) {
+    return postsCollection.doc(pId).snapshots();
   }
 
   // * Not in use

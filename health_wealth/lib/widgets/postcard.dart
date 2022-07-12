@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_wealth/screens/shareit/comments.dart';
 import 'package:health_wealth/widgets/like_animation.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
@@ -202,7 +203,13 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => CommentsPage(),
+                    ),
+                  );
+                },
                 icon: const Icon(
                   Icons.comment_outlined,
                 ),
@@ -236,13 +243,19 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CommentsPage(),
+                ),
+              );
+            },
             child: Container(
               padding: const EdgeInsets.symmetric(
                 vertical: 4,
               ),
-              child: const Text(
-                'View all comments',
+              child: Text(
+                'View all $commentLen comments',
                 style: TextStyle(
                   fontSize: 13.5,
                 ),
