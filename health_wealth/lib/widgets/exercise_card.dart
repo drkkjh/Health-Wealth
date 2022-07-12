@@ -23,7 +23,7 @@ class ExerciseCard extends StatelessWidget {
           context: context,
           builder: (context) {
             return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
+              height: MediaQuery.of(context).size.height * 0.65,
               child: UpdateExercisePanel(exercise: exercise),
             );
           });
