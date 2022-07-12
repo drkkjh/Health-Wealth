@@ -36,7 +36,6 @@ class _SearchUsersState extends State<SearchUsers> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Column(
-            // mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 20.0),
               TextField(

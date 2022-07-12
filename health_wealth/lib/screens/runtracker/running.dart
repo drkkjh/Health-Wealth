@@ -20,7 +20,7 @@ class _RunningState extends State<Running> {
   final Set<Polyline> polyline = {};
   final Location _location = Location();
   late GoogleMapController _mapController;
-  final LatLng _center = const LatLng(0, 0);
+  final LatLng _center = const LatLng(1.3521, 103.8198);
   List<LatLng> route = [];
 
   double _dist = 0;
@@ -113,7 +113,7 @@ class _RunningState extends State<Running> {
               width: double.infinity,
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 40),
               height: 140,
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: Column(
@@ -166,7 +166,7 @@ class _RunningState extends State<Running> {
                         ),
                         Column(
                           children: [
-                            Text("DISTANCE CLOCKED",
+                            Text("DISTANCE CLOCKED(KM)",
                                 style: GoogleFonts.yanoneKaffeesatz(
                                   fontSize: 15,
                                 )),
@@ -186,7 +186,7 @@ class _RunningState extends State<Running> {
                       size: 70,
                       color: Colors.red[700],
                     ),
-                    padding: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.fromLTRB(0, 0.0, 30.0, 0),
                     onPressed: () {
                       RunningDetails rd = RunningDetails(
                         id: AuthService().currentUser.uid,

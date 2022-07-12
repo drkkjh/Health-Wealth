@@ -110,6 +110,7 @@ class _PostCardState extends State<DiscussionCard> {
                                           deleteDiscussion(
                                             widget.snap['postId'].toString(),
                                           );
+                                          Navigator.pop(context);
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
