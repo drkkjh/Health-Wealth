@@ -119,6 +119,7 @@ class _PostCardState extends State<PostCard> {
                                           deletePost(
                                             widget.snap['postId'].toString(),
                                           );
+                                          Navigator.pop(context);
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
