@@ -118,67 +118,68 @@ class _RunningState extends State<Running> {
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: [
-                  Flexible(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              "SPEED(KM/H)",
-                              style: GoogleFonts.yanoneKaffeesatz(
-                                fontSize: 15,
-                              ),
+                  // Flexible(
+                  //   child:
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            "SPEED (KM/H)",
+                            style: GoogleFonts.yanoneKaffeesatz(
+                              fontSize: 15,
                             ),
-                            Text(
-                              _speed.toStringAsFixed(2),
-                              style: GoogleFonts.yanoneKaffeesatz(
-                                fontSize: 30,
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              "DURATION",
-                              style: GoogleFonts.yanoneKaffeesatz(
-                                fontSize: 15,
-                              ),
+                          ),
+                          Text(
+                            _speed.toStringAsFixed(2),
+                            style: GoogleFonts.yanoneKaffeesatz(
+                              fontSize: 30,
                             ),
-                            StreamBuilder<int>(
-                              stream: _stopWatchTimer.rawTime,
-                              initialData: 0,
-                              builder: (context, snap) {
-                                _time = snap
-                                    .data!; // snap.data will be of a non-null value so it is safe to force non-null here
-                                _displayTime =
-                                    "${StopWatchTimer.getDisplayTimeHours(_time)}:${StopWatchTimer.getDisplayTimeMinute(_time)}:${StopWatchTimer.getDisplayTimeSecond(_time)}";
-                                return Text(
-                                  _displayTime,
-                                  style: GoogleFonts.yanoneKaffeesatz(
-                                    fontSize: 30,
-                                  ),
-                                );
-                              },
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text("DISTANCE CLOCKED(KM)",
-                                style: GoogleFonts.yanoneKaffeesatz(
-                                  fontSize: 15,
-                                )),
-                            Text((_dist / 1000).toStringAsFixed(2),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "DURATION",
+                            style: GoogleFonts.yanoneKaffeesatz(
+                              fontSize: 15,
+                            ),
+                          ),
+                          StreamBuilder<int>(
+                            stream: _stopWatchTimer.rawTime,
+                            initialData: 0,
+                            builder: (context, snap) {
+                              _time = snap
+                                  .data!; // snap.data will be of a non-null value so it is safe to force non-null here
+                              _displayTime =
+                                  "${StopWatchTimer.getDisplayTimeHours(_time)}:${StopWatchTimer.getDisplayTimeMinute(_time)}:${StopWatchTimer.getDisplayTimeSecond(_time)}";
+                              return Text(
+                                _displayTime,
                                 style: GoogleFonts.yanoneKaffeesatz(
                                   fontSize: 30,
-                                ))
-                          ],
-                        )
-                      ],
-                    ),
+                                ),
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text("DISTANCE CLOCKED (KM)",
+                              style: GoogleFonts.yanoneKaffeesatz(
+                                fontSize: 15,
+                              )),
+                          Text((_dist / 1000).toStringAsFixed(2),
+                              style: GoogleFonts.yanoneKaffeesatz(
+                                fontSize: 30,
+                              ))
+                        ],
+                      )
+                    ],
                   ),
+                  // ),
                   const Divider(),
                   IconButton(
                     icon: Icon(
