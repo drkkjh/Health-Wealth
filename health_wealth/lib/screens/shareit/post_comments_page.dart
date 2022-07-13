@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
-import 'package:health_wealth/widgets/postcommentcard.dart';
+import 'package:health_wealth/widgets/post_comment_card.dart';
 
 class PostCommentsPage extends StatefulWidget {
   final String postId;
