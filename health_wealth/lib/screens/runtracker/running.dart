@@ -92,7 +92,7 @@ class _RunningState extends State<Running> {
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService();
-    final width = MediaQuery.of(context).size.width;
+    // final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Stack(
         children: [

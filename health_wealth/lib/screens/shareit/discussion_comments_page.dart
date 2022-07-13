@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
-import 'package:health_wealth/widgets/discussioncommentcard.dart';
+import 'package:health_wealth/widgets/discussion_comment_card.dart';
 
 class DiscussionCommentsPage extends StatefulWidget {
   final String postId;
@@ -25,16 +25,18 @@ class _CommentsPageState extends State<DiscussionCommentsPage> {
 
   void postComment(String comment, String uid) async {
     try {
-      await methods.addDiscussionComment(
-          comment, uid, widget.userName, widget.postId);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Comment added successfully'),
-        ),
-      );
+      await methods
+          .addDiscussionComment(comment, uid, widget.userName, widget.postId)
+          .whenComplete(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Comment added successfully'),
+          ),
+        );
+      });
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Failed to add comment'),
         ),
       );
@@ -43,14 +45,13 @@ class _CommentsPageState extends State<DiscussionCommentsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     username = widget.userName;
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    commentController.dispose();
     super.dispose();
   }
 
@@ -76,7 +77,7 @@ class _CommentsPageState extends State<DiscussionCommentsPage> {
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) => DiscussionCommentCard(
-                snap: snapshot.data!.docs[index].data(),
+                snap: snapshot.data!.docs[index].data() as Map<String, dynamic>,
                 postId: widget.postId,
               ),
             );
