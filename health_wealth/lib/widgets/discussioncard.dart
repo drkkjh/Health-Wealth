@@ -12,9 +12,11 @@ import 'package:intl/date_symbol_data_local.dart';
 
 class DiscussionCard extends StatefulWidget {
   final snap;
+  final String username;
   const DiscussionCard({
     Key? key,
     required this.snap,
+    required this.username,
   }) : super(key: key);
 
   @override
@@ -190,7 +192,7 @@ class _PostCardState extends State<DiscussionCard> {
                 MaterialPageRoute(
                   builder: (context) => DiscussionCommentsPage(
                     postId: widget.snap['postId'],
-                    userName: widget.snap['username'],
+                    userName: widget.username,
                   ),
                 ),
               );

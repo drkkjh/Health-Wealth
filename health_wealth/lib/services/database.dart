@@ -268,9 +268,7 @@ class DatabaseService {
   List<PostCard> _snapshotToListOfPostCards(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
-      return PostCard(
-        snap: data['snap'],
-      );
+      return PostCard(snap: data['snap'], username: data['snap']['username']);
     }).toList();
   }
 

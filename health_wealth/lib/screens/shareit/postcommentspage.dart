@@ -46,7 +46,6 @@ class _CommentsPageState extends State<PostCommentsPage> {
     // TODO: implement initState
     super.initState();
     username = widget.userName;
-    setState(() {});
   }
 
   @override
