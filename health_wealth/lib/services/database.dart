@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_wealth/model/exercise.dart';
+import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/widgets/postcard.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
@@ -239,6 +240,26 @@ class DatabaseService {
     return postsCollection.where('uid', whereIn: listOfFollowing).snapshots();
   }
 
+  Stream<Post> getPostDetails(String postId) {
+    return postsCollection.doc(postId).snapshots().map(Post.fromSnap);
+  }
+
+  Stream<QuerySnapshot> getDiscussionCommentsSnapshot(String postId) {
+    return discussionsCollection
+        .doc(postId)
+        .collection('comments')
+        .orderBy('datePublished', descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getPostCommentsSnapshot(String postId) {
+    return postsCollection
+        .doc(postId)
+        .collection('comments')
+        .orderBy('datePublished', descending: true)
+        .snapshots();
+  }
+
   // * Not in use
   Stream<List<PostCard>> get getPosts {
     return postsCollection.snapshots().map(_snapshotToListOfPostCards);
@@ -247,9 +268,7 @@ class DatabaseService {
   List<PostCard> _snapshotToListOfPostCards(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
-      return PostCard(
-        snap: data['snap'],
-      );
+      return PostCard(snap: data['snap'], username: data['snap']['username']);
     }).toList();
   }
 

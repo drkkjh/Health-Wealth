@@ -74,8 +74,8 @@ class _ShareItState extends State<ShareIt> {
                       return ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) => PostCard(
-                          snap: snapshot.data!.docs[index].data(),
-                        ),
+                            snap: snapshot.data!.docs[index].data(),
+                            username: user.username),
                       );
                     },
                   );
@@ -84,19 +84,39 @@ class _ShareItState extends State<ShareIt> {
             ),
             Scaffold(
               floatingActionButton: const CustomSpeedDial(),
-              body: StreamBuilder<QuerySnapshot>(
-                stream: _db.discussionsCollection.snapshots(),
+              body: StreamBuilder<User>(
+                stream: _db.getUserDetails,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) => DiscussionCard(
-                      snap: snapshot.data!.docs[index].data(),
-                    ),
+                  User user = snapshot.data ??
+                      const User(
+                        username: '',
+                        uid: '',
+                        email: '',
+                        followers: [''],
+                        following: [''],
+                        totalKcal: 0,
+                        kcalLimit: 0,
+                      );
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: _db.discussionsCollection.snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) => DiscussionCard(
+                            snap: snapshot.data!.docs[index].data(),
+                            username: user.username),
+                      );
+                    },
                   );
                 },
               ),

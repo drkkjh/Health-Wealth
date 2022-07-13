@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_wealth/model/comment.dart';
 import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/model/user.dart';
 import 'package:health_wealth/services/auth.dart';
@@ -42,6 +43,28 @@ class Methods {
     print(result); // used for debugging
   }
 
+  void addFeedComment(
+      String com, String uid, String username, String postId) async {
+    String result = 'debug';
+    try {
+      Comment comment = Comment(
+        comment: com,
+        uid: uid,
+        username: username,
+        postId: postId,
+        datePublished: DateTime.now(),
+      );
+      await _db.postsCollection
+          .doc(postId)
+          .collection(postId)
+          .doc(postId)
+          .set(comment.toJson());
+      result = 'successfully added to database';
+    } catch (err) {
+      print(err.toString());
+    }
+  }
+
   void addDiscussion(String description, String uid, String username) async {
     String result = 'For debugging purposes';
     try {
@@ -63,6 +86,56 @@ class Methods {
     print(result); // used for debugging
   }
 
+  Future<String> addDiscussionComment(
+      String com, String uid, String username, String postId) async {
+    String result = 'debug';
+    try {
+      String commentId = const Uuid().v1();
+      Comment comment = Comment(
+        comment: com,
+        uid: uid,
+        username: username,
+        postId: commentId,
+        datePublished: DateTime.now(),
+      );
+      await _db.discussionsCollection
+          .doc(postId)
+          .collection('comments')
+          .doc(commentId)
+          .set(comment.toJson());
+      result = 'successfully added to database 123';
+      return result;
+    } catch (err) {
+      print(err.toString());
+      return err.toString();
+    }
+  }
+
+  Future<String> addPostComment(
+      String com, String uid, String username, String postId) async {
+    String result = 'debug';
+    try {
+      String commentId = const Uuid().v1();
+      Comment comment = Comment(
+        comment: com,
+        uid: uid,
+        username: username,
+        postId: commentId,
+        datePublished: DateTime.now(),
+      );
+      await _db.postsCollection
+          .doc(postId)
+          .collection('comments')
+          .doc(commentId)
+          .set(comment.toJson());
+      result = 'successfully added to database 123';
+      return result;
+    } catch (err) {
+      print(err.toString());
+      return err.toString();
+    }
+  }
+
   deletePost(String postId) async {
     try {
       // TODO: Abstract away into a DatabaseService method
@@ -74,6 +147,14 @@ class Methods {
     }
   }
 
+  deletePostComment(String postId, String commentId) async {
+    await _db.postsCollection
+        .doc(postId)
+        .collection('comments')
+        .doc(commentId)
+        .delete();
+  }
+
   deleteDiscussion(String postId) async {
     try {
       // TODO: Abstract away into a DatabaseService method
@@ -82,6 +163,14 @@ class Methods {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  deleteDiscussionComment(String postId, String commentId) async {
+    await _db.discussionsCollection
+        .doc(postId)
+        .collection('comments')
+        .doc(commentId)
+        .delete();
   }
 
   Future<void> likePost(String postId, String uid, List likes) async {

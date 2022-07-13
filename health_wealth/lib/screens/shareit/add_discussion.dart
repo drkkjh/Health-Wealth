@@ -54,7 +54,7 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
               ),
               actions: <Widget>[
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     _addDiscussion(
                         _descriptionController.text, user.uid, _userName);
                     Navigator.pop(context);
