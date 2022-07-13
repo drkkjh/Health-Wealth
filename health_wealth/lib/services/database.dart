@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_wealth/model/exercise.dart';
+import 'package:health_wealth/model/post.dart';
 import 'package:health_wealth/widgets/postcard.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
@@ -12,7 +13,6 @@ import 'package:health_wealth/model/user.dart' as model;
 class DatabaseService {
   late final String uid = AuthService().currentUser.uid;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  late final String userName;
 
   /// Collection reference for users.
   late final CollectionReference usersCollection = _db.collection('users');
@@ -240,8 +240,24 @@ class DatabaseService {
     return postsCollection.where('uid', whereIn: listOfFollowing).snapshots();
   }
 
-  Stream<DocumentSnapshot> getCommentsSnapshot(String pId) {
-    return postsCollection.doc(pId).snapshots();
+  Stream<Post> getPostDetails(String postId) {
+    return postsCollection.doc(postId).snapshots().map(Post.fromSnap);
+  }
+
+  Stream<QuerySnapshot> getDiscussionCommentsSnapshot(String postId) {
+    return discussionsCollection
+        .doc(postId)
+        .collection('comments')
+        .orderBy('datePublished', descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getPostCommentsSnapshot(String postId) {
+    return postsCollection
+        .doc(postId)
+        .collection('comments')
+        .orderBy('datePublished', descending: true)
+        .snapshots();
   }
 
   // * Not in use

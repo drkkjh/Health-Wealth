@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
 import 'package:health_wealth/services/database.dart';
+import 'package:intl/intl.dart';
 
-class CommentCard extends StatefulWidget {
+class DiscussionCommentCard extends StatefulWidget {
   final snap;
-  const CommentCard({required this.snap, Key? key}) : super(key: key);
+  final String postId;
+  const DiscussionCommentCard(
+      {required this.snap, required this.postId, Key? key})
+      : super(key: key);
 
   @override
-  State<CommentCard> createState() => _CommentCardState();
+  State<DiscussionCommentCard> createState() => _CommentCardState();
 }
 
-class _CommentCardState extends State<CommentCard> {
+class _CommentCardState extends State<DiscussionCommentCard> {
   final DatabaseService _db = DatabaseService();
   Methods methods = Methods();
 
@@ -39,7 +43,7 @@ class _CommentCardState extends State<CommentCard> {
                           ),
                         ),
                         TextSpan(
-                          text: '${widget.snap['description']}',
+                          text: ' ${widget.snap['comment']}',
                           style: const TextStyle(
                             color: Colors.black,
                           ),
@@ -52,7 +56,9 @@ class _CommentCardState extends State<CommentCard> {
                       top: 4.0,
                     ),
                     child: Text(
-                      widget.snap['datePublished'],
+                      DateFormat.yMMMd().format(
+                        widget.snap['datePublished'].toDate(),
+                      ),
                       style: TextStyle(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w400,
@@ -63,9 +69,20 @@ class _CommentCardState extends State<CommentCard> {
               ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(Icons.favorite, size: 16.0),
+          InkWell(
+            onTap: () {
+              methods.deleteDiscussionComment(
+                  widget.postId, widget.snap['postId']);
+              /*ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Successfully deleted comment'),
+                ),
+              );*/
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.delete_forever, size: 20.0, color: Colors.red),
+            ),
           ),
         ],
       ),

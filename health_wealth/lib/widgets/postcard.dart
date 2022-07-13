@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:health_wealth/screens/shareit/comments.dart';
+import 'package:health_wealth/screens/shareit/postcommentspage.dart';
 import 'package:health_wealth/widgets/like_animation.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
@@ -44,16 +44,17 @@ class _PostCardState extends State<PostCard> {
     initializeDateFormatting();
     dateFormat = DateFormat.yMMMMd('en_SG');
     timeFormat = DateFormat.Hms('en_SG');
-    fetchCommentLen();
+    getComments();
   }
 
-  fetchCommentLen() async {
+  void getComments() async {
     try {
       QuerySnapshot snap = await _db.postsCollection
           .doc(widget.snap['postId'])
           .collection('comments')
           .get();
       commentLen = snap.docs.length;
+      print('successfully');
     } catch (err) {
       print(err);
     }
@@ -206,7 +207,10 @@ class _PostCardState extends State<PostCard> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => CommentsPage(),
+                      builder: (context) => PostCommentsPage(
+                        postId: widget.snap['postId'],
+                        userName: widget.snap['username'],
+                      ),
                     ),
                   );
                 },
@@ -246,7 +250,10 @@ class _PostCardState extends State<PostCard> {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => CommentsPage(),
+                  builder: (context) => PostCommentsPage(
+                    postId: widget.snap['postId'],
+                    userName: widget.snap['username'],
+                  ),
                 ),
               );
             },
