@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:health_wealth/widgets/discussioncard.dart';
-import 'package:health_wealth/widgets/postcard.dart';
+import 'package:health_wealth/widgets/discussion_card.dart';
+import 'package:health_wealth/widgets/post_card.dart';
 import 'package:health_wealth/model/user.dart';
 import 'package:health_wealth/screens/shareit/add_discussion.dart';
 import 'package:health_wealth/screens/shareit/add_feed.dart';
@@ -74,7 +74,8 @@ class _ShareItState extends State<ShareIt> {
                       return ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) => PostCard(
-                            snap: snapshot.data!.docs[index].data(),
+                            snap: snapshot.data!.docs[index].data()
+                                as Map<String, dynamic>,
                             username: user.username),
                       );
                     },
@@ -113,7 +114,8 @@ class _ShareItState extends State<ShareIt> {
                       return ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) => DiscussionCard(
-                            snap: snapshot.data!.docs[index].data(),
+                            snap: snapshot.data!.docs[index].data()
+                                as Map<String, dynamic>,
                             username: user.username),
                       );
                     },

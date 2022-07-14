@@ -34,7 +34,6 @@ class Methods {
         datePublished: DateTime.now(),
       );
       // TODO: Abstract away into a DatabaseService method
-      await _db.postsSubcollection.doc(postId).set(post.toJson());
       await _db.postsCollection.doc(postId).set(post.toJson());
       result = 'successfully added to database';
     } catch (err) {
@@ -45,7 +44,7 @@ class Methods {
 
   void addFeedComment(
       String com, String uid, String username, String postId) async {
-    String result = 'debug';
+    // String result = 'debug';
     try {
       Comment comment = Comment(
         comment: com,
@@ -59,7 +58,7 @@ class Methods {
           .collection(postId)
           .doc(postId)
           .set(comment.toJson());
-      result = 'successfully added to database';
+      // result = 'successfully added to database';
     } catch (err) {
       print(err.toString());
     }
@@ -140,7 +139,6 @@ class Methods {
     try {
       // TODO: Abstract away into a DatabaseService method
       await _db.postsCollection.doc(postId).delete();
-      await _db.postsSubcollection.doc(postId).delete();
       print('successfully deleted post'); // for debugging
     } catch (e) {
       print(e.toString());
@@ -181,15 +179,9 @@ class Methods {
         await _db.postsCollection.doc(postId).update({
           'likes': FieldValue.arrayRemove([uid]),
         });
-        await _db.postsSubcollection.doc(postId).update({
-          'likes': FieldValue.arrayRemove([uid]),
-        });
       } else {
         // havent like the post
         await _db.postsCollection.doc(postId).update({
-          'likes': FieldValue.arrayUnion([uid]),
-        });
-        await _db.postsSubcollection.doc(postId).update({
           'likes': FieldValue.arrayUnion([uid]),
         });
       }

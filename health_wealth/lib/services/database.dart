@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/model/post.dart';
-import 'package:health_wealth/widgets/postcard.dart';
+import 'package:health_wealth/widgets/post_card.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/model/runningdetails.dart';
