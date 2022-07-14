@@ -3,8 +3,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_wealth/model/exercise.dart';
-import 'package:health_wealth/model/post.dart';
-import 'package:health_wealth/widgets/post_card.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/model/runningdetails.dart';
@@ -238,11 +236,20 @@ class DatabaseService {
   Stream<QuerySnapshot> getPostsSnapshot(model.User user) {
     //  To ensure that firebase query has a non-empty list argument
     List listOfFollowing = user.following.isEmpty ? [''] : user.following;
-    return postsCollection.where('uid', whereIn: listOfFollowing).snapshots();
+    return postsCollection
+        .where('uid', whereIn: listOfFollowing)
+        .orderBy('datePublished', descending: true)
+        .snapshots();
   }
 
-  Stream<Post> getPostDetails(String postId) {
-    return postsCollection.doc(postId).snapshots().map(Post.fromSnap);
+  // Stream<Post> getPostDetails(String postId) {
+  //   return postsCollection.doc(postId).snapshots().map(Post.fromSnap);
+  // }
+
+  Stream<QuerySnapshot> get getDiscussionsSnapshot {
+    return discussionsCollection
+        .orderBy('datePublished', descending: true)
+        .snapshots();
   }
 
   Stream<QuerySnapshot> getDiscussionCommentsSnapshot(String postId) {
@@ -262,16 +269,16 @@ class DatabaseService {
   }
 
   // * Not in use
-  Stream<List<PostCard>> get getPosts {
-    return postsCollection.snapshots().map(_snapshotToListOfPostCards);
-  }
+  // Stream<List<PostCard>> get getPosts {
+  //   return postsCollection.snapshots().map(_snapshotToListOfPostCards);
+  // }
 
-  List<PostCard> _snapshotToListOfPostCards(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      var data = doc.data() as Map<String, dynamic>;
-      return PostCard(snap: data['snap'], username: data['snap']['username']);
-    }).toList();
-  }
+  // List<PostCard> _snapshotToListOfPostCards(QuerySnapshot snapshot) {
+  //   return snapshot.docs.map((doc) {
+  //     var data = doc.data() as Map<String, dynamic>;
+  //     return PostCard(snap: data['snap'], username: data['snap']['username']);
+  //   }).toList();
+  // }
 
   Future<void> updateUsernameInShareItPosts(String newName) async {
     QuerySnapshot q1 = await postsCollection.where('uid', isEqualTo: uid).get();

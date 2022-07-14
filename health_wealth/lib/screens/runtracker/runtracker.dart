@@ -29,7 +29,7 @@ class _RunTrackerState extends State<RunTracker> {
           backgroundColor: Colors.lightBlue,
         ),
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: ExactAssetImage("assets/RunTracker_background.jpg"),
               fit: BoxFit.fill,
