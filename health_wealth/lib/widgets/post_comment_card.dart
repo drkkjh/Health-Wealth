@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
-import 'package:health_wealth/services/database.dart';
 import 'package:intl/intl.dart';
 
-class DiscussionCommentCard extends StatefulWidget {
-  final snap;
+class PostCommentCard extends StatefulWidget {
+  final Map<String, dynamic> snap;
   final String postId;
-  const DiscussionCommentCard(
-      {required this.snap, required this.postId, Key? key})
+  const PostCommentCard({required this.snap, required this.postId, Key? key})
       : super(key: key);
 
   @override
-  State<DiscussionCommentCard> createState() => _CommentCardState();
+  State<PostCommentCard> createState() => _CommentCardState();
 }
 
-class _CommentCardState extends State<DiscussionCommentCard> {
-  final DatabaseService _db = DatabaseService();
+class _CommentCardState extends State<PostCommentCard> {
   Methods methods = Methods();
 
   @override
@@ -59,7 +56,7 @@ class _CommentCardState extends State<DiscussionCommentCard> {
                       DateFormat.yMMMd().format(
                         widget.snap['datePublished'].toDate(),
                       ),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w400,
                       ),
@@ -71,17 +68,17 @@ class _CommentCardState extends State<DiscussionCommentCard> {
           ),
           InkWell(
             onTap: () {
-              methods.deleteDiscussionComment(
-                  widget.postId, widget.snap['postId']);
+              methods.deletePostComment(widget.postId, widget.snap['postId']);
               /*ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Text('Successfully deleted comment'),
                 ),
               );*/
             },
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.delete_forever, size: 20.0, color: Colors.red),
+              child: const Icon(Icons.delete_forever,
+                  size: 20.0, color: Colors.red),
             ),
           ),
         ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health_wealth/widgets/runningcard.dart';
+import 'package:health_wealth/widgets/running_card.dart';
 import 'package:health_wealth/model/runningdetails.dart';
 import 'package:provider/provider.dart';
 

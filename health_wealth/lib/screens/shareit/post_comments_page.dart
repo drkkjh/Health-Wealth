@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
-import 'package:health_wealth/widgets/postcommentcard.dart';
+import 'package:health_wealth/widgets/post_comment_card.dart';
 
 class PostCommentsPage extends StatefulWidget {
   final String postId;
@@ -25,16 +25,18 @@ class _CommentsPageState extends State<PostCommentsPage> {
 
   void postComment(String comment, String uid) async {
     try {
-      await methods.addPostComment(
-          comment, uid, widget.userName, widget.postId);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Comment added successfully'),
-        ),
-      );
+      await methods
+          .addPostComment(comment, uid, widget.userName, widget.postId)
+          .whenComplete(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Comment added successfully'),
+          ),
+        );
+      });
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Failed to add comment'),
         ),
       );
@@ -43,14 +45,13 @@ class _CommentsPageState extends State<PostCommentsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     username = widget.userName;
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    commentController.dispose();
     super.dispose();
   }
 
@@ -65,7 +66,7 @@ class _CommentsPageState extends State<PostCommentsPage> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       // Comments page UI
@@ -82,7 +83,7 @@ class _CommentsPageState extends State<PostCommentsPage> {
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) => PostCommentCard(
-                snap: snapshot.data!.docs[index].data(),
+                snap: snapshot.data!.docs[index].data() as Map<String, dynamic>,
                 postId: widget.postId,
               ),
             );
