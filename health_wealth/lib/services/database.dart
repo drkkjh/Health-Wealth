@@ -60,7 +60,8 @@ class DatabaseService {
   Future updateUsername(String username) async {
     // TODO: Implement logic to check that username isn't taken
     await usersCollection.doc(uid).update({'username': username});
-    return await updateUsernameInShareItPosts(username);
+    await updateUsernameInShareItPosts(username);
+    return await updateUsernameInShareItComments(username);
   }
 
   /// Methods for SnackTracker.
@@ -285,6 +286,43 @@ class DatabaseService {
       await discussionsCollection
           .doc(data['postId'])
           .update({'username': newName});
+    }
+  }
+
+  Future<void> updateUsernameInShareItComments(String newName) async {
+    QuerySnapshot q1 = await postsCollection.get();
+    for (QueryDocumentSnapshot snap in q1.docs) {
+      var data = snap.data() as Map<String, dynamic>;
+      QuerySnapshot qq = await postsCollection
+          .doc(data['postId'])
+          .collection('comments')
+          .where('uid', isEqualTo: uid)
+          .get();
+      for (QueryDocumentSnapshot sn in qq.docs) {
+        var data2 = sn.data() as Map<String, dynamic>;
+        await postsCollection
+            .doc(data['postId'])
+            .collection('comments')
+            .doc(data2['postId'])
+            .update({'username': newName});
+      }
+    }
+    QuerySnapshot q2 = await discussionsCollection.get();
+    for (QueryDocumentSnapshot snap in q2.docs) {
+      var data = snap.data() as Map<String, dynamic>;
+      QuerySnapshot qq = await discussionsCollection
+          .doc(data['postId'])
+          .collection('comments')
+          .where('uid', isEqualTo: uid)
+          .get();
+      for (QueryDocumentSnapshot sn in qq.docs) {
+        var data2 = sn.data() as Map<String, dynamic>;
+        await discussionsCollection
+            .doc(data['postId'])
+            .collection('comments')
+            .doc(data2['postId'])
+            .update({'username': newName});
+      }
     }
   }
 }
