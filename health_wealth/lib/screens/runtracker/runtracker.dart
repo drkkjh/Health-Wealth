@@ -28,7 +28,15 @@ class _RunTrackerState extends State<RunTracker> {
           centerTitle: true,
           backgroundColor: Colors.lightBlue,
         ),
-        body: const RunList(),
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: ExactAssetImage("assets/RunTracker_background.jpg"),
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: const RunList(),
+        ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green,
           foregroundColor: Colors.white,
