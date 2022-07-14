@@ -69,11 +69,11 @@ class _CommentCardState extends State<PostCommentCard> {
           InkWell(
             onTap: () {
               methods.deletePostComment(widget.postId, widget.snap['postId']);
-              /*ScaffoldMessenger.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Successfully deleted comment'),
                 ),
-              );*/
+              );
             },
             child: Container(
               padding: const EdgeInsets.all(8.0),

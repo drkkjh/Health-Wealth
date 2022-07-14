@@ -166,7 +166,7 @@ class _PostCardState extends State<DiscussionCard> {
                     MaterialPageRoute(
                       builder: (context) => DiscussionCommentsPage(
                         postId: widget.snap['postId'],
-                        userName: widget.snap['username'],
+                        userName: widget.username,
                       ),
                     ),
                   );
