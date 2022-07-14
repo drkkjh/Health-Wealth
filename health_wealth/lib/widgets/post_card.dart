@@ -211,7 +211,7 @@ class _PostCardState extends State<PostCard> {
                     MaterialPageRoute(
                       builder: (context) => PostCommentsPage(
                         postId: widget.snap['postId'],
-                        userName: widget.snap['username'],
+                        userName: widget.username,
                       ),
                     ),
                   );
