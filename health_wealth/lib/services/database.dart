@@ -94,6 +94,15 @@ class DatabaseService {
         .update({'totalKcal': FieldValue.increment(-snack.calories)});
   }
 
+  /// Delete all snacks from the user's snacks collection.
+  Future deleteAllSnacks() async {
+    var snapshots = await userSnacksCollection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+    await usersCollection.doc(uid).update({'totalKcal': 0});
+  }
+
   /// Update user's caloric limit
   Future updateCalLimit(num limit) async {
     return await usersCollection.doc(uid).update({'kcalLimit': limit});

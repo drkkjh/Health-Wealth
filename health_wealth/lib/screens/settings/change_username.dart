@@ -100,8 +100,10 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                           errorMsg = e.message!;
                         });
                       } on UsernameTakenException catch (e) {
-                        loading = false;
-                        errorMsg = e.message;
+                        setState(() {
+                          loading = false;
+                          errorMsg = e.message;
+                        });
                       }
                       setState(() {
                         loading = false;
