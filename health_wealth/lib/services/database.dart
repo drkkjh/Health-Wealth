@@ -225,7 +225,7 @@ class DatabaseService {
     return returnedUser.uid != uid ? returnedUser : null;
   }
 
-  Future followUser(String uid, String followId) async {
+  Future followUser(String followId) async {
     try {
       DocumentSnapshot snap = await usersCollection.doc(uid).get();
       model.User user = model.User.fromSnap(snap);
