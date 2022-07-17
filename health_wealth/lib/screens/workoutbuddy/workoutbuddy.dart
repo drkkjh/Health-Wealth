@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_wealth/screens/workoutbuddy/add_exercise.dart';
 import 'package:health_wealth/widgets/loading.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/widgets/exercise_card.dart';
@@ -13,62 +14,111 @@ class WorkOutBuddy extends StatefulWidget {
 
 class _WorkOutBuddyState extends State<WorkOutBuddy> {
   final _db = DatabaseService();
+  List<Exercise>? _exercises = [];
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Exercise>?>(
-      initialData: const [],
-      stream: _db.getExercises,
-      builder: (context, snapshot) {
-        final exercises = snapshot.data;
-
-        if (snapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: const Text('WorkOutBuddy'),
-              backgroundColor: Colors.lightBlue,
-            ),
-            // floatingActionButton: FloatingActionButton(
-            //   heroTag: 'addWorkoutTag',
-            //   onPressed: () async {
-            //     final workoutToAdd = await Navigator.of(context).push(
-            //       MaterialPageRoute(
-            //         builder: (context) => const AddWorkOut(),
-            //       ),
-            //     );
-            //   },
-            //   child: const Icon(Icons.add),
-            // ),
-            body: Column(
-              children: [
-                const HeaderRow(),
-                ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(20.0),
-                  itemCount: exercises!.length,
-                  itemBuilder: (context, index) {
-                    return ExerciseCard(exercise: exercises[index]);
-                  },
-                ),
-              ],
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              snapshot.error.toString(),
-              style: const TextStyle(
-                color: Colors.red,
-                fontSize: 20.0,
+        initialData: const [],
+        stream: _db.getExercises,
+        builder: (context, snapshot) {
+          final exerciseList = snapshot.data;
+          if (snapshot.hasData) {
+            Future.delayed(Duration.zero, () async {
+              setState(() {
+                _exercises = exerciseList;
+              });
+            });
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: const Text('WorkOutBuddy'),
+                backgroundColor: Colors.lightBlue,
               ),
-            ),
-          );
-        } else {
-          return const Loading();
-        }
-      },
+              floatingActionButton: FloatingActionButton(
+                heroTag: 'addExercise',
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddExercise()),
+                  );
+                },
+                child: const Icon(Icons.add),
+              ),
+              body: Column(
+                children: [
+                  const HeaderRow(),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(20.0),
+                    itemCount: _exercises!.length,
+                    itemBuilder: ((context, index) {
+                      Exercise ex = _exercises![index];
+                      return Dismissible(
+                        // key: Key(UniqueKey().toString()),
+                        key: Key(ex.name),
+                        onDismissed: (direction) {
+                          _showDeleted(context, ex, index);
+                          _removeExercise(index);
+                          _db.deleteExercise(ex);
+                        },
+                        background: _refreshBackground(),
+                        child: ExerciseCard(exercise: ex),
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontSize: 20.0,
+                ),
+              ),
+            );
+          } else {
+            return const Loading();
+          }
+        });
+  }
+
+  Widget _refreshBackground() {
+    return Container(
+      alignment: Alignment.centerRight,
+      padding: const EdgeInsets.only(right: 20.0),
+      color: Colors.red[900],
+      child: const Icon(Icons.delete, color: Colors.white),
     );
+  }
+
+  void _removeExercise(index) {
+    setState(() {
+      _exercises!.removeAt(index);
+    });
+  }
+
+  void _undoDelete(index, Exercise ex) async {
+    await _db.addExercise(ex);
+    // setState(() {
+    //   _exercises!.insert(index, ex);
+    // });
+  }
+
+  void _showDeleted(BuildContext context, Exercise ex, index) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('${ex.name} deleted'),
+      action: SnackBarAction(
+        label: 'UNDO',
+        onPressed: () {
+          _undoDelete(index, ex);
+        },
+      ),
+    ));
   }
 }
 
@@ -80,15 +130,15 @@ class HeaderRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: const [
           // SizedBox(width: 25),
-          Expanded(
-            flex: 1,
-            child: SizedBox.shrink(),
-          ),
+          // Expanded(
+          //   flex: 1,
+          //   child: SizedBox.shrink(),
+          // ),
           Expanded(
             flex: 6,
             child: Center(

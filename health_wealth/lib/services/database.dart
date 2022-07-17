@@ -140,6 +140,11 @@ class DatabaseService {
         .update(exercise.toJson());
   }
 
+  /// Delete exercise to the user's workout routine collection.
+  Future deleteExercise(Exercise exercise) async {
+    await userWorkoutRoutineCollection.doc(exercise.name).delete();
+  }
+
   /// Get Exercises stream
   Stream<List<Exercise>> get getExercises {
     return userWorkoutRoutineCollection
