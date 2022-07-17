@@ -78,49 +78,50 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                             _validate2 ? null : 'Re-enter the same username'),
               ),
               ElevatedButton(
-                  child: const Text(
-                    "Change username",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+                child: const Text(
+                  "Change username",
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                  onPressed: () async {
-                    setState(() {
-                      _validate1 = _controller1.text.length > 5;
-                      _validate2 = (_controller2.text.isNotEmpty &&
-                          _controller2.text == _controller1.text);
-                    });
-                    if (_validate1 && _validate2) {
-                      setState(() => loading = true);
-                      try {
-                        await _db.updateUsername(_controller1.text);
-                      } on FirebaseException catch (e) {
-                        setState(() {
-                          loading = false;
-                          errorMsg = e.message!;
-                        });
-                      } on UsernameTakenException catch (e) {
-                        setState(() {
-                          loading = false;
-                          errorMsg = e.message;
-                        });
-                      }
+                ),
+                onPressed: () async {
+                  setState(() {
+                    _validate1 = _controller1.text.length > 5;
+                    _validate2 = (_controller2.text.isNotEmpty &&
+                        _controller2.text == _controller1.text);
+                  });
+                  if (_validate1 && _validate2) {
+                    setState(() => loading = true);
+                    try {
+                      await _db.updateUsername(_controller1.text);
                       setState(() {
                         loading = false;
                         _validate1 = true;
                         _validate2 = true;
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            // TODO: Show error message is there's one
                             content: Text('Username changed successfully'),
                           ),
                         );
                         Navigator.pop(context);
                       });
+                    } on FirebaseException catch (e) {
+                      setState(() {
+                        loading = false;
+                        errorMsg = e.message!;
+                      });
+                    } on UsernameTakenException catch (e) {
+                      setState(() {
+                        _controller1.clear();
+                        _controller2.clear();
+                        loading = false;
+                        errorMsg = e.message;
+                      });
                     }
-                  }),
-              const SizedBox(height: 20.0),
-              const SizedBox(height: 5.0),
+                  }
+                },
+              ),
+              const SizedBox(height: 25.0),
               Text(
                 errorMsg,
                 style: const TextStyle(

@@ -56,7 +56,9 @@ class DatabaseService {
   }
 
   Future updateUsername(String username) async {
-    // TODO: Implement logic to check that username isn't taken
+    if (await findUsersByUsername(username) != null) {
+      throw const UsernameTakenException();
+    }
     await usersCollection.doc(uid).update({'username': username});
     await updateUsernameInShareItPosts(username);
     return await updateUsernameInShareItComments(username);
