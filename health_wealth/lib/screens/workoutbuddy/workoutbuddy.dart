@@ -32,7 +32,7 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                title: const Text('WorkOutBuddy'),
+                title: const Text('WorkoutBuddy'),
                 backgroundColor: Colors.lightBlue,
               ),
               floatingActionButton: FloatingActionButton(
