@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/widgets/running_card.dart';
-import 'package:health_wealth/model/runningdetails.dart';
+import 'package:health_wealth/model/running_details.dart';
 import 'package:provider/provider.dart';
 
 class RunList extends StatefulWidget {
@@ -19,7 +19,7 @@ class _RunListState extends State<RunList> {
       body: ListView.builder(
         itemCount: list.length,
         itemBuilder: (context, index) {
-          return RunningCard(runningdetails: list[index]);
+          return RunningCard(runningDetails: list[index]);
         },
       ),
     );
