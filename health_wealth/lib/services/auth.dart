@@ -6,26 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Create model.User object from a Firebases User obj
-  // model.User? _fbUserToModelUser(User? user) {
-  //   model.User user = _db.getUserDetails();
-  //   return user;
-  // return user != null
-  //     ? model.User(
-  //         username: user.email,
-  //         uid: user.uid,
-  //         email: user.email,
-  //         followers: [],
-  //         following: [],
-  //       )
-  //     : null;
-  // }
-
-  // Getter that returns User sign-in state in a Stream.
-  // Stream<model.User?> get getUser {
-  //   return _auth.authStateChanges().map(_fbUserToModelUser);
-  // }
-
   /// Getter that returns current user.
   User get currentUser {
     return _auth.currentUser!;
@@ -58,6 +38,19 @@ class AuthService {
       User? user = result.user;
       print('$user has registered');
       return user;
+    } catch (e) {
+      print(e.toString());
+      rethrow;
+    }
+  }
+
+  /// Change password
+  Future changePassword(String oldPassword, String newPassword) async {
+    try {
+      AuthCredential credential = EmailAuthProvider.credential(
+          email: currentUser.email!, password: oldPassword);
+      await _auth.currentUser!.reauthenticateWithCredential(credential);
+      await _auth.currentUser!.updatePassword(newPassword);
     } catch (e) {
       print(e.toString());
       rethrow;

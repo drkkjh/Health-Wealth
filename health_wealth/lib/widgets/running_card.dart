@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:health_wealth/model/runningdetails.dart';
+import 'package:health_wealth/model/running_details.dart';
 
 class RunningCard extends StatelessWidget {
-  final RunningDetails runningdetails;
-  const RunningCard({Key? key, required this.runningdetails}) : super(key: key);
+  final RunningDetails runningDetails;
+  const RunningCard({Key? key, required this.runningDetails}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +18,11 @@ class RunningCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  runningdetails.date,
+                  runningDetails.date,
                   style: GoogleFonts.yanoneKaffeesatz(fontSize: 18),
                 ),
                 Text(
-                  "${(runningdetails.distance / 1000.0).toStringAsFixed(2)} km",
+                  "${(runningDetails.distance / 1000.0).toStringAsFixed(2)} km",
                   style: GoogleFonts.yanoneKaffeesatz(fontSize: 18),
                 ),
               ],
@@ -31,11 +31,11 @@ class RunningCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  runningdetails.duration,
+                  runningDetails.duration,
                   style: GoogleFonts.yanoneKaffeesatz(fontSize: 14),
                 ),
                 Text(
-                  "${runningdetails.speed.toStringAsFixed(2)} km/h",
+                  "${runningDetails.speed.toStringAsFixed(2)} km/h",
                   style: GoogleFonts.yanoneKaffeesatz(fontSize: 14),
                 ),
               ],

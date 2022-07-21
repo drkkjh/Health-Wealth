@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
@@ -113,7 +111,7 @@ class _RegisterState extends State<Register> {
                                 User user =
                                     await _auth.register(email, password);
                                 await _db.createUserDocument(email);
-                                await _db.followUser(user.uid, user.uid);
+                                await _db.followUser(user.uid);
                                 // Create default exercises in WorkoutBuddy
                                 for (Exercise ex in Exercise.defaultExercises) {
                                   await _db.addExercise(ex);

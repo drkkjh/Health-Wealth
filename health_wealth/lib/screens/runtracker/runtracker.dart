@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health_wealth/model/runningdetails.dart';
+import 'package:health_wealth/model/running_details.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
 import 'package:health_wealth/widgets/run_list.dart';

@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/services/auth.dart';
-import 'package:health_wealth/model/runningdetails.dart';
+import 'package:health_wealth/model/running_details.dart';
 import 'package:health_wealth/model/user.dart' as model;
 
 class DatabaseService {
@@ -24,14 +24,11 @@ class DatabaseService {
       _db.collection('users').doc(uid).collection('workout routine');
 
   /// Collection reference for runs.
-  late final CollectionReference runsCollection = _db.collection("runs");
+  late final CollectionReference userRunsCollection =
+      usersCollection.doc(uid).collection('runs');
 
   /// Collection reference for feed posts
   late final CollectionReference postsCollection = _db.collection('posts');
-
-  /// Subcollection reference for user's feed posts
-  late final CollectionReference postsSubcollection =
-      _db.collection('users').doc(uid).collection('posts');
 
   /// Collection reference for discussion posts
   late final CollectionReference discussionsCollection =
@@ -56,7 +53,9 @@ class DatabaseService {
   }
 
   Future updateUsername(String username) async {
-    // TODO: Implement logic to check that username isn't taken
+    if (await findUsersByUsername(username) != null) {
+      throw const UsernameTakenException();
+    }
     await usersCollection.doc(uid).update({'username': username});
     await updateUsernameInShareItPosts(username);
     return await updateUsernameInShareItComments(username);
@@ -140,6 +139,11 @@ class DatabaseService {
         .update(exercise.toJson());
   }
 
+  /// Delete exercise to the user's workout routine collection.
+  Future deleteExercise(Exercise exercise) async {
+    await userWorkoutRoutineCollection.doc(exercise.name).delete();
+  }
+
   /// Get Exercises stream
   Stream<List<Exercise>> get getExercises {
     return userWorkoutRoutineCollection
@@ -157,33 +161,24 @@ class DatabaseService {
 
   /// Methods for RunTracker
   Stream<List<RunningDetails>> get getRuns {
-    return runsCollection
-        .doc(uid)
-        .collection('run data')
+    return userRunsCollection
+        .orderBy('dateTime', descending: true)
         .snapshots()
         .map(snapshotToListOfRuns);
   }
 
   List<RunningDetails> snapshotToListOfRuns(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      var data = doc.data() as Map<String, dynamic>;
-      return RunningDetails(
-        id: data['id'],
-        date: data['date'],
-        duration: data['duration'],
-        speed: data['speed'],
-        distance: data['distance'],
-      );
-    }).toList();
+    return snapshot.docs.map((snap) => RunningDetails.fromSnap(snap)).toList();
   }
 
   Future insertRun(RunningDetails details) async {
-    return await runsCollection.doc(uid).collection('run data').add({
+    return await userRunsCollection.add({
       'id': details.id,
       'date': details.date,
       'duration': details.duration,
       'speed': details.speed,
       'distance': details.distance,
+      'dateTime': details.dateTime,
     });
   }
 
@@ -218,7 +213,7 @@ class DatabaseService {
     return returnedUser.uid != uid ? returnedUser : null;
   }
 
-  Future followUser(String uid, String followId) async {
+  Future followUser(String followId) async {
     try {
       DocumentSnapshot snap = await usersCollection.doc(uid).get();
       model.User user = model.User.fromSnap(snap);
@@ -276,18 +271,6 @@ class DatabaseService {
         .orderBy('datePublished', descending: true)
         .snapshots();
   }
-
-  // * Not in use
-  // Stream<List<PostCard>> get getPosts {
-  //   return postsCollection.snapshots().map(_snapshotToListOfPostCards);
-  // }
-
-  // List<PostCard> _snapshotToListOfPostCards(QuerySnapshot snapshot) {
-  //   return snapshot.docs.map((doc) {
-  //     var data = doc.data() as Map<String, dynamic>;
-  //     return PostCard(snap: data['snap'], username: data['snap']['username']);
-  //   }).toList();
-  // }
 
   Future<void> updateUsernameInShareItPosts(String newName) async {
     QuerySnapshot q1 = await postsCollection.where('uid', isEqualTo: uid).get();

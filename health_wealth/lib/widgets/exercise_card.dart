@@ -62,7 +62,7 @@ class ExerciseCard extends StatelessWidget {
           //   width: 70,
           // ),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: TextButton(
               onPressed: _showUpdateExercisePanel,
               child: Text(
@@ -75,7 +75,7 @@ class ExerciseCard extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: TextButton(
               onPressed: _showUpdateExercisePanel,
               child: Text(

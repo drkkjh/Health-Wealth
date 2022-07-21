@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:health_wealth/model/runningdetails.dart';
+import 'package:health_wealth/model/running_details.dart';
 import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
 import 'package:intl/intl.dart';
@@ -197,6 +197,7 @@ class _RunningState extends State<Running> {
                           duration: _displayTime,
                           speed: _avgSpeed / _numberOfDifferentSpeedRecorded,
                           distance: _dist,
+                          dateTime: DateTime.now(),
                         );
                         db.insertRun(rd);
                         Navigator.pop(context);

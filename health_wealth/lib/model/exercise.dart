@@ -7,8 +7,6 @@ class Exercise {
   String name;
   int sets;
   int reps;
-  // List<int> days = [0, 2, 4];
-  // static final week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
   Exercise({required this.name, required this.sets, required this.reps});
 
@@ -16,18 +14,6 @@ class Exercise {
       _$ExerciseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ExerciseToJson(this);
-
-  // void setDays(List<int> days) {
-  //   this.days = days;
-  // }
-
-  // List<String> get getDays {
-  //   List<String> listDays = [];
-  //   for (int index in days) {
-  //     listDays.add(week[index]);
-  //   }
-  //   return listDays;
-  // }
 
   /// For assigning icon to Exercise.
   int get iconIndex {
