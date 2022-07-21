@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/settings/change_username.dart';
+import 'package:health_wealth/screens/settings/change_password.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -86,7 +87,13 @@ class _SettingsState extends State<Settings> {
                   ],
                 ),
               ),
-              onTap: () {},
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ChangePassword()),
+                );
+              },
             ),
           ],
         ),
