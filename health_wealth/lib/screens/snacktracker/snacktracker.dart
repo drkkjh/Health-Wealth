@@ -113,6 +113,8 @@ class _SnackTrackerState extends State<SnackTracker> {
   }
 
   Padding caloriesIndicator(num totalKcal, num kcalLimit) {
+    totalKcal = num.parse(totalKcal.toStringAsFixed(1));
+    kcalLimit = num.parse(kcalLimit.toStringAsFixed(1));
     double percent = totalKcal <= kcalLimit ? totalKcal / kcalLimit : 1;
 
     return Padding(
