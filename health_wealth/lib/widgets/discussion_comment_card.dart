@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
+import 'package:health_wealth/services/auth.dart';
 import 'package:intl/intl.dart';
 
 class DiscussionCommentCard extends StatefulWidget {
@@ -15,10 +17,10 @@ class DiscussionCommentCard extends StatefulWidget {
 
 class _CommentCardState extends State<DiscussionCommentCard> {
   Methods methods = Methods();
+  final User user = AuthService().currentUser;
 
   @override
   Widget build(BuildContext context) {
-    // implement widget for a single comment
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 16.0),
       child: Row(
@@ -67,25 +69,30 @@ class _CommentCardState extends State<DiscussionCommentCard> {
               ),
             ),
           ),
-          InkWell(
-            onTap: () {
-              methods.deleteDiscussionComment(
-                  widget.postId, widget.snap['postId']);
-              /*ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Successfully deleted comment'),
-                ),
-              );*/
-            },
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: const Icon(
-                Icons.delete_forever,
-                size: 20.0,
-                color: Colors.red,
-              ),
-            ),
-          ),
+          widget.snap['uid'] == user.uid
+              ? InkWell(
+                  onTap: () async {
+                    await methods
+                        .deleteDiscussionComment(
+                            widget.postId, widget.snap['postId'])
+                        .whenComplete(() {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Successfully deleted comment'),
+                        ),
+                      );
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Icon(
+                      Icons.delete_forever,
+                      size: 20.0,
+                      color: Colors.red,
+                    ),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

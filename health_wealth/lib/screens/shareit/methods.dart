@@ -14,13 +14,12 @@ class Methods {
 
   /// Returns true iff user if following the targetUser
   Future<bool> isFollowing(User targetUser) async {
-    // TODO: Abstract away into a DatabaseService method
     var snap = await _db.usersCollection.doc(_auth.currentUser.uid).get();
     User user = User.fromSnap(snap);
     return user.following.contains(targetUser.uid);
   }
 
-  void addFeed(String description, String uid, String username) async {
+  Future addFeed(String description, String uid, String username) async {
     String result = 'For debugging purposes';
     try {
       String postId =
@@ -33,7 +32,6 @@ class Methods {
         postId: postId,
         datePublished: DateTime.now(),
       );
-      // TODO: Abstract away into a DatabaseService method
       await _db.postsCollection.doc(postId).set(post.toJson());
       result = 'successfully added to database';
     } catch (err) {
@@ -42,7 +40,7 @@ class Methods {
     print(result); // used for debugging
   }
 
-  void addFeedComment(
+  Future addFeedComment(
       String com, String uid, String username, String postId) async {
     // String result = 'debug';
     try {
@@ -64,7 +62,7 @@ class Methods {
     }
   }
 
-  void addDiscussion(String description, String uid, String username) async {
+  Future addDiscussion(String description, String uid, String username) async {
     String result = 'For debugging purposes';
     try {
       String postId =
@@ -135,9 +133,8 @@ class Methods {
     }
   }
 
-  deletePost(String postId) async {
+  Future deletePost(String postId) async {
     try {
-      // TODO: Abstract away into a DatabaseService method
       await _db.postsCollection.doc(postId).delete();
       print('successfully deleted post'); // for debugging
     } catch (e) {
@@ -145,7 +142,7 @@ class Methods {
     }
   }
 
-  deletePostComment(String postId, String commentId) async {
+  Future deletePostComment(String postId, String commentId) async {
     await _db.postsCollection
         .doc(postId)
         .collection('comments')
@@ -153,9 +150,8 @@ class Methods {
         .delete();
   }
 
-  deleteDiscussion(String postId) async {
+  Future deleteDiscussion(String postId) async {
     try {
-      // TODO: Abstract away into a DatabaseService method
       await _db.discussionsCollection.doc(postId).delete();
       print('successfully deleted post'); // for debugging
     } catch (e) {
@@ -163,7 +159,7 @@ class Methods {
     }
   }
 
-  deleteDiscussionComment(String postId, String commentId) async {
+  Future deleteDiscussionComment(String postId, String commentId) async {
     await _db.discussionsCollection
         .doc(postId)
         .collection('comments')
@@ -171,8 +167,7 @@ class Methods {
         .delete();
   }
 
-  Future<void> likePost(String postId, String uid, List likes) async {
-    // TODO: Abstract away into a DatabaseService method
+  Future likePost(String postId, String uid, List likes) async {
     try {
       if (likes.contains(uid)) {
         // already liked the post
