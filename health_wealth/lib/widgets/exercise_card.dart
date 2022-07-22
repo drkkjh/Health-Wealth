@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/screens/workoutbuddy/update_exercise_panel.dart';
+import 'package:health_wealth/services/database.dart';
 
 class ExerciseCard extends StatelessWidget {
   final Exercise exercise;
-
-  ExerciseCard({Key? key, required this.exercise}) : super(key: key);
+  final _db = DatabaseService();
 
   final List<String> exerciseIcons = [
     'assets/icon-pushups.png',
     'assets/icon-situps.png',
     'assets/icon-pullups.png',
     'assets/icon-squats.png',
-    'assets/icon-dumbbell.png'
+    'assets/icon-dumbbell.png',
+    'assets/icon-benchpress.png',
+    'assets/icon-deadlift.png',
+    'assets/icon-running.png',
+    'assets/empty.png'
   ];
+
+  ExerciseCard({Key? key, required this.exercise}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +35,42 @@ class ExerciseCard extends StatelessWidget {
           });
     }
 
+    Future _openDialog() {
+      return showDialog(
+        context: context,
+        builder: (dialogContext) {
+          return AlertDialog(
+            scrollable: true,
+            title: const Text('Change icon'),
+            content: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.width * 0.75,
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 0,
+                    mainAxisSpacing: 0,
+                    crossAxisCount: 4,
+                  ),
+                  itemCount: exerciseIcons.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () async {
+                        await _db
+                            .changeExerciseIcon(exercise, index)
+                            .whenComplete(() => Navigator.pop(dialogContext));
+                      },
+                      child: Image.asset(exerciseIcons[index]),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Card(
       margin: const EdgeInsets.only(top: 10),
       child: Row(
@@ -42,12 +84,17 @@ class ExerciseCard extends StatelessWidget {
               child: SizedBox(
                 height: 40,
                 // width: 30
-                child: Image.asset(exerciseIcons[exercise.iconIndex]),
+                child: GestureDetector(
+                    onTap: _openDialog,
+                    child: exercise.iconIndex >= 0 // has icon set
+                        ? Image.asset(exerciseIcons[exercise.iconIndex])
+                        : Image.asset(exerciseIcons[
+                            exercise.defaultIconIndex]) // no icon set
+                    ),
               ),
             ),
           ),
           const Expanded(flex: 1, child: SizedBox(width: 30)),
-          // const SizedBox(width: 30),
           Expanded(
             flex: 5,
             child: SizedBox(
@@ -58,9 +105,6 @@ class ExerciseCard extends StatelessWidget {
               ),
             ),
           ),
-          // const SizedBox(
-          //   width: 70,
-          // ),
           Expanded(
             flex: 3,
             child: TextButton(

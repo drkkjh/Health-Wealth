@@ -131,6 +131,12 @@ class DatabaseService {
         .set(exercise.toJson());
   }
 
+  Future changeExerciseIcon(Exercise exercise, int icon) async {
+    await userWorkoutRoutineCollection
+        .doc(exercise.name)
+        .update({'iconIndex': icon});
+  }
+
   /// Update exercise in the user's workout routine collection.
   /// Exercise attributes are changed except for it's name.
   Future updateExercise(Exercise exercise) async {
