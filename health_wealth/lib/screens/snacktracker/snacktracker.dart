@@ -49,7 +49,6 @@ class _SnackTrackerState extends State<SnackTracker> {
                       const SnackList(),
                     ],
                   ),
-            // ),
             floatingActionButton: SpeedDial(
               activeBackgroundColor: Colors.blueAccent,
               activeIcon: Icons.clear,

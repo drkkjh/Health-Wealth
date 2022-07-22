@@ -7,6 +7,7 @@ class Exercise {
   String name;
   int sets;
   int reps;
+  int iconIndex = -1;
 
   Exercise({required this.name, required this.sets, required this.reps});
 
@@ -15,8 +16,8 @@ class Exercise {
 
   Map<String, dynamic> toJson() => _$ExerciseToJson(this);
 
-  /// For assigning icon to Exercise.
-  int get iconIndex {
+  /// For assigning icon to default Exercise.
+  int get defaultIconIndex {
     return name == 'Push ups'
         ? 0
         : name == 'Sit ups'
@@ -25,7 +26,7 @@ class Exercise {
                 ? 2
                 : name == 'Squats'
                     ? 3
-                    : 4;
+                    : 8;
   }
 
   static List<Exercise> get defaultExercises {
