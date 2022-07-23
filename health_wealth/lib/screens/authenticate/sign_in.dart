@@ -3,6 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
+import 'package:health_wealth/screens/authenticate/email_validator.dart';
+import 'package:health_wealth/screens/authenticate/password_validator.dart';
 import 'package:health_wealth/widgets/loading.dart';
 import 'package:health_wealth/services/auth.dart';
 
@@ -65,13 +67,7 @@ class _SignInState extends State<SignIn> {
                       TextFormField(
                         decoration:
                             formInputDecoration.copyWith(hintText: 'Email'),
-                        validator: (input) {
-                          if (input == null || input.isEmpty) {
-                            return 'Enter your email';
-                          } else {
-                            return null;
-                          }
-                        },
+                        validator: EmailValidator.validate,
                         onChanged: (input) {
                           setState(() => email = input);
                         },
@@ -81,16 +77,7 @@ class _SignInState extends State<SignIn> {
                         obscureText: true,
                         decoration:
                             formInputDecoration.copyWith(hintText: 'Password'),
-                        validator: (input) {
-                          if (input != null) {
-                            if (input.isEmpty) {
-                              return 'Enter your password';
-                            } else if (input.length < 6) {
-                              return 'Your password must be at least 6 characters!';
-                            }
-                          }
-                          return null;
-                        },
+                        validator: PasswordValidator.validate,
                         onChanged: (input) {
                           setState(() => password = input);
                         },
