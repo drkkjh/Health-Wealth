@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
-import 'package:health_wealth/screens/authenticate/email_validator.dart';
-import 'package:health_wealth/screens/authenticate/password_validator.dart';
+import 'package:health_wealth/common/input_validator.dart';
 import 'package:health_wealth/widgets/loading.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/services/auth.dart';
@@ -70,7 +69,7 @@ class _RegisterState extends State<Register> {
                         TextFormField(
                           decoration:
                               formInputDecoration.copyWith(hintText: 'Email'),
-                          validator: EmailValidator.validate,
+                          validator: InputValidator.validateEmail,
                           onChanged: (input) {
                             setState(() => email = input);
                           },
@@ -80,7 +79,7 @@ class _RegisterState extends State<Register> {
                           obscureText: true,
                           decoration: formInputDecoration.copyWith(
                               hintText: 'Password'),
-                          validator: PasswordValidator.validate,
+                          validator: InputValidator.validatePassword,
                           onChanged: (input) {
                             setState(() => password = input);
                           },
