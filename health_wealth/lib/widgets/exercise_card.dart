@@ -8,6 +8,7 @@ class ExerciseCard extends StatelessWidget {
   final _db = DatabaseService();
 
   final List<String> exerciseIcons = [
+    'assets/empty.png',
     'assets/icon-pushups.png',
     'assets/icon-situps.png',
     'assets/icon-pullups.png',
@@ -16,7 +17,6 @@ class ExerciseCard extends StatelessWidget {
     'assets/icon-benchpress.png',
     'assets/icon-deadlift.png',
     'assets/icon-running.png',
-    'assets/empty.png'
   ];
 
   ExerciseCard({Key? key, required this.exercise}) : super(key: key);

@@ -67,14 +67,13 @@ class _UpdateExerciseState extends State<UpdateExercisePanel> {
                 onPressed: () async {
                   // Check if form is valid.
                   if (_formKey.currentState!.validate()) {
-                    // TODO: Update exercise.
-
-                    await _db
-                        .updateExercise(Exercise(
-                            name: widget.exercise.name,
-                            sets: _sets,
-                            reps: _reps))
-                        .whenComplete(() {
+                    Exercise updatedExercise = Exercise(
+                      name: widget.exercise.name,
+                      sets: _sets >= 0 ? _sets : widget.exercise.sets,
+                      reps: _reps >= 0 ? _reps : widget.exercise.reps,
+                      iconIndex: widget.exercise.iconIndex,
+                    );
+                    await _db.updateExercise(updatedExercise).whenComplete(() {
                       Navigator.of(context).pop();
                     });
                   }
