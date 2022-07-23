@@ -2,7 +2,7 @@ import 'package:health_wealth/common/input_validator.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('UpdateCalLimit', () {
+  group('updateCalLimit', () {
     test('Empty input returns error string', () {
       final result = InputValidator.validateCalories('');
       expect(result, 'Enter your calories limit');

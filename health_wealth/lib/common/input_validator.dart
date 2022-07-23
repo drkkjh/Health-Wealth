@@ -18,4 +18,12 @@ class InputValidator {
             ? 'Enter a positive number'
             : null;
   }
+
+  static String? validateSetsAndReps(String? val) {
+    return (val == null || val.isEmpty)
+        ? null
+        : (int.tryParse(val) == null || int.parse(val) < 0)
+            ? 'Enter a positive integer'
+            : null;
+  }
 }
