@@ -60,7 +60,7 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
                     Navigator.pop(context);
                   },
                   child: const Text(
-                    'Post your query to discussion',
+                    'Post',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -71,15 +71,18 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
             ),
             body: Column(
               children: <Widget>[
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: TextField(
-                    controller: _descriptionController,
-                    decoration: const InputDecoration(
-                      hintText: 'Post your query to discussion',
-                      border: InputBorder.none,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+                  child: SizedBox(
+                    // width: MediaQuery.of(context).size.width ,
+                    child: TextField(
+                      controller: _descriptionController,
+                      decoration: const InputDecoration(
+                        hintText: 'Post your query to discussion',
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: 8,
                     ),
-                    maxLines: 8,
                   ),
                 ),
               ],
