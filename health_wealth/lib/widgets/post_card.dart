@@ -103,10 +103,10 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    widget.snap['uid'] == user.uid
-                        ? showDialog(
+                widget.snap['uid'] == user.uid
+                    ? IconButton(
+                        onPressed: () {
+                          showDialog(
                             context: context,
                             builder: (context) => Dialog(
                               child: ListView(
@@ -135,23 +135,11 @@ class _PostCardState extends State<PostCard> {
                                     .toList(),
                               ),
                             ),
-                          )
-                        : showDialog(
-                            context: context,
-                            builder: (context) => Dialog(
-                              child: ListView(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  shrinkWrap: true,
-                                  children: const [
-                                    Text('No permission to delete post'),
-                                  ]),
-                            ),
                           );
-                  },
-                  icon: const Icon(Icons.more_vert),
-                ),
+                        },
+                        icon: const Icon(Icons.more_vert),
+                      )
+                    : Container(),
               ],
             ),
           ),
@@ -162,7 +150,12 @@ class _PostCardState extends State<PostCard> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
                 width: double.infinity,
-                child: Text(' ${widget.snap['description']}'),
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 16,
+                    ),
+                    child: Text(' ${widget.snap['description']}')),
               ),
               AnimatedOpacity(
                 duration: const Duration(milliseconds: 200),
