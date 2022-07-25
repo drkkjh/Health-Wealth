@@ -7,25 +7,30 @@ class Exercise {
   String name;
   int sets;
   int reps;
+  int iconIndex;
 
-  Exercise({required this.name, required this.sets, required this.reps});
+  Exercise(
+      {required this.name,
+      required this.sets,
+      required this.reps,
+      this.iconIndex = -1});
 
   factory Exercise.fromJson(Map<String, dynamic> json) =>
       _$ExerciseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ExerciseToJson(this);
 
-  /// For assigning icon to Exercise.
-  int get iconIndex {
+  /// For assigning icon to default Exercise.
+  int get defaultIconIndex {
     return name == 'Push ups'
-        ? 0
+        ? 1
         : name == 'Sit ups'
-            ? 1
+            ? 2
             : name == 'Pull ups'
-                ? 2
+                ? 3
                 : name == 'Squats'
-                    ? 3
-                    : 4;
+                    ? 4
+                    : 0;
   }
 
   static List<Exercise> get defaultExercises {

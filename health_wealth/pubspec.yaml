@@ -38,7 +38,6 @@ dependencies:
   firebase_auth: ^3.3.18
   cloud_firestore: ^3.1.16
   provider: ^6.0.3
-  dio: ^4.0.6
   flutter_spinkit: ^5.1.0
   google_maps_flutter: ^2.1.7
   google_maps_flutter_web: ^0.3.3
@@ -52,11 +51,11 @@ dependencies:
   stop_watch_timer: ^1.5.0
   google_fonts: ^3.0.1
   intl: ^0.17.0
-  sqflite: ^2.0.2+1
   json_annotation: ^4.5.0
   flutter_speed_dial: ^6.0.0
   uuid: ^3.0.6
   percent_indicator: ^4.2.2
+  mockito: ^5.2.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +68,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   build_runner: ^2.1.11
+  test: ^1.21.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -90,6 +90,10 @@ flutter:
    - assets/icon-situps.png
    - assets/icon-squats.png
    - assets/icon-dumbbell.png
+   - assets/icon-benchpress.png
+   - assets/icon-deadlift.png
+   - assets/icon-running.png
+   - assets/empty.png
    - assets/RunTracker_background.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see

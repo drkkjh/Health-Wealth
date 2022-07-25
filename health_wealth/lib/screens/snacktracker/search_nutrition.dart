@@ -4,6 +4,7 @@ import 'package:health_wealth/model/snack.dart';
 import 'package:health_wealth/model/snack_api.dart';
 import 'package:health_wealth/widgets/snack_api_tile.dart';
 import 'package:health_wealth/services/network_service.dart';
+import 'package:http/http.dart' as http;
 
 class SearchNutrition extends StatefulWidget {
   const SearchNutrition({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class SearchNutrition extends StatefulWidget {
 }
 
 class _SearchSnackAPIState extends State<SearchNutrition> {
+  final http.Client _client = http.Client();
   final _controller1 = TextEditingController();
   Future<List<SnackAPI>?>? apiQuery;
   var showExamples = true;
@@ -48,7 +50,8 @@ class _SearchSnackAPIState extends State<SearchNutrition> {
                     setState(() {
                       showExamples = false;
                       FocusScope.of(context).unfocus();
-                      apiQuery = NetworkService.getSnackInfo(_controller1.text);
+                      apiQuery = NetworkService.getSnackInfo(
+                          _controller1.text, _client);
                     });
                   }),
               const SizedBox(height: 20.0),

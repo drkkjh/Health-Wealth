@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
+import 'package:health_wealth/common/input_validator.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/services/database.dart';
 
@@ -34,15 +35,7 @@ class _UpdateExerciseState extends State<UpdateExercisePanel> {
               autofocus: true,
               keyboardType: TextInputType.number,
               decoration: formInputDecoration.copyWith(hintText: 'sets'),
-              validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return null;
-                } else if (int.tryParse(val) == null || int.parse(val) < 0) {
-                  return 'Enter a positive integer';
-                } else {
-                  return null;
-                }
-              },
+              validator: InputValidator.validateSetsAndReps,
               onChanged: (val) {
                 setState(() {
                   if (int.tryParse(val) != null) {
@@ -55,15 +48,7 @@ class _UpdateExerciseState extends State<UpdateExercisePanel> {
             TextFormField(
               keyboardType: TextInputType.number,
               decoration: formInputDecoration.copyWith(hintText: 'reps'),
-              validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return null;
-                } else if (int.tryParse(val) == null || int.parse(val) < 0) {
-                  return 'Enter a positive integer';
-                } else {
-                  return null;
-                }
-              },
+              validator: InputValidator.validateSetsAndReps,
               onChanged: (val) {
                 setState(() {
                   if (int.tryParse(val) != null) {
@@ -82,12 +67,13 @@ class _UpdateExerciseState extends State<UpdateExercisePanel> {
                 onPressed: () async {
                   // Check if form is valid.
                   if (_formKey.currentState!.validate()) {
-                    await _db
-                        .updateExercise(Exercise(
-                            name: widget.exercise.name,
-                            sets: _sets,
-                            reps: _reps))
-                        .whenComplete(() {
+                    Exercise updatedExercise = Exercise(
+                      name: widget.exercise.name,
+                      sets: _sets >= 0 ? _sets : widget.exercise.sets,
+                      reps: _reps >= 0 ? _reps : widget.exercise.reps,
+                      iconIndex: widget.exercise.iconIndex,
+                    );
+                    await _db.updateExercise(updatedExercise).whenComplete(() {
                       Navigator.of(context).pop();
                     });
                   }

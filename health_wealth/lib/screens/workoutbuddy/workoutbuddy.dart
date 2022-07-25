@@ -56,7 +56,6 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
                     itemBuilder: ((context, index) {
                       Exercise ex = _exercises![index];
                       return Dismissible(
-                        // key: Key(UniqueKey().toString()),
                         key: Key(ex.name),
                         onDismissed: (direction) {
                           _showDeleted(context, ex, index);
@@ -104,9 +103,6 @@ class _WorkOutBuddyState extends State<WorkOutBuddy> {
 
   void _undoDelete(index, Exercise ex) async {
     await _db.addExercise(ex);
-    // setState(() {
-    //   _exercises!.insert(index, ex);
-    // });
   }
 
   void _showDeleted(BuildContext context, Exercise ex, index) {
@@ -134,25 +130,16 @@ class HeaderRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: const [
-          // SizedBox(width: 25),
-          // Expanded(
-          //   flex: 1,
-          //   child: SizedBox.shrink(),
-          // ),
           Expanded(
-            flex: 6,
+            flex: 3,
             child: Center(
               child: Text('Exercise', style: TextStyle(fontSize: 25)),
             ),
           ),
-          // SizedBox(width: 30),
           Expanded(
-            flex: 2,
             child: Text('Sets', style: TextStyle(fontSize: 25)),
           ),
-          // SizedBox(width: 20),
           Expanded(
-            flex: 2,
             child: Text('Reps', style: TextStyle(fontSize: 25)),
           ),
         ],

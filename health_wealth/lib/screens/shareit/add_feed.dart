@@ -55,7 +55,7 @@ class _AddToFeedState extends State<AddToFeed> {
                     Navigator.of(context).pop();
                   },
                   child: const Text(
-                    'Post to feed',
+                    'Post',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -66,13 +66,14 @@ class _AddToFeedState extends State<AddToFeed> {
             ),
             body: Column(
               children: <Widget>[
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
                   child: TextField(
+                    autofocus: true,
                     controller: _descriptionController,
                     decoration: const InputDecoration(
                       hintText: 'Write a caption for your post',
-                      border: InputBorder.none,
+                      border: OutlineInputBorder(),
                     ),
                     maxLines: 8,
                   ),
