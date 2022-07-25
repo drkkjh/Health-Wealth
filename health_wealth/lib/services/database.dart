@@ -59,6 +59,11 @@ class DatabaseService {
 
   Future updateUsername(String username) async {
     // TODO: Implement logic to check that username isn't taken
+    var data = usersCollection.where('username', isEqualTo: username).get();
+    if (data != null) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar: SnackBar(content: Text('Username is taken'),),);
+      break;
+    } 
     await usersCollection.doc(uid).update({'username': username});
     await updateUsernameInShareItPosts(username);
     return await updateUsernameInShareItComments(username);
