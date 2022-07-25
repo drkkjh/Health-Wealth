@@ -66,18 +66,29 @@ class _ShareItState extends State<ShareIt> {
                   return StreamBuilder<QuerySnapshot>(
                     stream: _db.getPostsSnapshot(user),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) => PostCard(
+                              snap: snapshot.data!.docs[index].data()
+                                  as Map<String, dynamic>,
+                              username: user.username),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            snapshot.error.toString(),
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 20.0,
+                            ),
+                          ),
+                        );
+                      } else {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
-                      return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) => PostCard(
-                            snap: snapshot.data!.docs[index].data()
-                                as Map<String, dynamic>,
-                            username: user.username),
-                      );
                     },
                   );
                 },
@@ -88,38 +99,51 @@ class _ShareItState extends State<ShareIt> {
               body: StreamBuilder<User>(
                 stream: _db.getUserDetails,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.hasData) {
+                    User user = snapshot.data!;
+                    return StreamBuilder<QuerySnapshot>(
+                      stream: _db.getDiscussionsSnapshot,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) => DiscussionCard(
+                                snap: snapshot.data!.docs[index].data()
+                                    as Map<String, dynamic>,
+                                username: user.username),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text(
+                              snapshot.error.toString(),
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        snapshot.error.toString(),
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                    );
+                  } else {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-                  User user = snapshot.data ??
-                      const User(
-                        username: '',
-                        uid: '',
-                        email: '',
-                        followers: [''],
-                        following: [''],
-                        totalKcal: 0,
-                        kcalLimit: 0,
-                      );
-                  return StreamBuilder<QuerySnapshot>(
-                    stream: _db.discussionsCollection.snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) => DiscussionCard(
-                            snap: snapshot.data!.docs[index].data()
-                                as Map<String, dynamic>,
-                            username: user.username),
-                      );
-                    },
-                  );
                 },
               ),
             ),

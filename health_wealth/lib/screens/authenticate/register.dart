@@ -1,8 +1,7 @@
-// ignore_for_file: avoid_print
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
+import 'package:health_wealth/common/input_validator.dart';
 import 'package:health_wealth/widgets/loading.dart';
 import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/services/auth.dart';
@@ -70,13 +69,7 @@ class _RegisterState extends State<Register> {
                         TextFormField(
                           decoration:
                               formInputDecoration.copyWith(hintText: 'Email'),
-                          validator: (input) {
-                            if (input == null || input.isEmpty) {
-                              return 'Enter your email';
-                            } else {
-                              return null;
-                            }
-                          },
+                          validator: InputValidator.validateEmail,
                           onChanged: (input) {
                             setState(() => email = input);
                           },
@@ -86,13 +79,7 @@ class _RegisterState extends State<Register> {
                           obscureText: true,
                           decoration: formInputDecoration.copyWith(
                               hintText: 'Password'),
-                          validator: (input) {
-                            if (input == null || input.length < 6) {
-                              return 'Your password must be at least 6 characters!';
-                            } else {
-                              return null;
-                            }
-                          },
+                          validator: InputValidator.validatePassword,
                           onChanged: (input) {
                             setState(() => password = input);
                           },
@@ -113,7 +100,7 @@ class _RegisterState extends State<Register> {
                                 User user =
                                     await _auth.register(email, password);
                                 await _db.createUserDocument(email);
-                                await _db.followUser(user.uid, user.uid);
+                                await _db.followUser(user.uid);
                                 // Create default exercises in WorkoutBuddy
                                 for (Exercise ex in Exercise.defaultExercises) {
                                   await _db.addExercise(ex);

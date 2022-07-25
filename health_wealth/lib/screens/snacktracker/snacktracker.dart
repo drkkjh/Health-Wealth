@@ -18,6 +18,7 @@ class SnackTracker extends StatefulWidget {
 
 class _SnackTrackerState extends State<SnackTracker> {
   final DatabaseService _db = DatabaseService();
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,24 +36,40 @@ class _SnackTrackerState extends State<SnackTracker> {
               title: const Text('SnackTracker'),
               backgroundColor: Colors.lightBlue,
             ),
-            body: Column(
-              children: <Widget>[
-                const SizedBox(height: 10),
-                const Text(
-                  'Daily consumption',
-                  style: TextStyle(fontSize: 20),
-                ),
-                caloriesIndicator(totalKcal, kcalLimit),
-                // const SizedBox(height: 10),
-                const SnackList(),
-              ],
-            ),
-            // ),
+            body: loading
+                ? const Loading()
+                : Column(
+                    children: <Widget>[
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Daily consumption',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      caloriesIndicator(totalKcal, kcalLimit),
+                      const SnackList(),
+                    ],
+                  ),
             floatingActionButton: SpeedDial(
               activeBackgroundColor: Colors.blueAccent,
               activeIcon: Icons.clear,
               icon: Icons.more_vert,
               children: [
+                SpeedDialChild(
+                  backgroundColor: Colors.red[400],
+                  label: 'Delete all snacks',
+                  child: const Icon(Icons.delete_forever),
+                  onTap: () async {
+                    setState(() => loading = true);
+                    await _db.deleteAllSnacks().whenComplete(() {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Snacks deleted'),
+                        ),
+                      );
+                    });
+                    setState(() => loading = false);
+                  },
+                ),
                 SpeedDialChild(
                   label: 'Add snack',
                   child: const Icon(Icons.add),
@@ -95,6 +112,8 @@ class _SnackTrackerState extends State<SnackTracker> {
   }
 
   Padding caloriesIndicator(num totalKcal, num kcalLimit) {
+    totalKcal = num.parse(totalKcal.toStringAsFixed(1));
+    kcalLimit = num.parse(kcalLimit.toStringAsFixed(1));
     double percent = totalKcal <= kcalLimit ? totalKcal / kcalLimit : 1;
 
     return Padding(

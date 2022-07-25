@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
+import 'package:health_wealth/common/input_validator.dart';
 import 'package:health_wealth/services/database.dart';
 
 class UpdateCalLimitPanel extends StatefulWidget {
@@ -32,15 +33,7 @@ class _UpdateExerciseState extends State<UpdateCalLimitPanel> {
               keyboardType: TextInputType.number,
               decoration:
                   formInputDecoration.copyWith(hintText: 'limit (kcal)'),
-              validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return null;
-                } else if (num.tryParse(val) == null || num.parse(val) < 0) {
-                  return 'Enter a positive number';
-                } else {
-                  return null;
-                }
-              },
+              validator: InputValidator.validateCalories,
               onChanged: (val) {
                 setState(() {
                   if (num.tryParse(val) != null) {

@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:health_wealth/common/form_input_decoration.dart';
-import 'package:health_wealth/model/snack.dart';
+import 'package:health_wealth/model/exercise.dart';
 import 'package:health_wealth/services/database.dart';
 
-class AddSnack extends StatefulWidget {
-  const AddSnack({Key? key}) : super(key: key);
+class AddExercise extends StatefulWidget {
+  const AddExercise({Key? key}) : super(key: key);
 
   @override
-  State<AddSnack> createState() => _AddSnackState();
+  State<AddExercise> createState() => _AddExerciseState();
 }
 
-class _AddSnackState extends State<AddSnack> {
+class _AddExerciseState extends State<AddExercise> {
   final _formKey = GlobalKey<FormState>();
+  final _db = DatabaseService();
 
   // User input variables
   String _name = '';
-  num _calories = 0;
+  int? _sets;
+  int? _reps;
 
-  void _addSnack() async {
-    var newSnack = Snack(name: _name, calories: _calories);
-    await DatabaseService().addSnack(newSnack);
-    if (!mounted) return;
-    Navigator.of(context).pop();
+  void _addExercise() async {
+    var newExercise = Exercise(name: _name, sets: _sets!, reps: _reps!);
+    await _db
+        .addExercise(newExercise)
+        .whenComplete(() => Navigator.of(context).pop());
   }
 
   @override
@@ -45,11 +47,11 @@ class _AddSnackState extends State<AddSnack> {
                       const SizedBox(height: 20.0),
                       TextFormField(
                         decoration: formInputDecoration.copyWith(
-                            hintText: 'Enter snack name'),
+                            hintText: 'Enter exercise name'),
                         autofocus: true,
                         validator: (input) {
                           if (input == null || input.isEmpty) {
-                            return 'Enter the name of the snack';
+                            return 'Name of exercise';
                           } else {
                             return null;
                           }
@@ -58,36 +60,57 @@ class _AddSnackState extends State<AddSnack> {
                           setState(() => _name = input);
                         },
                       ),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 10.0),
                       TextFormField(
                         keyboardType: TextInputType.number,
                         decoration: formInputDecoration.copyWith(
-                            hintText: 'Enter snack calories'),
+                            hintText: 'Number of sets'),
                         validator: (input) {
                           if (input == null || input.isEmpty) {
                             return 'Enter a number';
-                          } else if (num.tryParse(input) == null ||
-                              num.parse(input) < 0) {
-                            return 'Enter a positive number!';
+                          } else if (int.tryParse(input) == null ||
+                              int.parse(input) < 0) {
+                            return 'Enter a positive integer!';
                           } else {
                             return null;
                           }
                         },
                         onChanged: (input) {
-                          if (num.tryParse(input) != null) {
-                            setState(() => _calories = num.parse(input));
+                          if (int.tryParse(input) != null) {
+                            setState(() => _sets = int.parse(input));
                           }
                         },
                       ),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 10.0),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: formInputDecoration.copyWith(
+                            hintText: 'Number of reps'),
+                        validator: (input) {
+                          if (input == null || input.isEmpty) {
+                            return 'Enter a number';
+                          } else if (int.tryParse(input) == null ||
+                              int.parse(input) < 0) {
+                            return 'Enter a positive integer!';
+                          } else {
+                            return null;
+                          }
+                        },
+                        onChanged: (input) {
+                          if (int.tryParse(input) != null) {
+                            setState(() => _reps = int.parse(input));
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 10.0),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            _addSnack();
+                            _addExercise();
                           }
                         },
                         child: const Text(
-                          'Add snack',
+                          'Add exercise',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

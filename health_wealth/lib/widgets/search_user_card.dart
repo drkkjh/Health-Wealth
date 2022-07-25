@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:health_wealth/model/user.dart';
 import 'package:health_wealth/widgets/follow_button.dart';
 import 'package:health_wealth/screens/shareit/methods.dart';
-import 'package:health_wealth/services/auth.dart';
 import 'package:health_wealth/services/database.dart';
 
 class SearchUserCard extends StatefulWidget {
@@ -56,8 +55,7 @@ class _SearchUserCardState extends State<SearchUserCard> {
                   child: FollowButton(
                     isFollowing: isFollowing!,
                     function: () async {
-                      await _db.followUser(
-                          AuthService().currentUser.uid, widget.user.uid);
+                      await _db.followUser(widget.user.uid);
                       setState(() => isFollowing = !isFollowing!);
                     },
                   ),

@@ -201,9 +201,10 @@ class _PostCardState extends State<DiscussionCard> {
               padding: const EdgeInsets.symmetric(
                 vertical: 2,
               ),
-              child: Text(
-                'View all $commentLen comments',
-                style: const TextStyle(
+              child: const Text(
+                'View all comments',
+                // 'View all $commentLen comments',
+                style: TextStyle(
                   fontSize: 13.5,
                 ),
               ),
