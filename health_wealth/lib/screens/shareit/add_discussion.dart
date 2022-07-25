@@ -73,16 +73,14 @@ class _AddToDiscussionState extends State<AddToDiscussion> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
-                  child: SizedBox(
-                    // width: MediaQuery.of(context).size.width ,
-                    child: TextField(
-                      controller: _descriptionController,
-                      decoration: const InputDecoration(
-                        hintText: 'Post your query to discussion',
-                        border: OutlineInputBorder(),
-                      ),
-                      maxLines: 8,
+                  child: TextField(
+                    autofocus: true,
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(
+                      hintText: 'Post your query to discussion',
+                      border: OutlineInputBorder(),
                     ),
+                    maxLines: 8,
                   ),
                 ),
               ],

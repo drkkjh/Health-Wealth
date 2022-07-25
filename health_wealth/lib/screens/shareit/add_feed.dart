@@ -68,15 +68,14 @@ class _AddToFeedState extends State<AddToFeed> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
-                  child: SizedBox(
-                    child: TextField(
-                      controller: _descriptionController,
-                      decoration: const InputDecoration(
-                        hintText: 'Write a caption for your post',
-                        border: OutlineInputBorder(),
-                      ),
-                      maxLines: 8,
+                  child: TextField(
+                    autofocus: true,
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(
+                      hintText: 'Write a caption for your post',
+                      border: OutlineInputBorder(),
                     ),
+                    maxLines: 8,
                   ),
                 ),
               ],
