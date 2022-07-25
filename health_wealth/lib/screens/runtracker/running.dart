@@ -119,8 +119,6 @@ class _RunningState extends State<Running> {
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: [
-                  // Flexible(
-                  //   child:
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -180,13 +178,14 @@ class _RunningState extends State<Running> {
                       )
                     ],
                   ),
-                  // ),
                   const Divider(),
-                  Center(
+                  SizedBox(
+                    width: double.infinity,
                     child: IconButton(
+                      padding: EdgeInsets.zero,
                       icon: Icon(
                         Icons.stop_circle,
-                        size: 70,
+                        size: 50,
                         color: Colors.red[700],
                       ),
                       onPressed: () {
@@ -203,7 +202,7 @@ class _RunningState extends State<Running> {
                         Navigator.pop(context);
                       },
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
